@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <title>Registarse</title>
+        <!--hoja externa para menu.css-->
+        <link rel="stylesheet" href="CSS/registrarse.css">
+        <!--hoja externa para javsript-->
+        <script src="js/registrarse.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+
+    <body>
+       <div id="form_regi">
+        <header>
+            <h1>Registrarse</h1>
+        </header>
+        <!--linea horizaontal-->
+        <hr style=" width:85% ;color: #fff"/>
+        
+        <!--section para el fomulario-->
+        <section id="form">
+          <form action="inicio.html">
+                <input type="text" name="nombre" size="3"  class="txtvalidar" placeholder="Nombre" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+                <input type="text" name="apellido" class="txtvalidar" placeholder="Apellido" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+                <input type="text" name="username"  class="txtvalidar" placeholder="Username" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+                <input type="password" name="password" id="txtPass"  class="password" placeholder="Password" required="" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)" > </br > </br >
+                <label id="label1" for="label"> Tiene Carro </label> </br > 
+                <input class="radios" id="radioPosi" type="radio" name="car" value="si" onclick="plaquita.disabled = false" >Si
+                <input class="radios" id="radioNega" type="radio" name="car" value="no" onclick="plaquita.disabled = true"  >No
+                <input id="plaquita" type="text"  placeholder="GSG2123" class="showpassword" name="plaquita"  disabled="disabled" pattern="[a-zA-Z]{3}\d{4}">
+                
+                <button type="submit" > Registrar</button>
+           </form>
+        </section><!--fin de section-->
+       </div>
+    </body>
+</html>

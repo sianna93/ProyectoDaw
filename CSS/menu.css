@@ -1,0 +1,493 @@
+
+
+body{
+    font-size:14px;
+    /*color:#666;
+    background:#111 no-repeat;*/
+
+    /* CSS3 Radial Gradients */
+    /*background-image:-moz-radial-gradient(center -100px 45deg, circle farthest-corner, #444 150px, #111 300px);
+    background-image:-webkit-gradient(radial, 50% 0, 150, 50% 0, 300, from(#444), to(#111));*/
+    
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/*Map_Canvas GOOGLE*/
+html,body,#map-canvas {
+    height: 97%;
+    width: 100%;
+    margin: 0 10px;
+    padding: 0;
+    background:#55acee;
+    
+}
+
+body,#panel-derecho{
+    height: 97%;
+    padding: 0px;
+    margin: 0px;
+    background:#f5f8fa;
+
+}
+#map-canvas{
+    float: left;
+    width:100%;
+    height:100%;
+    margin:0 -10px;
+}
+
+/****panel derecho ****/
+#panel-derecho{
+   visibility: hidden;
+   height: 100%;
+   width: 30%;
+   float: right;
+}
+
+#directions_panel{
+  margin: 20px;
+  background-color: #0094ff;
+}
+
+/**menu******/
+#navigationMenu li{
+    list-style:none;
+    height:71px;
+    padding:2px;
+    width:71px;
+    
+}
+
+#navigationMenu span{
+    /* Container properties */
+    width:0;
+    left:70px;
+    padding:0;
+    position:absolute;
+    overflow:hidden;
+
+    /* Text properties */
+    font-family:'Myriad Pro',Arial, Helvetica, sans-serif;
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:0.6px;
+    white-space:nowrap;
+    line-height:70px;
+
+    /* CSS3 Transition: */
+    -webkit-transition: 0.25s;
+
+    /* Future proofing (these do not work yet): */
+    -moz-transition: 0.25s;
+    transition: 0.25s;
+}
+
+#navigationMenu a{
+    /* The background sprite: */
+    background:url('../imagenes/navigation2.jpg') no-repeat;
+
+    height:69px;
+    width:69px;
+    display:block;
+    position:relative;
+}
+
+/* General hover styles */
+
+#navigationMenu a:hover span{ width:auto; padding:0 20px;overflow:visible; }
+#navigationMenu a:hover{
+    text-decoration:none;
+
+    /* CSS outer glow with the box-shadow property */
+    -moz-box-shadow:0 0 5px #9ddff5;
+    -webkit-box-shadow:0 0 5px #9ddff5;
+    box-shadow:0 0 5px #9ddff5;
+}
+
+/* Green Button */
+
+#navigationMenu .cuenta {	background-position:0px 0;}
+#navigationMenu .cuenta:hover {	background-position:0px -72px;}
+#navigationMenu .cuenta span{
+    background-color:#7da315;
+    color:#3d4f0c;
+    text-shadow:1px 1px 0 #99bf31;
+}
+
+/* Blue Button */
+
+#navigationMenu .siguiendo{ background-position:-72px 0;}
+#navigationMenu .siguiendo:hover { background-position:-72px -72px;}
+#navigationMenu .siguiendo span{
+    background-color:#1e8bb4;
+    color:#223a44;
+    text-shadow:1px 1px 0 #44a8d0;
+}
+
+
+
+/* Blue Button */
+
+#navigationMenu .seguidores { background-position:-144px 0;}
+#navigationMenu .seguidores:hover { background-position:-144px -72px;}
+#navigationMenu .seguidores span{
+    background-color:#1e8bb4;
+    color:#223a44;
+    text-shadow:1px 1px 0 #44a8d0;
+}
+
+/* Orange Button */
+
+#navigationMenu .buscar { background-position:-217px 0;}
+#navigationMenu .buscar:hover { background-position:-217px -72px;}
+#navigationMenu .buscar span{
+    background-color:#c86c1f;
+    color:#5a3517;
+    text-shadow:1px 1px 0 #d28344;
+}
+
+/* Yellow Button */
+
+#navigationMenu .iniciar_ruta { background-position:-289px 0;}
+#navigationMenu .iniciar_ruta:hover{ background-position:-289px -72px;}
+#navigationMenu .iniciar_ruta span{
+    background-color:#d0a525;
+    color:#604e18;
+    text-shadow:1px 1px 0 #d8b54b;
+}
+
+/* Purple Button */
+
+#navigationMenu .Mis_Rutas { background-position:-361px 0;}
+#navigationMenu .Mis_Rutas:hover { background-position:-361px -72px;}
+#navigationMenu .Mis_Rutas span{
+    background-color:#af1e83;
+    color:#460f35;
+    text-shadow:1px 1px 0 #d244a6;
+}
+
+/* Purple Button */
+
+#navigationMenu .cerrar_sesion{ background-position:-431px 0;}
+#navigationMenu .cerrar_sesion:hover { background-position:-431px -72px;}
+#navigationMenu .cerrar_sesion span{
+    background-color:#9ddff5;
+    color:#460f35;
+    text-shadow:1px 1px 0 #d244a6;
+}
+
+
+
+#img_div{background: #2b80c1}
+#img_noti{
+    width: 30px;height: 30px;z-index: 20;background: #2b80c1;box-shadow: white
+}
+
+/*ELEMENTOS SIGUIENDO*/
+
+#header_panel{
+    background: #2b80c1; height: 50px
+}
+
+#labelpanel{ 
+    font-size: 20px;
+    font-weight: 800;
+    text-shadow: 0 1px 2px rgba(0,0,0,5);
+    width: 100%;height: auto;
+    vertical-align: central;
+    text-align: center;
+    color: #fff;
+    font-family:"georgia", serif;
+    
+}
+
+#cuerpo_presentacion{
+    padding: 20px;
+    height: 100%;
+}
+
+#panel-primary {
+    width: 100%;
+    float: left;
+}
+
+#panel-body{
+    height: 100%; padding: 10px;
+    font-family: "georgia", serif;
+}
+#presentacion_imagen{
+    padding: 5px;float:left;width:90px;height:60px
+}
+#presentacion_cuerpo_body{
+    float:left;width: 140px
+}
+#presentacion_bodynombre {
+    padding: 0;
+    float: left;
+    text-align: left;
+    color: #0026ff;
+    font-size: 15px;
+    width: 100%;
+}
+#presentacion_bodyID{
+    text-align: left;
+    width: 100%;
+}
+
+.close {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #ffffff ;
+    text-shadow: 0 1px 0 #000000;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+    text-decoration: none;
+
+}
+.close:hover {
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.4;
+}
+
+.modal-body{
+     background:url('../imagenes/fondocuenta.jpg') no-repeat;
+}
+
+/*DESDE AQUÍ añadido*/
+/**CSS CUENTA*/
+#cuerpo_cuenta{
+    height: 600px;
+    position: relative;
+    top: 2px;
+    background:url('../imagenes/fondocuenta.jpg') repeat;
+    font-family:"georgia", serif;
+    color: #fff;
+    width: 100%
+
+}
+#datos_cuenta{
+    width: 100%;
+    text-align: center;
+}
+#nombreCuenta{
+    font-size: 30px;
+    font-weight: 800;
+    text-shadow: 0 1px 4px rgba(0,0,0,5);
+    font: sansserif;
+    text-align:center;
+    float:left;
+    width:100%;
+    margin:  0 auto;
+}
+
+
+#nombreUsuario{
+    font-size: 20px;
+    font-weight: 800;
+    text-shadow: 0 1px 2px rgba(0,0,0,5);
+    font: sansserif;
+    color: #fff;
+    text-align:center;
+    float:left;
+    width:100%;
+    position: relative;
+    top:  30px;
+}
+#numseguidores {
+    color: #fff;
+    font: 150% Fantasía;
+    font-size: 14px;
+    text-align: center;
+    
+    padding-left: 1em;
+    position: relative;
+    top: 50px;
+    
+}
+
+#seguidores{
+
+    color: #fff;
+    font: 150% Fantasía;
+    font-size:14px;
+    text-align:center;
+    
+    padding-left:1em;
+    position: relative;
+    top: 50px;
+    
+}
+#numseguidos{
+     color: #fff;
+     font: 150% Fantasía;
+     font-size:14px;
+     text-align:center;
+     
+     padding-left:2em;
+     position: relative;
+     top: 50px;
+}
+
+#seguidos{
+    color: #fff;
+    font: 150% Fantasía;
+    font-size:14px;
+    text-align:center;
+    
+    padding-left:1em;
+    position: relative;
+    top: 50px;
+}
+
+#carro{
+    width: 100%;
+    color: #fff;
+    font: 150% Fantasía;
+    font-size:18px;
+    text-align:center;
+    position: relative;
+    top: 60px;
+    clear: both;
+      
+      
+}
+
+/**** CSS INICIAR RUTA*/
+
+#label_origen_ruta,#label_destino_ruta,#label_fecha_ruta{
+     color: #4800ff;
+     font-family:georgia,serif;
+     font-size:15px;
+     text-align:left;
+     float:left;
+     width:100%;
+     margin: 0 auto;
+     font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0,0,0,.4);
+     position: relative;
+    top: 20px;
+}
+
+
+#end{
+    clear: both;
+}
+
+/*boton guardar ru*/
+#btn_guardar, #btn_llevame{
+    clear: both;
+    
+    cursor: pointer;
+    width: 135px;
+    height: 36px;
+    margin-top: 25px;
+    padding: 0;
+    background: #0392CF;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #0392CF;
+    -moz-box-shadow:
+        0 15px 30px 0 rgba(255,255,255,.25) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+    -webkit-box-shadow:
+        0 15px 30px 0 rgba(255,255,255,.30) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+    box-shadow:
+        0 15px 30px 0 rgba(255,255,255,.35) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+    font-family:georgia,serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -o-transition: all .2s;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    -ms-transition: all .2s;
+    position: relative;
+    top: 20px;
+    
+}
+
+#btn_guardar:hover ,#btn_llevame:hover{
+    -moz-box-shadow:
+        0 15px 30px 0 rgba(255,255,255,.15) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+    -webkit-box-shadow:
+        0 15px 30px 0 rgba(255,255,255,.15) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+    box-shadow:
+        0 15px 30px 0 rgba(255,255,255,.15) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+   
+}
+/*para todas las cajas de texto de la pag*/
+
+input {
+    
+    height: 35px;
+    margin-top: 25px;
+    padding: 0 15px;
+    background: #2d2d2d; /* browsers that don't support rgba */
+    background: rgba(45,45,45,.15);
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+    border: 1px solid rgba(255,255,255,.15);
+    -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -o-transition: all .2s;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    -ms-transition: all .2s;
+    /*pos*/
+    position: relative;
+    width: 280px;
+    margin: 15px auto 0 auto;
+    text-align: left;
+    top: 20px;
+}
+input:focus {
+    outline: none;
+    -moz-box-shadow:
+        0 2px 3px 0 rgba(0,0,0,.1) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+    -webkit-box-shadow:
+        0 2px 3px 0 rgba(0,0,0,.1) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+    box-shadow:
+        0 2px 3px 0 rgba(0,0,0,.1) inset,
+        0 2px 7px 0 rgba(0,0,0,.2);
+}
+
+
+footer{
+    text-align: center;
+}
+
+/*CSS MIS RUTAS*/
+#cuerpo_misrutas{
+    padding:20px 30px;
+    float:left;text-align: center;
+    color: #4800ff; 
+    font-size: 15px;width:100%;
+    font-family:georgia,serif;
+}
+#ListaRutas{
+    color: #4800ff;
+    font-size:15px;
+    text-align:left;
+    float:left;
+    width:100%;
+    margin:  0 auto;
+    font-family:georgia,serif;
+}

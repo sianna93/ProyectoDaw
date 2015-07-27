@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<rutas>
+    <ruta>
+        <id_usuario>jlcosta</id_usuario>
+        <origen>FIEC ESPOL</origen>
+        <destino>PRADERA II Guayaquil</destino>
+    </ruta>
+    <ruta>
+        <id_usuario>jlcosta</id_usuario>
+        <origen>FICMP ESPOL</origen>
+        <destino>Samanes Guayaquil</destino>
+    </ruta>
+
+</rutas>

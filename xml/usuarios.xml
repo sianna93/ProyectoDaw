@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<personas>
+  <usuario categoria="siguiendo">
+    <nombre>Sianna Puente</nombre>
+    <id>sppuente</id>
+    <imagen>CSS/img/car1.png</imagen>
+  </usuario>
+  <usuario categoria="siguiendo">
+    <nombre>Kleber Díaz</nombre>
+    <id>kdiaz</id>
+    <imagen>CSS/img/car1.png</imagen>
+  </usuario>
+  <usuario categoria="seguidor">
+    <nombre>Stephany Quimba</nombre>
+    <id>struquim</id>
+    <imagen>CSS/img/car1.png</imagen>
+  </usuario>
+  <usuario categoria="seguidor">
+    <nombre>Maritza Loaiza</nombre>
+    <id>marlo</id>
+    <imagen>CSS/img/car1.png</imagen>
+  </usuario>
+  <usuario categoria="seguidor">
+    <nombre>Juan Vaca</nombre>
+    <id>jucama</id>
+    <imagen>CSS/img/car1.png</imagen>
+  </usuario>
+</personas>
