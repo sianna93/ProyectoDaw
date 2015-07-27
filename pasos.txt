@@ -44,3 +44,9 @@ Dentro de esta carpeta tendremos algunos archivos como:
   templates <-- en esta carpeta deben ir los html, xml, json (recomiendo trabajr con Json)
   
 
+Para probar el proyecto es el siguiente comando: 
+
+python manage.py runserver 8000
+
+el '8000' es opcional y también es variable, si tienen corriendo algo en ese puerto les saldrá error
+entonces pueden cambiarlo pueden hacerlo con python manage.py runserver 7777 ¿por qué? porque es de Diosito.<3
