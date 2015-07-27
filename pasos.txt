@@ -8,7 +8,7 @@ DJANGO
 I N I C I O
 
 Para empezar un proyecto en django (asumimos que ya está instalado sin embargo
-     debe estar instalado python 2.7 o django 1.8)
+     debe estar instalado python 3.4 o django 1.8)
 
 
 primer paso:
