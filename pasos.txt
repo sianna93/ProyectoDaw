@@ -1,0 +1,46 @@
+
+
+****************************
+DJANGO
+***************************
+
+
+I N I C I O
+
+Para empezar un proyecto en django (asumimos que ya está instalado sin embargo
+     debe estar instalado python 2.7 o django 1.8)
+
+
+primer paso:
+
+django-admin.py startproject nombredelproyecto
+
+Con esto creamos el proyecto, y esto significa que se crea:
+
+Una carpeta con el nombre que hayamos puesto, dentro de esa carpeta tenemos:
+  manage.py <-- Este archivo es sustancial y tiene las funciones de django para probar el proyecto, actualizar cambios en la base, etc.
+  nombredelproyecto <-- una carpeta que tiene adentro archivos de configuracion como:
+    settings.py <--- En este script agregan o eliminan subproyectos que creen dentro de este o que hayan visto en internet para utilizar, además de configurar base de datos
+    wsgi.py <-- script para cuando se vaya a correr en el servidor (no se toca)
+    urls.py <-- script para mapear con patrones lo que se escriba en el url se redireccione a cierta función o parametro (Muy importante)
+
+Después de crear un proyecto, deben crear mínimo un subproyecto que es con el que trabajarán.
+El primero creado es para configuraciones.
+¿Cómo crear un subproyecto?
+Nos situamos dentro de la carpeta de nuestro proyecto y :
+
+python manage.py stratapp nombredelsubproyecto
+
+En este caso recomiendo poner de nombre web, ¿por qué? porque me gusta.
+
+Dentro de esta carpeta tendremos algunos archivos como:
+  models.py <-- Django trabaja con un ORM (leer) y en este script tu escribiras, como clases, tus tablas con sus atributos. (leer documentación de django, preguntarme)
+  views.py <-- Las views son las funciones con que trabajaremos la interacción del navegador con el servidor, puesto a que una url (revisar el archivo que creamos en el proyecto principal
+    ) llama a un view y el view da una respuesta. Un ejemplo básico es un view que retorna una página html.
+  admin.py <-- Django te da un administador de contenido, y cuando quieres mostrar cierto modelo para que sea administrado (ver, modifica, eliminar, insertar) debe ser agregado a este
+    archivo. (leer documentación de django, preguntarme)
+  migrations <-- en esta carpeta se guardan los archivos de migracion de base de datos (actualización de cambios en models)
+  static <-- en esta carpeta deben ir los archivos estaticos (css, js, imagenes)
+  templates <-- en esta carpeta deben ir los html, xml, json (recomiendo trabajr con Json)
+  
+
