@@ -4,9 +4,11 @@
 /carga
 /media
 /static
+/daw/__pycache__/
 backup-file.sql
 db.sqlite3
 deploy.sh
 users
+.DS_STORE
 *~
 .idea/*
