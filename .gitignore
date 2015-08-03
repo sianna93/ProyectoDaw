@@ -1,0 +1,12 @@
+*.pyc
+/daw/settings*.py
+/daw/wsgi*.py
+/carga
+/media
+/static
+backup-file.sql
+db.sqlite3
+deploy.sh
+users
+*~
+.idea/*
