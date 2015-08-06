@@ -1,10 +1,16 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 
 <html lang="en"> 
     <head>
     <meta charset="utf-8">
     <title>Inicio de Sesión</title>
-    <link rel="stylesheet" type="text/css" href="CSS/inicio.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/inicio.css' %}" />
+	<script src="{% static 'js/inicio.js' %}"></script>
+	
+	<!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
     </head>
     <body>
     <div class="container">
@@ -21,7 +27,7 @@
 			    </div>
 			    
                 <div>
-				    <input type="submit" value="Log in" id="button" formaction="menu.html"></input>
+				    <input type="submit" value="Log in" id="button_login" ></input>
                     <a id="registrate" href="registrarse.html">Regístrate!</a><b >¿No tienes una cuenta?</b>
 				    <!--<a href="#">Lost your password?</a>-->
          	    </div>

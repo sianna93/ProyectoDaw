@@ -5,6 +5,7 @@ from django.db import models
 
 class Persona(models.Model):
     usuario = models.CharField(max_length=10, unique=True)
+    password = models.CharField (max_length=10 , null= False)
     apellido = models.CharField(max_length=30)
     nombre = models.CharField(max_length=30)
     iscarro = models.BooleanField(default=1)
