@@ -3,7 +3,7 @@
 Integrantes:
         Sianna Puente
         Janina Costa
-        Stephy Samaniego
+        Stephany Quimba
         Kleber Díaz
 
 Funciones para el menu y página pincipal de la página
@@ -153,7 +153,7 @@ function crear_cabecera(seccion,header,label,textlabel){
         class : 'panel-body'
     }).append($('<img>',{
         id: 'presentacion_imagen',
-        src : "imagenes/car1.png"
+        src : '/static/imagenes/car1.png'
     }),$('<div>',{
         id:"presentacion_cuerpo_body"
     }).append($('<a>',{
@@ -189,7 +189,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
         text:nombreCuenta      
     }),$('<img>',{
         id: 'presentacion_imagenCuenta',
-        src : "imagenes/Icon-user.png",
+        src : '/static/imagenes/Icon-user.png',
         style:"width:120px;height:130px;margin-left:30%;position:relative;top:20px"
     }),$("<div>",{
 	    id:'datos_cuenta',
@@ -295,7 +295,7 @@ function cargarComponentes_Ruta(seccion){
         style:"padding:20px"
     }).append($('<img>',{
 	    id: 'img_car_panel_ruta',
-	    src:'imagenes/car1.png',
+	    src:'/static/imagenes/car1.png',
         style:"width:350px;height:200px"
     }),$('<h4>',{
         id:'label_origen_ruta',
@@ -381,8 +381,8 @@ function insertDatos(xmlDoc,node,child,dato){
     x.insertData(0,dato);
 }
 function guardar(){
-    var xml = "xml/rutas.xml";
-    xmlDoc = loadXMLDoc('xml/rutas.xml');
+    var xml = '/xml/rutas.xml';
+    xmlDoc = loadXMLDoc('../../templates/rutas.xml');
     var node = "ruta";
     var id = "id_usuario";
     var origen = "origen";
@@ -413,7 +413,7 @@ function guardar(){
 }
 
 function guardarRuta(start, end){
-    xmlDoc=loadXMLDoc('xml/rutas.xml');
+    xmlDoc=loadXMLDoc('/xml/rutas.xml');
     origen=xmlDoc.createElement("origen");
 
     //ruta=xmlDoc.documentElement;
@@ -477,7 +477,7 @@ function loadXMLDoc(filename)
 
 /*abre el archivo xml, lee las rutas guardadas y las presenta*/
 function cargarRutas(){
-    xmlDoc = loadXMLDoc('xml/rutas.xml');
+    xmlDoc = loadXMLDoc('../../templates/xml/rutas.xml');
     // Obtenemos todos los nodos denominados foro del archivo xml
     var rutas=xmlDoc.getElementsByTagName("ruta");
     // Hacemos un bucle por todos los elementos foro
@@ -527,7 +527,7 @@ function perfil_usuario(evt){
         var target_nombre = $(this).text();
 
         //alert(target_nombre);
-        xmlDoc = loadXMLDoc('xml/usuarios.xml');
+        xmlDoc = loadXMLDoc('../../templates/xml/usuarios.xml');
         var usuarios = xmlDoc.getElementsByTagName("usuario");
         for (var i = 0; i < usuarios.length; i++) {
             categoria = xmlDoc.getElementsByTagName("usuario")[i].getAttributeNode("categoria").nodeValue;
@@ -592,7 +592,7 @@ function cargarDatosSeguidores(){
     }
  
     // Abrimos el archivo que esta alojado en el servidor cd_catalog.xml
-    xmlhttp.open("GET",'xml/usuarios.xml',false);
+    xmlhttp.open("GET",'../../templates/xml/usuarios.xml',false);
     xmlhttp.send();
  
     // Obtenemos un objeto XMLDocument con el contenido del archivo xml del servidor

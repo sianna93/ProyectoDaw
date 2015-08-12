@@ -6,8 +6,16 @@
     <meta charset="utf-8">
     <title>Inicio de Sesión</title>
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/inicio.css' %}" />
-	<script src="{% static 'js/inicio.js' %}"></script>
-	
+	<script type="text/javascript" src="{% static 'js/inicio.js' %}"></script>
+
+
+	{% ifequal error2 'true' %}
+    <script type="text/javascript">
+    	window.alert("Usuario y contrasenas invalidas" + error);
+    </script>
+
+  	{% endifequal %}
+		
 	<!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         
@@ -15,15 +23,15 @@
     <body>
     <div class="container">
 	    <section id="content">
-		    <form action="">
+		    <form action="login" method="post">{% csrf_token %}
 			    <h1>Bienvenido</h1>
 			    
                 <div>
-				    <input type="text" placeholder="Username" required="" id="username" />
+				    <input type="text" name="username" placeholder="Username" required="" id="username" />
 			    </div>
 			    
                 <div>
-				    <input type="password" placeholder="Password" required="" id="password" />
+				    <input type="password" name="password" placeholder="Password" required="" id="password" />
 			    </div>
 			    
                 <div>

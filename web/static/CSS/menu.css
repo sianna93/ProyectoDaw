@@ -84,7 +84,7 @@ body,#panel-derecho{
 
 #navigationMenu a{
     /* The background sprite: */
-    background:url('../imagenes/navigation2.jpg') no-repeat;
+    background:url('../imagenes/navigation2.jpg' ) no-repeat;
 
     height:69px;
     width:69px;

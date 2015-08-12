@@ -1,31 +1,27 @@
 from django.db import models
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.models import User
+#from django.contrib.auth.models import AnonymousUser
 
 # Create your models here.
 
+    #def __unicode__(self):
+    #    return self.usuario
 
-class Persona(models.Model):
-    usuario = models.CharField(max_length=10, unique=True)
-    password = models.CharField (max_length=10 , null= False)
-    apellido = models.CharField(max_length=30)
-    nombre = models.CharField(max_length=30)
-    iscarro = models.BooleanField(default=1)
-    placa = models.CharField(max_length=7 , null = True)
-
-    def __unicode__(self):
-        return self.usuario
-   
-
-                            
-                                        
+class Persona (models.Model):
+    is_carro = models.BooleanField(default=1)
+    placa = models.CharField(max_length=7 , null = True, blank= True) 
+    fk_user = models.ForeignKey(User, related_name = 'personas')
+    
 class Seguidor(models.Model):
-    fk_persona = models.ForeignKey(Persona, related_name = 'seguidores')
-    fk_seguidor = models.ForeignKey(Persona, related_name = 'siguiendos')
+    fk_persona = models.ForeignKey(User, related_name = 'seguidores')
+    fk_seguidor = models.ForeignKey(User, related_name = 'siguiendos')
 
 class Ruta(models.Model):
     origen = models.CharField(max_length=30)
     destino= models.CharField(max_length=30)
     fecha = models.DateField()
-    fk_persona_ru = models.ForeignKey(Persona, related_name = 'rutas')
+    fk_persona_ruta = models.ForeignKey(User, related_name = 'rutas')
 
 
 class Coordenada_geografica(models.Model):
@@ -37,8 +33,10 @@ class Coordenada_geografica(models.Model):
 class Peticion(models.Model) :
     comentario = models.CharField(max_length=30)
     fecha_pe = models.DateField()
-    fk_persona_ruta = models.ForeignKey(Persona, related_name = 'peticiones')
-    fk_coordenada = models.ForeignKey(Coordenada_geografica, related_name = 'coordenada')                        
+    fk_persona_peticion = models.ForeignKey(User, related_name = 'peticiones')
+    fk_coordenada = models.ForeignKey(Coordenada_geografica, related_name = 'coordenada')                             
+                                        
+           
 
 
 
