@@ -58,4 +58,13 @@ def login(request):
     else:
         # Return an 'invalid login' error message.
          return render(request, 'inicio.html', {'error':'Credenciales no encontradas' ,'error2':'true'})
-    
+
+def guardarRuta(request):
+    #orig=request.POST['txtOrigen']
+    #dest=request.POST['txtDestino']
+
+    ruta=web_ruta(id=1, origen='espol', destino='guayaquil',fecha='2015-08-10',fk_persona_ruta_id=1)
+    ruta.save()
+
+    return render(request,'menu.html',{})
+

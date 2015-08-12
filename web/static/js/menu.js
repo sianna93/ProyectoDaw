@@ -86,7 +86,7 @@ function F_iniciaruta(evt) {
     $('#panel-derecho').show();
     document.getElementById('panel-derecho').style.visibility="visible";
     crear_cabecera('seccion_ruta', 'header_panel', 'labelpanel', 'INICIAR RUTA');
-    cargarComponentes_Ruta('#seccion_ruta');
+    //cargarComponentes_Ruta('#seccion_ruta');
 
     //Guardar ruta
     //addNodes("xml/rutas.xml","ruta");
@@ -297,7 +297,10 @@ function cargarComponentes_Ruta(seccion){
 	    id: 'img_car_panel_ruta',
 	    src:'/static/imagenes/car1.png',
         style:"width:350px;height:200px"
-    }),$('<h4>',{
+    }),$('<form>',{
+	//action : "ruta" ,
+	//method:"post"
+	}).append($('<h4>',{
         id:'label_origen_ruta',
 	    text:'Origen'
     }),$('<input>',{
@@ -331,8 +334,8 @@ function cargarComponentes_Ruta(seccion){
         id: 'btn_guardar',
 	    class:'btn btn-primary center-block',
 	    text:'Guardar Ruta'
-    })).hide().appendTo(seccion).fadeIn('slow');
-    $("#btn_guardar").click(function () {
+    }))).hide().appendTo(seccion).fadeIn('slow');
+    /*$("#btn_guardar").click(function () {
         var start = document.getElementById("start").value;
         var end = document.getElementById("end").value;
         eliminar_todo();
@@ -340,7 +343,7 @@ function cargarComponentes_Ruta(seccion){
         cargarComponentes_MisRutas('#seccion_misrutas');
 
         guardarRuta(start, end);
-    });
+    });*/
 }
 
 /////////////////////////////////////////////////////////
