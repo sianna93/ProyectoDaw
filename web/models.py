@@ -20,7 +20,7 @@ class Seguidor(models.Model):
 class Ruta(models.Model):
     origen = models.CharField(max_length=30)
     destino= models.CharField(max_length=30)
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now=True)
     fk_persona_ruta = models.ForeignKey(User, related_name = 'rutas')
 
 class Coordenada_geografica(models.Model):
@@ -31,10 +31,10 @@ class Coordenada_geografica(models.Model):
 
 class Peticion(models.Model):
     comentario = models.CharField(max_length=30)
-    ubicacion_longitud = models.DecimalField( max_digits=10,decimal_places=10)
-    ubicacion_latitude = models.DecimalField( max_digits=10,decimal_places=10)
-    fecha_pe = models.DateField()
+    ubicacion_longitud = models.DecimalField( max_digits=10,decimal_places=10, null=True)
+    ubicacion_latitude = models.DecimalField( max_digits=10,decimal_places=10, null=True)
+    fecha_pe = models.DateField(auto_now=True)
     fk_persona_peticion = models.ForeignKey(User, related_name = 'peticiones')
-    fk_pet_ruta = models.ForeignKey(Ruta, related_name = 'ruta')
+    fk_pet_ruta = models.ForeignKey(Ruta, related_name = 'ruta', null=True)
 
 

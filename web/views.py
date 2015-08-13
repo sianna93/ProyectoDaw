@@ -16,7 +16,9 @@ def getSeguidores(request):
         yosigo = Seguidores.objects.filter(fk_seguidor = personas[0])
         return render_to_response('seguidores.html',{'mesiguen':mesiguen})
 def menu(request):
-    return render_to_response('menu.html',{})
+    c = {}
+    c.update(csrf(request))
+    return render_to_response('menu.html',c)
 
 def inicio(request):
     c = {}
@@ -67,18 +69,21 @@ def guardarRuta(request):
         orig = request.POST.get('txtOrigen',None)
         dest = request.POST.get('txtDestino',None)
         user = request.user
+        print(orig)
+        print(dest)
+        print(user.pk)
         if orig is not None and dest is not None:
-            ruta = Ruta(origen= orig, destino= dest,fk_persona_ruta_id= user )
+            ruta = Ruta(origen= orig, destino= dest,fk_persona_ruta_id= user.pk )
+            print(ruta)
             ruta.save()
-            return render(request,'menu.html',{})
+            return HttpResponse('todo posi')
 
 def obtenerRutas(request):
     if request.method == 'GET':
         routes = Ruta.objects.all()
         response = render_to_response(
             'json/routes.json',
-            {'routes': routes},
-            context_instance=RequestContext(request)
+            {'routes': routes}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'

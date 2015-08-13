@@ -86,7 +86,7 @@ function F_iniciaruta(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_ruta', 'header_panel', 'labelpanel', 'INICIAR RUTA');
-  //cargarComponentes_Ruta('#seccion_ruta');
+  cargarComponentes_Ruta('#seccion_ruta');
 
   //Guardar ruta
   //addNodes("xml/rutas.xml","ruta");
@@ -299,9 +299,13 @@ function cargarComponentes_Ruta(seccion){
     id: 'img_car_panel_ruta',
     src:'/static/imagenes/car1.png',
     style:"width:350px;height:200px"
-  }),$('<form>',{
-    //action : "ruta" ,
-    //method:"post"
+  }),$('<input>',{
+    type: 'hidden',
+    name: 'csrfmiddlewaretoken',
+    value: csrf
+  }),$('<div>',{
+    action : "ruta" ,
+    method:"post"
   }).append($('<h4>',{
     id:'label_origen_ruta',
     text:'Origen'
@@ -337,15 +341,29 @@ function cargarComponentes_Ruta(seccion){
     class:'btn btn-primary center-block',
     text:'Guardar Ruta'
   }))).hide().appendTo(seccion).fadeIn('slow');
-  /*$("#btn_guardar").click(function () {
+  $("#btn_guardar").click(function () {
+
     var start = document.getElementById("start").value;
     var end = document.getElementById("end").value;
-    eliminar_todo();
-    crear_cabecera('seccion_misrutas', 'header_panel', 'labelpanel', 'MIS RUTAS');
-    cargarComponentes_MisRutas('#seccion_misrutas');
+    //eliminar_todo();
+    //crear_cabecera('seccion_misrutas', 'header_panel', 'labelpanel', 'MIS RUTAS');
+    //cargarComponentes_MisRutas('#seccion_misrutas');
+    //guardarRuta(start, end);
+    console.log(start);
 
-    guardarRuta(start, end);
-    });*/
+    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+	type: "POST",
+	url:'/ruta',
+	data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
+	success: function(){
+           swal({   title: 'Auto close alert!',   text: 'EXITOOOO',   timer: 2000 });
+        },
+	error: function(){
+          swal({   title: 'Auto close alert!',   text: 'ERRROOOR',   timer: 2000 });
+        }
+    });
+    });
 }
 
 /////////////////////////////////////////////////////////
