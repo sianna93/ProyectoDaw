@@ -54,20 +54,7 @@
     <div id="panel-derecho">
       <a id="a_close" class="close" title="Cerrar">×</a>
       <div id="img_div"><img id="img_noti"src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/></div>
-      <form action="ruta" method="post">
-        {% csrf_token %}
-        <h4 id="label_origen_ruta">Origen</h4>
-        <input id="start" type="text" name="txtOrigen" placeholder="Origen" onchange="calcRoute();" required="required">
-        <h4 id="label_destino_ruta">Destino</h4>
-        <input id="end" type="text" name="txtDestino" placeholder="Destino" onchange="calcRoute();" required="required">
-        <h4 id="label_fecha_ruta">Fecha</h4>
-        <input id="input_fecha_ruta" type="date" name="txtFecha" required="required">
-        <button id="btn_guardar" class="btn btn-primary center-block">Guardar Ruta</button>
-      </form>
-
-
-
-
+     
     </div>
 
     <!-- Modal: Modal con información de los seguidores/seguidos que se me presenta al dar click en cada nombre -->
