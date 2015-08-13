@@ -1,93 +1,97 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title> Rutas </title>
-         <!--<script src="{% static 'js/menu.js' %}"></script>-->
-        <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}" >
-        <!-- Latest compiled and minified css -->
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <head>
+    <meta charset="utf-8" />
+    <title> Rutas </title>
+    <!--<script src="{% static 'js/menu.js' %}"></script>-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}" >
+    <!-- Latest compiled and minified css -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-        <!-- Latest compiled JavaScript -->
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <!-- Google -->
-         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-        <script src="{% static 'js/google.js' %}"></script>
-        <script src="{% static 'js/menu.js' %}"></script>
-    </head>
-    <body>
-        
-  
-      <div id="map-canvas" ></div>
-      <div id="directions_panel"></div>
 
-        
-        <!--Inicio de menu -->
-            <nav id="form">
-                <ul id="navigationMenu" style="margin: 0-40px; width: 0px; height: 0px ">
-                    <li>
-                        <a id="a_cuenta" class="cuenta" href="#"><span>Cuenta</span> </a>
-                    </li>
-                    <li>
-                        <a id="a_siguiendo" class="siguiendo" href="#"  ><span>Siguiendo</span> </a>
-                    </li>
-                    <li>
-    	                <a id="a_seguidores" class="seguidores" href="#" ><span>Seguidores</span> </a>
-                    </li>
-                    <li>
-                         <a id="a_buscar" class="buscar" href="#"> <span>Buscar</span></a>
-                    </li>
-                    <li>
-    	                <a id="a_iniciar_ruta" class="iniciar_ruta" href="#" ><span>Iniciar ruta</span></a>
-                    </li>
-                    <li>
-                        <a id="a_misrutas" class="Mis_Rutas" href="#"><span>Mis Rutas</span></a>
-                    </li>
-                    <li>
-    	                <a id="a_cerrar_sesion" href="inicio.html" class="cerrar_sesion" href="inicio.html"> <span>cerrar sesión</span>  </a>
-                    </li>
-                </ul>
-            </nav>
-            
-        <!--aside para de panel derecho-->
-            
-        <div id="panel-derecho">
-            <a id="a_close" class="close" title="Cerrar">×</a>
-            <div id="img_div"><img id="img_noti"src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/></div>
-            <form action="ruta" method="post"> {% csrf_token %} 
-                <h4 id="label_origen_ruta">Origen</h4>
-                <input id="start" type="text" name="txtOrigen" placeholder="Origen" onchange="calcRoute();" required="required">
-                <h4 id="label_destino_ruta">Destino</h4>
-                <input id="end" type="text" name="txtDestino" placeholder="Destino" onchange="calcRoute();" required="required">
-                <h4 id="label_fecha_ruta">Fecha</h4>
-                <input id="input_fecha_ruta" type="date" name="txtFecha" required="required">
-                <button id="btn_guardar" class="btn btn-primary center-block">Guardar Ruta</button>
-            </form>
+    <!-- Latest compiled JavaScript -->
+  </head>
+  <body>
+
+
+    <div id="map-canvas" ></div>
+    <div id="directions_panel"></div>
+
+
+    <!--Inicio de menu -->
+    <nav id="form">
+      <ul id="navigationMenu" style="margin: 0-40px; width: 0px; height: 0px ">
+        <li>
+          <a id="a_cuenta" class="cuenta" href="#"><span>Cuenta</span> </a>
+        </li>
+        <li>
+          <a id="a_siguiendo" class="siguiendo" href="#"  ><span>Siguiendo</span> </a>
+        </li>
+        <li>
+          <a id="a_seguidores" class="seguidores" href="#" ><span>Seguidores</span> </a>
+        </li>
+        <li>
+          <a id="a_buscar" class="buscar" href="#"> <span>Buscar</span></a>
+        </li>
+        <li>
+          <a id="a_iniciar_ruta" class="iniciar_ruta" href="#" ><span>Iniciar ruta</span></a>
+        </li>
+        <li>
+          <a id="a_misrutas" class="Mis_Rutas" href="#"><span>Mis Rutas</span></a>
+        </li>
+        <li>
+          <a id="a_cerrar_sesion" href="inicio.html" class="cerrar_sesion" href="inicio.html"> <span>cerrar sesión</span>  </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!--aside para de panel derecho-->
+
+    <div id="panel-derecho">
+      <a id="a_close" class="close" title="Cerrar">×</a>
+      <div id="img_div"><img id="img_noti"src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/></div>
+      <form action="ruta" method="post">
+        {% csrf_token %}
+        <h4 id="label_origen_ruta">Origen</h4>
+        <input id="start" type="text" name="txtOrigen" placeholder="Origen" onchange="calcRoute();" required="required">
+        <h4 id="label_destino_ruta">Destino</h4>
+        <input id="end" type="text" name="txtDestino" placeholder="Destino" onchange="calcRoute();" required="required">
+        <h4 id="label_fecha_ruta">Fecha</h4>
+        <input id="input_fecha_ruta" type="date" name="txtFecha" required="required">
+        <button id="btn_guardar" class="btn btn-primary center-block">Guardar Ruta</button>
+      </form>
 
 
 
-           
+
+    </div>
+
+    <!-- Modal: Modal con información de los seguidores/seguidos que se me presenta al dar click en cada nombre -->
+    <div id="modal_usuario" >
+      <div class="modal fade" id="myModal_usuario" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+
         </div>
-        
-        <!-- Modal: Modal con información de los seguidores/seguidos que se me presenta al dar click en cada nombre -->
-        <div id="modal_usuario" >
-            <div class="modal fade" id="myModal_usuario" role="dialog">
-                <div class="modal-dialog">    
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-body">
-                           
-                        </div>
-                  </div>
-                </div>
-      
-            </div>
+      </div>
         </div>
-        <footer ><small> Derechos reservados Desarrollo web - 2015</small></footer>
-    </body>
+
+      </div>
+    </div>
+    <footer ><small> Derechos reservados Desarrollo web - 2015</small></footer>
+    {% csrf_token %}
+  </body>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!-- Google -->
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+  <script src="{% static 'js/google.js' %}"></script>
+
+  <script src="{% static 'js/menu.js' %}"></script>
+
 </html>

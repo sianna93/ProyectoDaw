@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.http import HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseNotFound, HttpResponse, HttpResponseForbidden
 from django.core.serializers.json import *
 
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def getSeguidores(request):
@@ -22,7 +23,7 @@ def inicio(request):
     c.update(csrf(request))
     return render_to_response('inicio.html',c)
 
-    #GET ALL FOLLOWERS 
+    #GET ALL FOLLOWERS
 def validar_sesion(request,usuario, contrasena):
     if request.method == 'GET':
         personas = Persona.objects.all()
@@ -37,7 +38,7 @@ def login(request):
     except:
         return HttpResponseBadRequest('Bad parameters')
 
-    
+
 
     user = authenticate(username=username, password=password)
     if user is not None:
@@ -46,7 +47,7 @@ def login(request):
             auth_login(request,user)
 
             response_content = {
-                'username': user.username,                
+                'username': user.username,
             }
             response =  HttpResponse(json.dumps(response_content))
             response['Content-Type'] = 'application/json; charset=utf-8'
@@ -59,12 +60,29 @@ def login(request):
         # Return an 'invalid login' error message.
          return render(request, 'inicio.html', {'error':'Credenciales no encontradas' ,'error2':'true'})
 
+@login_required
 def guardarRuta(request):
-    #orig=request.POST['txtOrigen']
-    #dest=request.POST['txtDestino']
+    if request.method == 'POST':
+        from django.utils import timezone
+        orig = request.POST.get('txtOrigen',None)
+        dest = request.POST.get('txtDestino',None)
+        user = request.user
+        if orig is not None and dest is not None:
+            ruta = Ruta(origen= orig, destino= dest,fk_persona_ruta_id= user )
+            ruta.save()
+            return render(request,'menu.html',{})
 
-    ruta=web_ruta(id=1, origen='espol', destino='guayaquil',fecha='2015-08-10',fk_persona_ruta_id=1)
-    ruta.save()
+def obtenerRutas(request):
+    if request.method == 'GET':
+        routes = Ruta.objects.all()
+        response = render_to_response(
+            'json/routes.json',
+            {'routes': routes},
+            context_instance=RequestContext(request)
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
 
-    return render(request,'menu.html',{})
+
 

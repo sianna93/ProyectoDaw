@@ -10,9 +10,9 @@ from django.contrib.auth.models import User
 
 class Persona (models.Model):
     is_carro = models.BooleanField(default=1)
-    placa = models.CharField(max_length=7 , null = True, blank= True) 
+    placa = models.CharField(max_length=7 , null = True, blank= True)
     fk_user = models.ForeignKey(User, related_name = 'personas')
-    
+
 class Seguidor(models.Model):
     fk_persona = models.ForeignKey(User, related_name = 'seguidores')
     fk_seguidor = models.ForeignKey(User, related_name = 'siguiendos')
@@ -20,7 +20,7 @@ class Seguidor(models.Model):
 class Ruta(models.Model):
     origen = models.CharField(max_length=30)
     destino= models.CharField(max_length=30)
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now = True)
     fk_persona_ruta = models.ForeignKey(User, related_name = 'rutas')
 
 
@@ -29,14 +29,14 @@ class Coordenada_geografica(models.Model):
     longitude = models.DecimalField( max_digits=10,decimal_places=10)
     fk_ruta = models.ForeignKey(Ruta, related_name = 'coordenadas_rutas')
 
-    
+
 class Peticion(models.Model) :
     comentario = models.CharField(max_length=30)
     fecha_pe = models.DateField()
     fk_persona_peticion = models.ForeignKey(User, related_name = 'peticiones')
-    fk_coordenada = models.ForeignKey(Coordenada_geografica, related_name = 'coordenada')                             
-                                        
-           
+    fk_coordenada = models.ForeignKey(Coordenada_geografica, related_name = 'coordenada')
+
+
 
 
 
