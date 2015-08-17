@@ -1,0 +1,7 @@
+{% spaceless %}  
+{
+    "username":"{{ usuario.username}}",
+    "first_name":"{{usuario.first_name}}",
+    "last_name":"{{usuario.last_name}}"
+}
+{% endspaceless %}

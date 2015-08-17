@@ -38,7 +38,29 @@ function F_cuenta(evt){
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_cuenta', 'header_panel', 'labelpanel', 'MI CUENTA');
-  cargarComponentes_Cuenta('#seccion_cuenta', 'Janina Costa', 'jlcosta', 'seguidores','0', 'seguidos','0','Si tiene carro');
+  //cargarComponentes_Cuenta('#seccion_cuenta', 'Janina Costa', 'jlcosta', 'seguidores','0', 'seguidos','0','Si tiene carro');
+  //../../templates/json/users.json'
+
+  //Se hace la llamada ajax del json para el user autenticado
+  $.ajax({
+    type: "GET",
+    url:'/cuenta/',
+    async: true,
+    dataType:"Json",
+    contenType:"application/Json; charset=utf-8",
+    success: function(user){          
+          cargarComponentes_Cuenta('#seccion_cuenta', user.first_name, user.username ,'seguidores','0', 'seguidos','0','Si tiene carro');      
+    },
+    error: function(data){
+      console.log(data.responseText);
+      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+    }
+  });
+  
+  
+
+
+  //cargarComponentes_Cuenta('#seccion_cuenta', 'Janina Costa', 'jlcosta', 'seguidores','0', 'seguidos','0','Si tiene carro');
 }
 /*FIN CUENTA*/
 
@@ -341,6 +363,8 @@ function cargarComponentes_Ruta(seccion){
     class:'btn btn-primary center-block',
     text:'Guardar Ruta'
   }))).hide().appendTo(seccion).fadeIn('slow');
+  
+
   $("#btn_guardar").click(function () {
 
     var start = document.getElementById("start").value;
@@ -353,17 +377,17 @@ function cargarComponentes_Ruta(seccion){
 
     var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
-	type: "POST",
-	url:'/ruta',
-	data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
-	success: function(){
-           swal({   title: 'Auto close alert!',   text: 'EXITOOOO',   timer: 2000 });
-        },
-	error: function(){
-          swal({   title: 'Auto close alert!',   text: 'ERRROOOR',   timer: 2000 });
-        }
+    	type: "POST",
+    	url:'/ruta',
+    	data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
+    	success: function(){
+         swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
+      },
+    	error: function(){
+        swal({   title: 'Error!',   text: 'Error al intentar guardad ruta',   timer: 2000 });
+      }
     });
-    });
+  });
 }
 
 /////////////////////////////////////////////////////////

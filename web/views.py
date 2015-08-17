@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
+from django.template import RequestContext
 from web.models import *
 from django.contrib.auth import authenticate, login as auth_login
 from django.http import HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseNotFound, HttpResponse, HttpResponseForbidden
@@ -51,6 +52,7 @@ def login(request):
             response_content = {
                 'username': user.username,
             }
+
             response =  HttpResponse(json.dumps(response_content))
             response['Content-Type'] = 'application/json; charset=utf-8'
             response['Cache-Control'] = 'no-cache'
@@ -61,6 +63,20 @@ def login(request):
     else:
         # Return an 'invalid login' error message.
          return render(request, 'inicio.html', {'error':'Credenciales no encontradas' ,'error2':'true'})
+
+
+def home(request):
+    usuario=request.user
+    template = 'inicio.html'
+    
+    if usuario.is_authenticated():
+        print(usuario.username)
+        return render_to_response(
+            'json/user.json',
+            {'usuario': usuario}
+            )        
+    else:
+        return render(request, template, {})
 
 @login_required
 def guardarRuta(request):
@@ -90,4 +106,15 @@ def obtenerRutas(request):
         return response
 
 
-
+def obtenerUsuario(request):
+    if request.method == 'GET':
+        
+        users=User.objects.all()
+        response = render_to_response(
+            'json/users.json',
+            {'user':user},
+            context_instance=RequestContext(request)
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
