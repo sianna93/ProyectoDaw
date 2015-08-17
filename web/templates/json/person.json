@@ -1,0 +1,12 @@
+{% spaceless %}
+[
+  {% for person in persons %}
+  {
+    'nombre':{{ person.nombre}},
+    'usuario':{{ person.usuario}},
+    'iscarro':{{person.iscarro}}
+
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+]
+{% endspaceless %}

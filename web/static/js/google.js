@@ -69,3 +69,38 @@ function cargarMapa(){
 
    });
 }
+
+        google.maps.event.addListener(map, 'click', function (event) {
+            //Agrega un unevo marcador en el mapa
+            var marker = new google.maps.Marker({
+               position: event.latLng, tittle: '#', draggable: true, map: map
+            });
+
+            if (start == null) {
+                start = event.latLng;
+                return;
+            }
+            else if (end == null) {
+                end =  event.latLng;                           
+                return;
+            }
+            else {
+                waypts.push({
+                    location: end, stopover: false
+                });
+                end =  event.latLng;
+
+            }
+
+            var request = {
+                origin: start, destination: end, waypoints: waypts, optimizeWaypoints: true, travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        });
+
+   });
+}
