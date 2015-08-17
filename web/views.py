@@ -64,7 +64,7 @@ def login(request):
         # Return an 'invalid login' error message.
          return render(request, 'inicio.html', {'error':'Credenciales no encontradas' ,'error2':'true'})
 
-
+#funcion que me valida quien logueo, retorna los datos de quien inicio sesion con el url cuenta
 def home(request):
     usuario=request.user
     template = 'inicio.html'
@@ -118,3 +118,26 @@ def obtenerUsuario(request):
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
         return response
+
+def obtenerSeguidores(request):
+    if request.method == 'GET':
+        seguidores = Seguidor.objects.all()
+        listSeguidores = list()
+        usuario=request.user
+        print (usuario.username)
+        if usuario.is_authenticated():
+            for seg in seguidores:
+                print(seg.fk_persona)
+                if (seg.fk_persona==usuario.username):
+                    listSeguidores.append(seg)
+                    print(seg)
+            print(listSeguidores)
+            response = render_to_response(
+            'json/seguidores.json',
+            {'seguidores':listSeguidores},
+            context_instance=RequestContext(request)
+            )
+        return response
+            
+        
+        

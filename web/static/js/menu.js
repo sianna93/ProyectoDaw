@@ -84,7 +84,32 @@ function F_seguidores(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_seguidores', 'header_panel', 'labelpanel', 'SEGUIDORES');
-  cargarDatosSeguidores();
+  
+
+  $.ajax({
+    type: "GET",
+    url:'/seguidores/',
+    async: true,
+    dataType:"Json",
+    contenType:"application/Json; charset=utf-8",
+    success: function(seguidores){
+        $.each(seguidores,function(i,seg){
+          console.log(seguidores);
+          crear_presentancion_usuario('#seccion_seguidores', seg.id, i, 'primary', 'Siguiendo'); 
+
+        })
+                   
+               
+    },
+    error: function(data){
+      console.log(data.responseText);
+      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+    }
+  });
+
+
+  
+  //cargarDatosSeguidores();
   añadir_eventos();
 }
 
