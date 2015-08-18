@@ -2,9 +2,9 @@
 [
   {% for route in routes %}
   {
-    'origen':{{ route.origen}},
-    'destino':{{ route.destino}},
-    'fecha':{{route.fecha}}
+    "origen":"{{ route.origen}}",
+    "destino":"{{ route.destino}}",
+    "fecha":"{{route.fecha}}"
 
   }{% if not forloop.last %},{% endif %}
   {% endfor %}

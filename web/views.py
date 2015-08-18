@@ -96,7 +96,7 @@ def guardarRuta(request):
 
 def obtenerRutas(request):
     if request.method == 'GET':
-        routes = Ruta.objects.all()
+        routes = Ruta.objects.filter(fk_persona_ruta=request.user)
         response = render_to_response(
             'json/routes.json',
             {'routes': routes}
@@ -106,13 +106,13 @@ def obtenerRutas(request):
         return response
 
 
-def obtenerUsuario(request):
+def obtenerUsuarios(request):
     if request.method == 'GET':
         
         users=User.objects.all()
         response = render_to_response(
             'json/users.json',
-            {'user':user},
+            {'users':users},
             context_instance=RequestContext(request)
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
@@ -124,19 +124,39 @@ def obtenerSeguidores(request):
         seguidores = Seguidor.objects.all()
         listSeguidores = list()
         usuario=request.user
+        if usuario.is_authenticated():
+            for seg in seguidores:
+                if seg.fk_persona==usuario:
+                    listSeguidores.append(seg)
+            response = render_to_response(
+                'json/seguidores.json',
+                {'seguidores':listSeguidores},
+                context_instance=RequestContext(request)
+            )
+            response['Content-Type'] = 'application/json; charset=utf-8'
+            response['Cache-Control'] = 'no-cache'
+        return response
+
+def obtenerSiguiendos(request):
+    if request.method == 'GET':
+        seguidores = Seguidor.objects.all()
+        listSiguiendos = list()
+        usuario=request.user
         print (usuario.username)
         if usuario.is_authenticated():
             for seg in seguidores:
-                print(seg.fk_persona)
-                if (seg.fk_persona==usuario.username):
-                    listSeguidores.append(seg)
-                    print(seg)
-            print(listSeguidores)
+                print("antes",seg.fk_persona)
+                if seg.fk_seguidor==usuario:
+                    listSiguiendos.append(seg)
+                    print("seg: ",seg)
+            print(listSiguiendos)
             response = render_to_response(
-            'json/seguidores.json',
-            {'seguidores':listSeguidores},
-            context_instance=RequestContext(request)
+                'json/seguidores.json',
+                {'seguidores':listSiguiendos},
+                context_instance=RequestContext(request)
             )
+            response['Content-Type'] = 'application/json; charset=utf-8'
+            response['Cache-Control'] = 'no-cache'
         return response
             
         

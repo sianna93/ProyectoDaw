@@ -23,7 +23,9 @@ urlpatterns = [
     url(r'^inicio','web.views.inicio'),
     url(r'^login','web.views.login'),
     url(r'^ruta','web.views.guardarRuta'),
-    url(r'^ingreso','web.views.obtenerUsuario'),
+    url(r'^misRutas','web.views.obtenerRutas'),
+    url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^cuenta', 'web.views.home'),
-    url(r'^seguidores', 'web.views.obtenerSeguidores')
+    url(r'^seguidores', 'web.views.obtenerSeguidores'),
+    url(r'^siguiendos', 'web.views.obtenerSiguiendos')
 ]
