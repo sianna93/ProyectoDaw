@@ -6,9 +6,38 @@ from web.models import *
 from django.contrib.auth import authenticate, login as auth_login
 from django.http import HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseNotFound, HttpResponse, HttpResponseForbidden
 from django.core.serializers.json import *
-
+from datetime import datetime, timedelta # Importar funciones para cálculo del tiempo
+from daw import settings # Importar configuraciones del proyecto
+from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 # Create your views here.
+
+
+class AutoLogout:
+     def process_request(self, request):
+        if not request.user.is_authenticated() :
+         return
+        try:
+            if datetime.now() - request.session['last_touch'] > timedelta( 0, settings.AUTO_LOGOUT_DELAY * 60, 0):
+                auth.logout(request) 
+                del request.session['last_touch']
+                print("hola")
+                return
+        except KeyError:
+         pass
+         request.session['last_touch'] = datetime.now() 
+             
+"""
+class InactivityLogout(object):
+     def process_request( self, request ):
+        COOKIE_AGE = getattr(settings, 'SESSION_COOKIE_AGE', 15)
+        if datetime.now() – request.session.get_expiry_date() < timedelta(seconds = COOKIE_AGE):
+            request.session.set_expiry(datetime.now() + timedelta(seconds = COOKIE_AGE))
+            return None
+"""
+
+
 
 def getSeguidores(request):
     if request.method == 'GET':
@@ -158,6 +187,5 @@ def obtenerSiguiendos(request):
             response['Content-Type'] = 'application/json; charset=utf-8'
             response['Cache-Control'] = 'no-cache'
         return response
-            
-        
-        
+		
+

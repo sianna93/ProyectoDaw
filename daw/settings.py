@@ -27,6 +27,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#variablesn de tiempo
+
+#SESSION_COOKIE_AGE =15
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True 
+
+AUTO_LOGOUT_DELAY = 1
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+
 
 # Application definition
 
@@ -49,6 +60,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+	'web.views.AutoLogout',
+	#'web.views.InactivityLogout',
+	
+	
+
+	
+	
 )
 
 ROOT_URLCONF = 'daw.urls'
@@ -80,7 +98,7 @@ DATABASES = {
 	'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'daw',
         'USER': 'root',
-        'PASSWORD': 'sianna',
+        'PASSWORD': '12345',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
@@ -99,6 +117,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
