@@ -54,7 +54,7 @@ function F_cuenta(evt){
     },
     error: function(data){
       console.log(data.responseText);
-      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+      swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
     }
   });
   
@@ -103,7 +103,7 @@ function F_siguiendo(evt) {
             },
             error: function(data){
               console.log(data.responseText);
-              swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+              swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
            
@@ -114,7 +114,7 @@ function F_siguiendo(evt) {
     },
     error: function(data){
       console.log(data.responseText);
-      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+      swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
     }
   });
 
@@ -179,6 +179,25 @@ function F_seguidores(evt) {
   añadir_eventos();
 }
 
+
+function myFunction() {
+          
+
+          $.ajax({
+          type: "GET",
+          url:'/busqueda/',
+          async: true,
+          dataType:"Json",
+          contenType:"application/Json; charset=utf-8",
+          success: function(user){
+                $.each(user,function(i,per){
+                    crear_presentancion_usuario('#seccion_buscar', per.first_name + " " +per.last_name,per.id, 'primary', 'Siguiendo');
+                })    
+    },
+  });
+}
+ 
+
 //Función para el botón buscar amigos
 function F_buscar(evt) {
   eliminar_todo();
@@ -187,9 +206,9 @@ function F_buscar(evt) {
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_buscar', 'header_panel', 'labelpanel', 'BUSCAR');
   cargarComponentes_Buscar('#seccion_buscar');
-  cargarDatosSeguidores();
-  document.getElementById('presentacion_bodynombre').addEventListener('click',perfil_usuario, false);
-  document.getElementById('button_seguir').addEventListener('click',boton_seguir, false);
+  //cargarDatosSeguidores();
+  //document.getElementById('presentacion_bodynombre').addEventListener('click',perfil_usuario, false);
+  document.getElementById('button_buscar').addEventListener('click',myFunction, false);
 }
 
 //Función para el botón iniciar ruta
@@ -338,6 +357,8 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
 
 //Crea dinamicamente la estructura del contenido de BuscarAmigos
 function cargarComponentes_Buscar(seccion){
+  var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+  var token ="<input type='hidden' name='csrfmiddlewaretoken' value='"+csrf+"' />";
   $("<div>",{
     id: 'cuerpo_buscar'
   }).append($('<input>',{
@@ -350,8 +371,12 @@ function cargarComponentes_Buscar(seccion){
            onkeypress:"return soloLetras(event)",
            onblur:"limpia()",
            onKeyDown: "return limitar(event,this.value,10)"
+  }),$('<button>',{
+    id:'button_buscar',
+    text: 'Buscar'
   })).hide().appendTo(seccion).fadeIn('slow');
-}
+  }
+
 
 //funciones de validar solo letras y longitud de los campos de texto
 function limitar(e, contenido, caracteres)

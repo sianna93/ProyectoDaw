@@ -12,6 +12,8 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 # Create your views here.
+#import  threading
+
 
 
 class AutoLogout:
@@ -22,11 +24,12 @@ class AutoLogout:
             if datetime.now() - request.session['last_touch'] > timedelta( 0, settings.AUTO_LOGOUT_DELAY * 60, 0):
                 auth.logout(request) 
                 del request.session['last_touch']
-                print("hola")
+                print ("holaaaaaaaaaaaa")
                 return
         except KeyError:
          pass
-         request.session['last_touch'] = datetime.now() 
+         request.session['last_touch'] = datetime.now()
+
              
 """
 class InactivityLogout(object):
@@ -187,5 +190,63 @@ def obtenerSiguiendos(request):
             response['Content-Type'] = 'application/json; charset=utf-8'
             response['Cache-Control'] = 'no-cache'
         return response
-		
 
+
+"""	
+def func(request):
+    background = process()
+    background.start()
+    return render_to_response('hello.html')
+	
+class process(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+    def run(self):
+        print("holaaaaaaaaaaaa")
+       
+"""
+
+
+
+def BuscarPer2(request):
+    #if request.method== 'POST':
+        #nombreabuscar= request.POST.get('txtBuscar',None)
+        #print(nombreabsucar)
+    if request.method == 'GET':
+        nombreabuscar='janina'
+        usuarios = User.objects.all()
+        listUsers = list()
+        userreq=request.user
+        print (userreq.username)
+        if userreq.is_authenticated():
+            for u in usuarios:
+                print("nombres",u.first_name)
+                if u.first_name==nombreabuscar:
+                    listUsers.append(u)
+            print(listUsers)
+        response = render_to_response(
+        'json/users.json',
+        {'user':listUsers},
+        context_instance=RequestContext(request)
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
+
+def BuscarPer(request):
+    nombreabuscar='janina'
+    if request.method == 'GET':
+        users=User.objects.all()
+        listUsers = list()
+        for u in users:
+            if u.first_name==nombreabuscar:
+                listUsers.append(u)
+        response = render_to_response(
+            'json/users.json',
+            {'users':listUsers},
+            context_instance=RequestContext(request)
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response

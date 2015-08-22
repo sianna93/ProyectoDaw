@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True 
 
-AUTO_LOGOUT_DELAY = 1
+AUTO_LOGOUT_DELAY = 100
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 	'web.views.AutoLogout',
-	#'web.views.InactivityLogout',
+	
 	
 	
 

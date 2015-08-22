@@ -1,12 +1,10 @@
 {% spaceless %}
 [
-  {% for person in persons %}
-  {
-    'nombre':{{ person.nombre}},
-    'usuario':{{ person.usuario}},
-    'iscarro':{{person.iscarro}}
-
-  }{% if not forloop.last %},{% endif %}
-  {% endfor %}
+	{% for p in personas %}
+	{
+		"id":"{{ p.fk_user_id}}",
+		"placa":"{{ p.placa}}",
+	}{% if not forloop.last %},{% endif %}
+	{% endfor %}
 ]
 {% endspaceless %}

@@ -27,5 +27,9 @@ urlpatterns = [
     url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^cuenta', 'web.views.home'),
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
-    url(r'^siguiendos', 'web.views.obtenerSiguiendos')
+    url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
+    url(r'^busqueda', 'web.views.BuscarPer'),
+    
+    
+	
 ]
