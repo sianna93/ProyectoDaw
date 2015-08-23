@@ -29,7 +29,10 @@ urlpatterns = [
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
     url(r'^busqueda', 'web.views.BuscarPer'),
-    
+    url(r'^registrar', 'web.views.registrarse'),
+    url(r'^filtrarNombres', 'web.views.filtrarNombres'),
+
+  
     
 	
 ]

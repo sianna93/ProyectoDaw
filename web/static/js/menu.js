@@ -179,10 +179,47 @@ function F_seguidores(evt) {
   añadir_eventos();
 }
 
+function darclick(){
+
+
+    function log( message ) {
+      $( "<div>" ).text( message ).prependTo( "#log" );
+      $( "#log" ).scrollTop( 0 );
+    }
+ 
+    
+    $( "#txtvalidar" ).autocomplete({
+      source: function( request, response ) {
+        $.ajax({
+          url: "filtrarNombres",   //--------------------->aqui
+          dataType: "json",
+          data: {
+
+            q: request.term
+          },
+          success: function( data ) {
+            response( data );
+          }
+        });
+      },
+      minLength: 2,
+      select: function( event, ui ) {
+        log( ui.item ?
+          "Selected: " + ui.item.name:
+          "Nothing selected, input was " + this.value);
+      },
+      open: function() {
+        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+      },
+      close: function() {
+        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+      }
+    });
+    //alert("click");
+
+}
 
 function myFunction() {
-          
-
           $.ajax({
           type: "GET",
           url:'/busqueda/',
@@ -209,6 +246,10 @@ function F_buscar(evt) {
   //cargarDatosSeguidores();
   //document.getElementById('presentacion_bodynombre').addEventListener('click',perfil_usuario, false);
   document.getElementById('button_buscar').addEventListener('click',myFunction, false);
+
+
+   document.getElementById('txtvalidar').addEventListener('click',darclick, false);
+  
 }
 
 //Función para el botón iniciar ruta
@@ -360,6 +401,7 @@ function cargarComponentes_Buscar(seccion){
   var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
   var token ="<input type='hidden' name='csrfmiddlewaretoken' value='"+csrf+"' />";
   $("<div>",{
+    class: 'ui-widget',
     id: 'cuerpo_buscar'
   }).append($('<input>',{
     type:'text',
@@ -374,7 +416,12 @@ function cargarComponentes_Buscar(seccion){
   }),$('<button>',{
     id:'button_buscar',
     text: 'Buscar'
-  })).hide().appendTo(seccion).fadeIn('slow');
+  }),$('<label>',{
+    id:'log',
+    text: ''
+  })
+
+  ).hide().appendTo(seccion).fadeIn('slow');
   }
 
 

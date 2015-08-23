@@ -1,0 +1,11 @@
+{% spaceless %}
+[
+  {% for user in users %}
+  {
+    "name":"{{ user.first_name}}",
+	"apellido":"{{ user.last_name}}"
+
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+]
+{% endspaceless %}

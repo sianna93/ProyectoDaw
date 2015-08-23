@@ -11,6 +11,8 @@ from daw import settings # Importar configuraciones del proyecto
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+import csv
+
 # Create your views here.
 #import  threading
 
@@ -191,6 +193,10 @@ def obtenerSiguiendos(request):
             response['Cache-Control'] = 'no-cache'
         return response
 
+def registrarse(request):
+    c = {}
+    c.update(csrf(request))
+    return render_to_response('registrarse.html',c)
 
 """	
 def func(request):
@@ -208,34 +214,9 @@ class process(threading.Thread):
 
 
 
-def BuscarPer2(request):
-    #if request.method== 'POST':
-        #nombreabuscar= request.POST.get('txtBuscar',None)
-        #print(nombreabsucar)
-    if request.method == 'GET':
-        nombreabuscar='janina'
-        usuarios = User.objects.all()
-        listUsers = list()
-        userreq=request.user
-        print (userreq.username)
-        if userreq.is_authenticated():
-            for u in usuarios:
-                print("nombres",u.first_name)
-                if u.first_name==nombreabuscar:
-                    listUsers.append(u)
-            print(listUsers)
-        response = render_to_response(
-        'json/users.json',
-        {'user':listUsers},
-        context_instance=RequestContext(request)
-        )
-        response['Content-Type'] = 'application/json; charset=utf-8'
-        response['Cache-Control'] = 'no-cache'
-        return response
-
 
 def BuscarPer(request):
-    nombreabuscar='janina'
+    nombreabuscar='sianna'
     if request.method == 'GET':
         users=User.objects.all()
         listUsers = list()
@@ -244,6 +225,22 @@ def BuscarPer(request):
                 listUsers.append(u)
         response = render_to_response(
             'json/users.json',
+            {'users':listUsers},
+            context_instance=RequestContext(request)
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
+def filtrarNombres(request):
+    if request.method == 'GET':
+        users=User.objects.all()
+        listUsers = list()
+        for u in users:
+            if(u.first_name is not None):
+                listUsers.append(u)
+        response = render_to_response(
+            'json/buscar.json',
             {'users':listUsers},
             context_instance=RequestContext(request)
         )

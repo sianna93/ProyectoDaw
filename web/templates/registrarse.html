@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 
 <html lang="es">
@@ -5,9 +6,9 @@
         <meta charset="utf-8" />
         <title>Registarse</title>
         <!--hoja externa para menu.css-->
-        <link rel="stylesheet" href="CSS/registrarse.css">
+        <link rel="stylesheet" href="{% static 'CSS/registrarse.css' %}">
         <!--hoja externa para javsript-->
-        <script src="js/registrarse.js"></script>
+        <script src="{% static 'js/registrarse.js' %}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     </head>
 
@@ -21,7 +22,7 @@
         
         <!--section para el fomulario-->
         <section id="form">
-          <form action="inicio.html">
+          <form action="inicio.html" method="POST">{% csrf_token %}
                 <input type="text" name="nombre" size="3"  class="txtvalidar" placeholder="Nombre" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
                 <input type="text" name="apellido" class="txtvalidar" placeholder="Apellido" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
                 <input type="text" name="username"  class="txtvalidar" placeholder="Username" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
