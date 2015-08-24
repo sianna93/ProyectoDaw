@@ -192,9 +192,8 @@ function autocomplete_busqueda(){
             success: function(data){
               console.log(data);
               console.log(request);
-              //$.each(usuarios,function(i,usuario){
+              var lista=[];
 
-              //});
               $.each(data,function(i,usuario){
                 lista.push(usuario.username);
               });
@@ -202,18 +201,6 @@ function autocomplete_busqueda(){
               response(lista);
 
             },
-            /*success: function(usuarios){
-              $.each(usuarios,function(i,usuario){
-                console.log("json");
-                if(usuario.name==bsq){
-                  user=usuario.name + " " + usuario.apellido;
-                  response(user);
-                  //log(user);
-                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
-                }
-              });            
-              */
-            //},
             error: function(data){
               console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
@@ -223,7 +210,7 @@ function autocomplete_busqueda(){
       minLength: 1,
       select: function( event, ui ) {
         log( ui.item ?
-          ui.item.username:
+          ui.item.label:
           "Nothing selected, input was " + this.value);
         //log( "hola");
         console.log("por aqui");
