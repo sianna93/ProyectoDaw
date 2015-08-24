@@ -57,7 +57,7 @@
           <a id="a_misrutas" class="Mis_Rutas" href="#"><span>Mis Rutas</span></a>
         </li>
         <li>
-          <a id="a_cerrar_sesion" href="inicio.html" class="cerrar_sesion" href="inicio.html"> <span>cerrar sesión</span>  </a>
+          <a id="a_cerrar_sesion" href= "{% url 'logout' %}" class="cerrar_sesion" > <span>cerrar sesión</span>  </a>
         </li>
       </ul>
     </nav>
@@ -93,4 +93,6 @@
   <script src="{% static 'js/menu.js' %}"></script>
   <script src="{% static 'js/sweetalert2.min.js' %}"></script> 
 {% csrf_token %}
+
+
 </html>

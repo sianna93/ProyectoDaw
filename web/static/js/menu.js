@@ -242,6 +242,7 @@ function autocomplete_busqueda(){
 
 //funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
 function mostrar_busqueda() {
+
   ELIMINAR("cuerpo_presentacion");
     
   var busqueda = document.getElementById("txtvalidar").value;
@@ -266,6 +267,7 @@ function mostrar_busqueda() {
         swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
       }
     });
+
 }
 
  

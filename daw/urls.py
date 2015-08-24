@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from web.views import *
+from django.contrib.auth.views import login, logout
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -29,10 +30,11 @@ urlpatterns = [
     url(r'^cuenta', 'web.views.home'),
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
-    url(r'^busqueda', 'web.views.BuscarPer'),
+    url(r'^busqueda', 'web.views.BuscarPer'),#para buscar una sola persona
     url(r'^registrar', 'web.views.registrarse'),
     url(r'^filtrarNombres', 'web.views.filtrarNombres'),
     url(r'^logout$', logout, {'template_name': 'inicio.html', }, name="logout"),  #cerrar sesion
+
 
   
     

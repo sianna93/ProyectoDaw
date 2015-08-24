@@ -257,7 +257,7 @@ body,#panel-derecho{
 
 /*DESDE AQUÍ añadido*/
 /**CSS CUENTA*/
-#cuerpo_cuenta{
+#cuerpo_cuenta {
     height: 600px;
     position: relative;
     top: 2px;
@@ -324,7 +324,6 @@ body,#panel-derecho{
      font: 150% Fantasía;
      font-size:14px;
      text-align:center;
-     
      padding-left:2em;
      position: relative;
      top: 50px;
@@ -490,4 +489,24 @@ footer{
     width:100%;
     margin:  0 auto;
     font-family:georgia,serif;
+}
+
+/*CSS BUSCAR*/
+#cuerpo_busqueda{
+    height: 350px;
+    position: relative;
+    top: 20px;
+    background:url('../imagenes/fondocuenta.jpg') repeat;
+    font-family:"georgia", serif;
+    color: #fff;
+    width: 100%
+}
+#button_buscar{
+	height: 30px;
+	width: 30px;
+	position: relative;
+	top : -23px;
+	left: 330px;
+	
+	
 }
