@@ -198,34 +198,19 @@ def registrarse(request):
     c.update(csrf(request))
     return render_to_response('registrarse.html',c)
 
-"""	
-def func(request):
-    background = process()
-    background.start()
-    return render_to_response('hello.html')
-	
-class process(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-    def run(self):
-        print("holaaaaaaaaaaaa")
-       
-"""
-
-
-
 
 def BuscarPer(request):
-    nombreabuscar='sianna'
-    if request.method == 'GET':
+    #nombre = 'sianna'
+    if request.method == 'POST':
+        nombre = request.POST.get('txtBuscar',None)
         users=User.objects.all()
         listUsers = list()
         for u in users:
-            if u.first_name==nombreabuscar:
+            if u.first_name==nombre:
                 listUsers.append(u)
-        response = render_to_response(
-            'json/users.json',
-            {'users':listUsers},
+                response = render_to_response(
+                      'json/users.json',
+                      {'users':listUsers},
             context_instance=RequestContext(request)
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
@@ -233,6 +218,7 @@ def BuscarPer(request):
         return response
 
 def filtrarNombres(request):
+
     if request.method == 'GET':
         users=User.objects.all()
         listUsers = list()

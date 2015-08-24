@@ -38,8 +38,6 @@ function F_cuenta(evt){
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_cuenta', 'header_panel', 'labelpanel', 'MI CUENTA');
-  //cargarComponentes_Cuenta('#seccion_cuenta', 'Janina Costa', 'jlcosta', 'seguidores','0', 'seguidos','0','Si tiene carro');
-  //../../templates/json/users.json'
 
   //Se hace la llamada ajax del json para el user autenticado
   $.ajax({
@@ -58,10 +56,7 @@ function F_cuenta(evt){
     }
   });
   
-  
-
-
-  //cargarComponentes_Cuenta('#seccion_cuenta', 'Janina Costa', 'jlcosta', 'seguidores','0', 'seguidos','0','Si tiene carro');
+ 
 }
 /*FIN CUENTA*/
 
@@ -72,9 +67,7 @@ function F_siguiendo(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_siguiendo', 'header_panel', 'labelpanel', 'SIGUIENDO');
-  
-  //document.getElementById('presentacion_bodynombre').addEventListener('click',perfil_usuario, false);
-  //document.getElementById('button_seguir').addEventListener('click',boton_seguir, false);
+
   $.ajax({
     type: "GET",
     url:'/siguiendos/',
@@ -190,16 +183,27 @@ function autocomplete_busqueda(){
     $( "#txtvalidar" ).autocomplete({
       source: function( request, response ) {
         $.ajax({
-          url: "filtrarNombres",   //-------->aqui
-          dataType: "json",
-          data: {
+            type: "GET",
+            url:'/usuarios/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(usuarios){
+              $.each(usuarios,function(i,usuario){
 
-            q: request.term
-          },
-          success: function( data ) {
-            response( data );
-          }
-        });
+                if(usuario.username==this.value){
+                  user=usuario.first_name + " " + usuario.last_name;
+                  log(user);
+                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
+                }
+              })            
+
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+            }
+          });
       },
       minLength: 2,
       select: function( event, ui ) {
@@ -217,21 +221,36 @@ function autocomplete_busqueda(){
     //alert("click");
 
 }
+
+
 //funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
 function mostrar_busqueda() {
-          $.ajax({
-          type: "GET",
-          url:'/busqueda/',
-          async: true,
-          dataType:"Json",
-          contenType:"application/Json; charset=utf-8",
-          success: function(user){
-                $.each(user,function(i,per){
-                    crear_presentancion_usuario('#seccion_buscar', per.first_name + " " +per.last_name,per.id, 'primary', 'Siguiendo');
-                })    
-    },
-  });
+	ELIMINAR("cuerpo_presentacion");
+  	
+	var busqueda = document.getElementById("txtvalidar").value;
+	$.ajax({
+	    type: "GET",
+	    url:'/usuarios/',
+	    async: true,
+	    dataType:"Json",
+	    contenType:"application/Json; charset=utf-8",
+	    success: function(usuarios){
+	      $.each(usuarios,function(i,usuario){
+
+	        if(usuario.username==busqueda){
+	          user=usuario.first_name + " " + usuario.last_name;
+	          crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
+	        }
+	      })   	         
+
+	    },
+	    error: function(data){
+	      console.log(data.responseText);
+	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+	    }
+	  });
 }
+
  
 
 //Función para el botón buscar amigos
@@ -244,9 +263,7 @@ function F_buscar(evt) {
   cargarComponentes_Buscar('#seccion_buscar');
   
   document.getElementById('button_buscar').addEventListener('click',mostrar_busqueda, false);
-
-
-   document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false);
+  document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false); //autocompletar campo
   
 }
 
@@ -312,7 +329,7 @@ function crear_cabecera(seccion,header,label,textlabel){
 
 }
 
-//crea cada cada tarjeta de presentacion para los
+//crea cada cada tarjeta de presentacion 
 function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
   $("<div>" ,{
     id : 'cuerpo_presentacion'
@@ -394,6 +411,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
 
 /*fin cuenta*/
 
+
 //Crea dinamicamente la estructura del contenido de BuscarAmigos
 function cargarComponentes_Buscar(seccion){
   var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
@@ -410,10 +428,11 @@ function cargarComponentes_Buscar(seccion){
     style:"width:85%; margin:10px 20px;",
            onkeypress:"return soloLetras(event)",
            onblur:"limpia()",
-           onKeyDown: "return limitar(event,this.value,10)"
-  }),$('<button>',{
-    id:'button_buscar',
-    text: 'Buscar'
+           onKeyDown: "return limitar(event,this.value,30)"
+  }),$('<img>',{
+    id: 'button_buscar',
+    src : '/static/imagenes/icon_buscar.png',
+    
   }),$('<label>',{
     id:'log',
     text: ''
@@ -422,6 +441,46 @@ function cargarComponentes_Buscar(seccion){
   ).hide().appendTo(seccion).fadeIn('slow');
   }
 
+
+
+
+//Crea dinamicamente la estructura del contenido de Buscar
+function crear_presentacion_Busqueda(seccion, nombreCuenta, nombreUsuario, seguidores,numseguidores,seguidos,numseguidos,carro){
+  $("<div>",{
+    id:'cuerpo_busqueda',
+    style:"padding:80px;"
+  }).append($('<label>',{
+    id: 'nombreCuenta',
+    text:nombreCuenta
+  }),$("<div>",{
+    id:'datos_busqueda',
+    style:"padding:0px;"
+  }).append($('<label>',{
+    id: 'nombreUsuario',
+    text: nombreUsuario
+  }),$('<label>',{
+    id: 'numseguidores' ,
+    text: numseguidores,
+    onMouseover: "this.style.color='yellow'"
+      ,onMouseout: "this.style.color='#fff'"
+  }),$('<label>',{
+    id: 'seguidores',
+    text: seguidores
+  }),$('<label>',{
+    id: 'numseguidos',
+    text:numseguidos,
+    onMouseover: "this.style.color='yellow'"
+      ,onMouseout: "this.style.color='#fff'"
+  }),$('<label>',{
+    id: 'seguidos',
+    text:seguidos
+  }),$('<label>',{
+    id: 'carro',
+    text:carro
+  }))
+
+  ).hide().appendTo(seccion).fadeIn('slow');
+}
 
 //funciones de validar solo letras y longitud de los campos de texto
 function limitar(e, contenido, caracteres)
