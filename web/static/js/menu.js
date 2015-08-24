@@ -15,7 +15,7 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-  //document.getElementById('a_close').addEventListener('click',F_cerrar, false);
+  
 }
 
 //Función para el botón cerrar sesión
@@ -179,8 +179,7 @@ function F_seguidores(evt) {
   añadir_eventos();
 }
 
-function darclick(){
-
+function autocomplete_busqueda(){
 
     function log( message ) {
       $( "<div>" ).text( message ).prependTo( "#log" );
@@ -191,7 +190,7 @@ function darclick(){
     $( "#txtvalidar" ).autocomplete({
       source: function( request, response ) {
         $.ajax({
-          url: "filtrarNombres",   //--------------------->aqui
+          url: "filtrarNombres",   //-------->aqui
           dataType: "json",
           data: {
 
@@ -218,8 +217,8 @@ function darclick(){
     //alert("click");
 
 }
-
-function myFunction() {
+//funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
+function mostrar_busqueda() {
           $.ajax({
           type: "GET",
           url:'/busqueda/',
@@ -243,12 +242,11 @@ function F_buscar(evt) {
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_buscar', 'header_panel', 'labelpanel', 'BUSCAR');
   cargarComponentes_Buscar('#seccion_buscar');
-  //cargarDatosSeguidores();
-  //document.getElementById('presentacion_bodynombre').addEventListener('click',perfil_usuario, false);
-  document.getElementById('button_buscar').addEventListener('click',myFunction, false);
+  
+  document.getElementById('button_buscar').addEventListener('click',mostrar_busqueda, false);
 
 
-   document.getElementById('txtvalidar').addEventListener('click',darclick, false);
+   document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false);
   
 }
 
