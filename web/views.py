@@ -220,14 +220,19 @@ def BuscarPer(request):
 def filtrarNombres(request):
 
     if request.method == 'GET':
-        users=User.objects.all()
-        listUsers = list()
-        for u in users:
-            if(u.first_name is not None):
-                listUsers.append(u)
+        bsq=request.GET["q"]
+        print("2-->",bsq)
+        
+        users=User.objects.filter(username__contains=bsq) 
+        list_user=list()
+        #users=User.objects.raw('SELECT * FROM auth_user WHERE auth_user.username LIKE ''%s'%'',[bsq])       
+        print("3-->",users)
+        #for u in users:
+        #   list_user.append(u.username)
+        #print(list_user)
         response = render_to_response(
-            'json/buscar.json',
-            {'users':listUsers},
+            'json/buscar_amigo.json',
+            {'users':users},
             context_instance=RequestContext(request)
         )
         response['Content-Type'] = 'application/json; charset=utf-8'

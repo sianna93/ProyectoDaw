@@ -173,43 +173,62 @@ function F_seguidores(evt) {
 }
 
 function autocomplete_busqueda(){
-
+    
     function log( message ) {
       $( "<div>" ).text( message ).prependTo( "#log" );
       $( "#log" ).scrollTop( 0 );
     }
- 
-    
+    var lista=[];
+    var bsq = document.getElementById("txtvalidar").value;
     $( "#txtvalidar" ).autocomplete({
+      
       source: function( request, response ) {
+        //bsq= this.value;
+        console.log(bsq);
         $.ajax({
-            type: "GET",
-            url:'/usuarios/',
-            async: true,
-            dataType:"Json",
+            
+            url:'/filtrarNombres/',
+            dataType:"json",
             contenType:"application/Json; charset=utf-8",
-            success: function(usuarios){
-              $.each(usuarios,function(i,usuario){
+            data: {q: request.term},
+            success: function(data){
+              console.log(data);
+              console.log(request);
+              //$.each(usuarios,function(i,usuario){
 
-                if(usuario.username==this.value){
-                  user=usuario.first_name + " " + usuario.last_name;
-                  log(user);
-                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
-                }
-              })            
+              //});
+              $.each(data,function(i,usuario){
+                lista.push(usuario.username);
+              });
+              console.log(lista);
+              response(lista);
 
             },
+            /*success: function(usuarios){
+              $.each(usuarios,function(i,usuario){
+                console.log("json");
+                if(usuario.name==bsq){
+                  user=usuario.name + " " + usuario.apellido;
+                  response(user);
+                  //log(user);
+                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
+                }
+              });            
+              */
+            //},
             error: function(data){
               console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
       },
-      minLength: 2,
+      minLength: 1,
       select: function( event, ui ) {
         log( ui.item ?
-          "Selected: " + ui.item.name:
+          ui.item.username:
           "Nothing selected, input was " + this.value);
+        //log( "hola");
+        console.log("por aqui");
       },
       open: function() {
         $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -433,9 +452,10 @@ function cargarComponentes_Buscar(seccion){
     id: 'button_buscar',
     src : '/static/imagenes/icon_buscar.png',
     
-  }),$('<label>',{
+  }),$('<div>',{
     id:'log',
-    text: ''
+    text: '',
+    class:'ui-widget-content'
   })
 
   ).hide().appendTo(seccion).fadeIn('slow');
