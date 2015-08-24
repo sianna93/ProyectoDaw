@@ -1,8 +1,8 @@
 {% spaceless %}
 [
-	{% for u in usuario %}
+	{% for u in users %}
 	{
-		"first_name":"{{ u.first_name}}"
+		"username":"{{ u.username}}"
 		
 	}{% if not forloop.last %},{% endif %}
 	{% endfor %}

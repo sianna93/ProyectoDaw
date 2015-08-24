@@ -376,7 +376,7 @@ body,#panel-derecho{
 }
 
 /*boton guardar ru*/
-#btn_guardar, #btn_llevame{
+#btn_guardar, #btn_Guardar_coord, #btn_llevame{
     clear: both;
     
     cursor: pointer;
@@ -412,7 +412,7 @@ body,#panel-derecho{
     
 }
 
-#btn_guardar:hover ,#btn_llevame:hover{
+#btn_guardar:hover ,#btn_llevame:hover ,#btn_Guardar_coord:hover{
     -moz-box-shadow:
         0 15px 30px 0 rgba(255,255,255,.15) inset,
         0 2px 7px 0 rgba(0,0,0,.2);

@@ -1,11 +1,9 @@
 /*************************************************************
-
   Integrantes:
   Sianna Puente
   Janina Costa
   Stephany Quimba
   Kleber Díaz
-
   Funciones para el menu y página pincipal de la página
  **************************************************************/
 function initialize() {
@@ -15,7 +13,7 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-  //document.getElementById('a_close').addEventListener('click',F_cerrar, false);
+  
 }
 
 //Función para el botón cerrar sesión
@@ -38,8 +36,6 @@ function F_cuenta(evt){
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_cuenta', 'header_panel', 'labelpanel', 'MI CUENTA');
-  //cargarComponentes_Cuenta('#seccion_cuenta', 'Janina Costa', 'jlcosta', 'seguidores','0', 'seguidos','0','Si tiene carro');
-  //../../templates/json/users.json'
 
   //Se hace la llamada ajax del json para el user autenticado
   $.ajax({
@@ -58,10 +54,7 @@ function F_cuenta(evt){
     }
   });
   
-  
-
-
-  //cargarComponentes_Cuenta('#seccion_cuenta', 'Janina Costa', 'jlcosta', 'seguidores','0', 'seguidos','0','Si tiene carro');
+ 
 }
 /*FIN CUENTA*/
 
@@ -72,9 +65,7 @@ function F_siguiendo(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_siguiendo', 'header_panel', 'labelpanel', 'SIGUIENDO');
-  
-  //document.getElementById('presentacion_bodynombre').addEventListener('click',perfil_usuario, false);
-  //document.getElementById('button_seguir').addEventListener('click',boton_seguir, false);
+
   $.ajax({
     type: "GET",
     url:'/siguiendos/',
@@ -179,34 +170,63 @@ function F_seguidores(evt) {
   añadir_eventos();
 }
 
-function darclick(){
-
-
+function autocomplete_busqueda(){
+    
     function log( message ) {
       $( "<div>" ).text( message ).prependTo( "#log" );
       $( "#log" ).scrollTop( 0 );
     }
- 
-    
+    var lista=[];
+    var bsq = document.getElementById("txtvalidar").value;
     $( "#txtvalidar" ).autocomplete({
+      
       source: function( request, response ) {
+        //bsq= this.value;
+        console.log(bsq);
         $.ajax({
-          url: "filtrarNombres",   //--------------------->aqui
-          dataType: "json",
-          data: {
+            
+            url:'/filtrarNombres/',
+            dataType:"json",
+            contenType:"application/Json; charset=utf-8",
+            data: {q: request.term},
+            success: function(data){
+              console.log(data);
+              console.log(request);
+              //$.each(usuarios,function(i,usuario){
 
-            q: request.term
-          },
-          success: function( data ) {
-            response( data );
-          }
-        });
+              //});
+              $.each(data,function(i,usuario){
+                lista.push(usuario.username);
+              });
+              console.log(lista);
+              response(lista);
+
+            },
+            /*success: function(usuarios){
+              $.each(usuarios,function(i,usuario){
+                console.log("json");
+                if(usuario.name==bsq){
+                  user=usuario.name + " " + usuario.apellido;
+                  response(user);
+                  //log(user);
+                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
+                }
+              });            
+              */
+            //},
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+            }
+          });
       },
-      minLength: 2,
+      minLength: 1,
       select: function( event, ui ) {
         log( ui.item ?
-          "Selected: " + ui.item.name:
+          ui.item.username:
           "Nothing selected, input was " + this.value);
+        //log( "hola");
+        console.log("por aqui");
       },
       open: function() {
         $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -219,20 +239,35 @@ function darclick(){
 
 }
 
-function myFunction() {
-          $.ajax({
-          type: "GET",
-          url:'/busqueda/',
-          async: true,
-          dataType:"Json",
-          contenType:"application/Json; charset=utf-8",
-          success: function(user){
-                $.each(user,function(i,per){
-                    crear_presentancion_usuario('#seccion_buscar', per.first_name + " " +per.last_name,per.id, 'primary', 'Siguiendo');
-                })    
-    },
-  });
+
+//funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
+function mostrar_busqueda() {
+  ELIMINAR("cuerpo_presentacion");
+    
+  var busqueda = document.getElementById("txtvalidar").value;
+  $.ajax({
+      type: "GET",
+      url:'/usuarios/',
+      async: true,
+      dataType:"Json",
+      contenType:"application/Json; charset=utf-8",
+      success: function(usuarios){
+        $.each(usuarios,function(i,usuario){
+
+          if(usuario.username==busqueda){
+            user=usuario.first_name + " " + usuario.last_name;
+            crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
+          }
+        })             
+
+      },
+      error: function(data){
+        console.log(data.responseText);
+        swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+      }
+    });
 }
+
  
 
 //Función para el botón buscar amigos
@@ -243,12 +278,9 @@ function F_buscar(evt) {
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_buscar', 'header_panel', 'labelpanel', 'BUSCAR');
   cargarComponentes_Buscar('#seccion_buscar');
-  //cargarDatosSeguidores();
-  //document.getElementById('presentacion_bodynombre').addEventListener('click',perfil_usuario, false);
-  document.getElementById('button_buscar').addEventListener('click',myFunction, false);
-
-
-   document.getElementById('txtvalidar').addEventListener('click',darclick, false);
+  
+  document.getElementById('button_buscar').addEventListener('click',mostrar_busqueda, false);
+  document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false); //autocompletar campo
   
 }
 
@@ -314,7 +346,7 @@ function crear_cabecera(seccion,header,label,textlabel){
 
 }
 
-//crea cada cada tarjeta de presentacion para los
+//crea cada cada tarjeta de presentacion 
 function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
   $("<div>" ,{
     id : 'cuerpo_presentacion'
@@ -396,6 +428,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
 
 /*fin cuenta*/
 
+
 //Crea dinamicamente la estructura del contenido de BuscarAmigos
 function cargarComponentes_Buscar(seccion){
   var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
@@ -412,18 +445,60 @@ function cargarComponentes_Buscar(seccion){
     style:"width:85%; margin:10px 20px;",
            onkeypress:"return soloLetras(event)",
            onblur:"limpia()",
-           onKeyDown: "return limitar(event,this.value,10)"
-  }),$('<button>',{
-    id:'button_buscar',
-    text: 'Buscar'
-  }),$('<label>',{
+           onKeyDown: "return limitar(event,this.value,30)"
+  }),$('<img>',{
+    id: 'button_buscar',
+    src : '/static/imagenes/icon_buscar.png',
+    
+  }),$('<div>',{
     id:'log',
-    text: ''
+    text: '',
+    class:'ui-widget-content'
   })
 
   ).hide().appendTo(seccion).fadeIn('slow');
   }
 
+
+
+
+//Crea dinamicamente la estructura del contenido de Buscar
+function crear_presentacion_Busqueda(seccion, nombreCuenta, nombreUsuario, seguidores,numseguidores,seguidos,numseguidos,carro){
+  $("<div>",{
+    id:'cuerpo_busqueda',
+    style:"padding:80px;"
+  }).append($('<label>',{
+    id: 'nombreCuenta',
+    text:nombreCuenta
+  }),$("<div>",{
+    id:'datos_busqueda',
+    style:"padding:0px;"
+  }).append($('<label>',{
+    id: 'nombreUsuario',
+    text: nombreUsuario
+  }),$('<label>',{
+    id: 'numseguidores' ,
+    text: numseguidores,
+    onMouseover: "this.style.color='yellow'"
+      ,onMouseout: "this.style.color='#fff'"
+  }),$('<label>',{
+    id: 'seguidores',
+    text: seguidores
+  }),$('<label>',{
+    id: 'numseguidos',
+    text:numseguidos,
+    onMouseover: "this.style.color='yellow'"
+      ,onMouseout: "this.style.color='#fff'"
+  }),$('<label>',{
+    id: 'seguidos',
+    text:seguidos
+  }),$('<label>',{
+    id: 'carro',
+    text:carro
+  }))
+
+  ).hide().appendTo(seccion).fadeIn('slow');
+}
 
 //funciones de validar solo letras y longitud de los campos de texto
 function limitar(e, contenido, caracteres)
@@ -483,7 +558,7 @@ function cargarComponentes_Ruta(seccion){
   }).append($('<img>',{
     id: 'img_car_panel_ruta',
     src:'/static/imagenes/car1.png',
-    style:"width:350px;height:200px"
+    style:"width:310px;height:160px"
   }),$('<input>',{
     type: 'hidden',
     name: 'csrfmiddlewaretoken',
@@ -525,6 +600,10 @@ function cargarComponentes_Ruta(seccion){
     id: 'btn_guardar',
     class:'btn btn-primary center-block',
     text:'Guardar Ruta'
+  }),$('<button>',{
+    id: 'btn_Guardar_coord',
+    class: 'btn btn-primary center-block',
+    text:'Guardar Puntos'
   }))).hide().appendTo(seccion).fadeIn('slow');
   
 
@@ -540,13 +619,13 @@ function cargarComponentes_Ruta(seccion){
 
     var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
-    	type: "POST",
-    	url:'/ruta',
-    	data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
-    	success: function(){
+      type: "POST",
+      url:'/ruta',
+      data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
+      success: function(){
          swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
       },
-    	error: function(){
+      error: function(){
         swal({   title: 'Error!',   text: 'Error al intentar guardad ruta',   timer: 2000 });
       }
     });

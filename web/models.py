@@ -24,8 +24,8 @@ class Ruta(models.Model):
     fk_persona_ruta = models.ForeignKey(User, related_name = 'rutas')
 
 class Coordenada_geografica(models.Model):
-    latitude = models.DecimalField( max_digits=10,decimal_places=10)
-    longitude = models.DecimalField( max_digits=10,decimal_places=10)
+    latitude = models.DecimalField( max_digits=11,decimal_places=7)
+    longitude = models.DecimalField( max_digits=11,decimal_places=7)
     fk_ruta = models.ForeignKey(Ruta, related_name = 'coordenadas_rutas')
 
 

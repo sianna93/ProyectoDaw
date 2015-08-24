@@ -128,6 +128,22 @@ def guardarRuta(request):
             ruta.save()
             return HttpResponse('todo posi')
 
+def guardarCoordenadas(request):
+     if request.method == 'POST':
+        from django.utils import timezone
+        punto_lat = request.POST.get('coord_lat',None)
+        punto_long = request.POST.get('coord_long',None)
+        user = request.user
+        rutas = Ruta.objects.all()
+        print("aqui:",Decimal(punto_lat))
+        print(Decimal(punto_long))
+        if punto_lat is not None and punto_long is not None:
+
+            punto = Coordenada_geografica(latitude= Decimal(punto_lat), longitude= Decimal(punto_long),fk_ruta_id = rutas[len(rutas)-1].pk )
+            print(punto)
+            punto.save()
+            return HttpResponse('Guardado con exito')
+
 def obtenerRutas(request):
     if request.method == 'GET':
         routes = Ruta.objects.filter(fk_persona_ruta=request.user)
@@ -198,34 +214,19 @@ def registrarse(request):
     c.update(csrf(request))
     return render_to_response('registrarse.html',c)
 
-"""	
-def func(request):
-    background = process()
-    background.start()
-    return render_to_response('hello.html')
-	
-class process(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-    def run(self):
-        print("holaaaaaaaaaaaa")
-       
-"""
-
-
-
 
 def BuscarPer(request):
-    nombreabuscar='sianna'
-    if request.method == 'GET':
+    #nombre = 'sianna'
+    if request.method == 'POST':
+        nombre = request.POST.get('txtBuscar',None)
         users=User.objects.all()
         listUsers = list()
         for u in users:
-            if u.first_name==nombreabuscar:
+            if u.first_name==nombre:
                 listUsers.append(u)
-        response = render_to_response(
-            'json/users.json',
-            {'users':listUsers},
+                response = render_to_response(
+                      'json/users.json',
+                      {'users':listUsers},
             context_instance=RequestContext(request)
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
@@ -233,15 +234,21 @@ def BuscarPer(request):
         return response
 
 def filtrarNombres(request):
+
     if request.method == 'GET':
-        users=User.objects.all()
-        listUsers = list()
-        for u in users:
-            if(u.first_name is not None):
-                listUsers.append(u)
+        bsq=request.GET["q"]
+        print("2-->",bsq)
+        
+        users=User.objects.filter(username__contains=bsq) 
+        list_user=list()
+        #users=User.objects.raw('SELECT * FROM auth_user WHERE auth_user.username LIKE ''%s'%'',[bsq])       
+        print("3-->",users)
+        #for u in users:
+        #   list_user.append(u.username)
+        #print(list_user)
         response = render_to_response(
-            'json/buscar.json',
-            {'users':listUsers},
+            'json/buscar_amigo.json',
+            {'users':users},
             context_instance=RequestContext(request)
         )
         response['Content-Type'] = 'application/json; charset=utf-8'

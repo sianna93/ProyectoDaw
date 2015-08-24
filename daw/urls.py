@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^inicio','web.views.inicio'),
     url(r'^login','web.views.login'),
     url(r'^ruta','web.views.guardarRuta'),
+    url(r'^coordenadas','web.views.guardarCoordenadas'),
     url(r'^misRutas','web.views.obtenerRutas'),
     url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^cuenta', 'web.views.home'),
@@ -31,6 +32,7 @@ urlpatterns = [
     url(r'^busqueda', 'web.views.BuscarPer'),
     url(r'^registrar', 'web.views.registrarse'),
     url(r'^filtrarNombres', 'web.views.filtrarNombres'),
+    url(r'^logout$', logout, {'template_name': 'inicio.html', }, name="logout"),  #cerrar sesion
 
   
     
