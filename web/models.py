@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 #from django.contrib.auth.models import AnonymousUser
 
 # Create your models here.

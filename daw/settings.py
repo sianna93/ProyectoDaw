@@ -37,7 +37,10 @@ AUTO_LOGOUT_DELAY = 100
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
-
+# Redirect when login is correct.
+LOGIN_REDIRECT_URL = "/menu"
+# Redirect when login is not correct.
+LOGIN_URL = '/'
 
 # Application definition
 
@@ -98,7 +101,7 @@ DATABASES = {
 	'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'daw',
         'USER': 'root',
-        'PASSWORD': 'sianna',
+        'PASSWORD': 'root',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }

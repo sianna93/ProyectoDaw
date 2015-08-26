@@ -18,11 +18,12 @@ from django.contrib import admin
 from web.views import *
 from django.contrib.auth.views import login, logout
 
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^menu','web.views.menu'),
-    url(r'^inicio','web.views.inicio'),
-    url(r'^login','web.views.login'),
+    #url(r'^menu','web.views.menu'),
+    #url(r'^inicio','web.views.inicio'),
+    #url(r'^login','web.views.login'),
     url(r'^ruta','web.views.guardarRuta'),
     url(r'^coordenadas','web.views.guardarCoordenadas'),
     url(r'^misRutas','web.views.obtenerRutas'),
@@ -31,11 +32,13 @@ urlpatterns = [
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
     url(r'^busqueda', 'web.views.BuscarPer'),#para buscar una sola persona
-    url(r'^registrar', 'web.views.registrarse'),
     url(r'^filtrarNombres', 'web.views.filtrarNombres'),
+    
+    url(r'^$', 'web.views.inicio', name='inicio'),
+    url(r'^signup$', 'web.views.signup', name='signup'), #registrar nuevo usuario
+    url(r'^login$', login, {'template_name': 'inicio.html', }, name="login"), #login con funcion de django
+    url(r'^menu$', 'web.views.menu', name='menu'), 
     url(r'^logout$', logout, {'template_name': 'inicio.html', }, name="logout"),  #cerrar sesion
-
-
   
     
 	

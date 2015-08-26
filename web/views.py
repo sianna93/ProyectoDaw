@@ -1,3 +1,7 @@
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect
+from django.template.context import RequestContext
 from django.shortcuts import render, redirect
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
@@ -12,10 +16,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import csv
-
-# Create your views here.
-#import  threading
-
+from web.forms import SignUpForm
 
 
 class AutoLogout:
@@ -32,17 +33,6 @@ class AutoLogout:
          pass
          request.session['last_touch'] = datetime.now()
 
-             
-"""
-class InactivityLogout(object):
-     def process_request( self, request ):
-        COOKIE_AGE = getattr(settings, 'SESSION_COOKIE_AGE', 15)
-        if datetime.now() – request.session.get_expiry_date() < timedelta(seconds = COOKIE_AGE):
-            request.session.set_expiry(datetime.now() + timedelta(seconds = COOKIE_AGE))
-            return None
-"""
-
-
 
 def getSeguidores(request):
     if request.method == 'GET':
@@ -50,23 +40,15 @@ def getSeguidores(request):
         mesiguen = Seguidores.objects.filter(fk_persona = personas[0])
         yosigo = Seguidores.objects.filter(fk_seguidor = personas[0])
         return render_to_response('seguidores.html',{'mesiguen':mesiguen})
-def menu(request):
-    c = {}
-    c.update(csrf(request))
-    return render_to_response('menu.html',c)
 
-def inicio(request):
-    c = {}
-    c.update(csrf(request))
-    return render_to_response('inicio.html',c)
 
     #GET ALL FOLLOWERS
 def validar_sesion(request,usuario, contrasena):
     if request.method == 'GET':
         personas = Persona.objects.all()
         return render_to_response('inicio.js', {'personas': personas})
-
-def login(request):
+"""
+def login_s(request):
     #if not request.is_ajax() or request.method != 'GET':
     #    return
     try:
@@ -74,8 +56,6 @@ def login(request):
         password = request.POST['password']
     except:
         return HttpResponseBadRequest('Bad parameters')
-
-
 
     user = authenticate(username=username, password=password)
     if user is not None:
@@ -97,7 +77,7 @@ def login(request):
     else:
         # Return an 'invalid login' error message.
          return render(request, 'inicio.html', {'error':'Credenciales no encontradas' ,'error2':'true'})
-
+"""
 #funcion que me valida quien logueo, retorna los datos de quien inicio sesion con el url cuenta
 def home(request):
     usuario=request.user
@@ -209,10 +189,6 @@ def obtenerSiguiendos(request):
             response['Cache-Control'] = 'no-cache'
         return response
 
-def registrarse(request):
-    c = {}
-    c.update(csrf(request))
-    return render_to_response('registrarse.html',c)
 
 
 def BuscarPer(request):
@@ -254,3 +230,39 @@ def filtrarNombres(request):
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
         return response
+
+#funcion para registrar nuevosusuarios
+def signup(request):
+    if request.method == 'POST':  # If the form has been submitted...
+        form = SignUpForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+ 
+            """
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+ 
+            user = User.objects.create_user(username, password)
+            user.first_name = first_name
+            user.last_name = last_name
+            """
+
+            form.save()
+ 
+            return HttpResponseRedirect(reverse('login'))  # Redirect after POST
+    else:
+        form = SignUpForm()
+ 
+    data = {
+        'form': form,
+    }
+    return render_to_response('registrarse.html', data, context_instance=RequestContext(request))
+
+def inicio(request):
+    return render_to_response('inicio.html', {}, context_instance=RequestContext(request))
+
+@login_required()
+def menu(request):
+    return render_to_response('menu.html', {'user': request.user}, context_instance=RequestContext(request))

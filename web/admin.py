@@ -8,3 +8,4 @@ admin.site.register(Ruta)
 admin.site.register(Peticion)
 admin.site.register(Coordenada_geografica)
 
+
