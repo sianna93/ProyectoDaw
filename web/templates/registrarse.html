@@ -36,13 +36,13 @@
                 <input type="password" name="password" id="txtPass"  class="password" placeholder="Password" required=""  > </br > </br >
                 <!--{{ form.password }}-->
 
-                <label id="label1" for="label"> Tiene Carro </label> </br > 
+                <label id="label1" for="label" > Tiene Carro </label> </br > 
                 
-                <input class="radios" id="radioPosi" type="radio" name="car" value="si" onclick="plaquita.disabled = false" >Si
+                <input class="radios" id="radioPosi" type="radio" name="is_carro" value="si" onclick="plaquita.disabled = false"  >Si
                 
-                <input class="radios" id="radioNega" type="radio" name="car" value="no" onclick="plaquita.disabled = true"  >No
+                <input class="radios" id="radioNega" type="radio" name="is_carro" value="no" onclick="plaquita.disabled = true"  >No
                 
-                <input id="plaquita" type="text"  placeholder="GSG2123" class="showpassword" name="plaquita"  disabled="disabled" pattern="[a-zA-Z]{3}\d{4}">
+                <input id="plaquita" type="text"  placeholder="GSG2123" class="showpassword" name="placa"  disabled="disabled" pattern="[a-zA-Z]{3}\d{4}">
                 
                 <button type="submit" value="login"> Registrar</button>
            </form>

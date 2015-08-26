@@ -16,7 +16,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import csv
-from web.forms import SignUpForm
+from web.forms import SignUpForm, SignUpForm2
 
 
 class AutoLogout:
@@ -234,29 +234,53 @@ def filtrarNombres(request):
 #funcion para registrar nuevosusuarios
 def signup(request):
     if request.method == 'POST':  # If the form has been submitted...
+        
         form = SignUpForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
+            
+                      # Process the data in form.cleaned_data
+            username1 = form.cleaned_data["username"]
+            password1 = form.cleaned_data["password"]
  
-            """
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
  
-            user = User.objects.create_user(username, password)
+           
+            user = User.objects.create_user(username=username1, password=password1)
             user.first_name = first_name
             user.last_name = last_name
-            """
+ 
+         
+                     
 
-            form.save()
+            user.save()
+            print(form.fields)
+ 
+            
+
+        form2= SignUpForm2(request.POST)  # A form bound to the POST data
+        if form2.is_valid():  # All validation rules pass
+            
+                      # Process the data in form.cleaned_data
+            is_carro1 = form2.cleaned_data["is_carro"]
+            placa1 = form2.cleaned_data["placa"]
+ 
+            usuarios= User.objects.all()
+
+            
+           
+            persona = Persona(is_carro=is_carro1, placa=placa1, fk_user_id=usuarios[len(usuarios)-1].pk)                     
+
+            persona.save()
  
             return HttpResponseRedirect(reverse('login'))  # Redirect after POST
     else:
         form = SignUpForm()
+        form2= SignUpForm2()
  
     data = {
         'form': form,
+        'form2': form2,
     }
     return render_to_response('registrarse.html', data, context_instance=RequestContext(request))
 
