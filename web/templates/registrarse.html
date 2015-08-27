@@ -22,33 +22,33 @@
         </header>
         <!--linea horizaontal-->
         <hr style=" width:85% ;color: #fff"/>
-        
+
         <!--section para el fomulario-->
         <section id="form">
           <form method="post" action="{% url 'signup' %}">
             {% csrf_token %}
                 <input type="text" name="first_name" size="3"  class="txtvalidar" placeholder="Nombre" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
-                
+
                 <input type="text" name="last_name" class="txtvalidar" placeholder="Apellido" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
-                
+
                 <input type="text" name="username"  class="txtvalidar" placeholder="Username" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
-                
+
                 <input type="password" name="password" id="txtPass"  class="password" placeholder="Password" required=""  > </br > </br >
                 <!--{{ form.password }}-->
 
-                <label id="label1" for="label" > Tiene Carro </label> </br > 
-                
-                <input class="radios" id="radioPosi" type="radio" name="is_carro" value="si" onclick="plaquita.disabled = false"  >Si
-                
+                <label id="label1" for="label" > Tiene Carro </label> </br >
+
+                <input class="radios" id="radioPosi" type="radio" name="is_carro" value="si" onclick="plaquita.disabled = false">Si
+
                 <input class="radios" id="radioNega" type="radio" name="is_carro" value="no" onclick="plaquita.disabled = true"  >No
-                
+
                 <input id="plaquita" type="text"  placeholder="GSG2123" class="showpassword" name="placa"  disabled="disabled" pattern="[a-zA-Z]{3}\d{4}">
-                
+
                 <button type="submit" value="login"> Registrar</button>
            </form>
            {% endblock %}
         </section><!--fin de section-->
        </div>
     </body>
-    
+
 </html>

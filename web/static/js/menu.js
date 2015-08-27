@@ -15,7 +15,7 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-  
+
 }
 
 //Función para el botón cerrar sesión
@@ -54,9 +54,13 @@ function F_cuenta(evt){
     success: function(user){
           //console.log(user)
           usuario= user.first_name+" "+user.last_name;
+<<<<<<< HEAD
           cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
           //Si tiene o no carro
            $.ajax({
+=======
+          $.ajax({
+>>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
             type: "GET",
             url:'/datos/',
             async: true,
@@ -64,6 +68,7 @@ function F_cuenta(evt){
             contenType:"application/Json; charset=utf-8",
             success: function(personas){
                   $.each(personas,function(p,persona){
+<<<<<<< HEAD
 
                     if(user.id==persona.fk_user_id){
                       if(persona.is_carro=='True'){
@@ -129,14 +134,38 @@ function F_cuenta(evt){
           
 
 
+=======
+                    car=persona.is_carro;
+                    console.log('id=',user.id,'fk',persona.fk_user_id)
+                    if(user.id==persona.fk_user_id){
+                      if(car=='True'){
+                        console.log(car)
+                        cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','Si tiene carro');
+                      }
+                      else if(car=='False'){
+                        console.log(car)
+                        cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','No tiene carro');
+                      }
+                    }
+                  });
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+            }
+          });
+>>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
     },
     error: function(data){
       console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
     }
   });
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
 }
 
 
@@ -176,14 +205,26 @@ function F_siguiendo(evt) {
                   contador=contador +1;
                 }
               })
+<<<<<<< HEAD
               console.log(contador+ 'siguiendo')
+=======
+
+>>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
             },
             error: function(data){
               console.log(data.responseText);
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
+<<<<<<< HEAD
         });      
+=======
+
+
+        });
+
+
+>>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
     },
     error: function(data){
       console.log(data.responseText);
@@ -231,18 +272,22 @@ function F_seguidores(evt) {
                   contador=contador +1;
                 }
               })
+<<<<<<< HEAD
               console.log(contador+ 'seguidoresssssssssssss')
+=======
+
+>>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
             },
             error: function(data){
               console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
-           
+
 
         });
-                   
-               
+
+
     },
     error: function(data){
       console.log(data.responseText);
@@ -251,13 +296,13 @@ function F_seguidores(evt) {
   });
 
 
-  
+
   //cargarDatosSeguidores();
   añadir_eventos();
 }
 
 function autocomplete_busqueda(){
-    
+
     function log( message ) {
       $( "<div>" ).text( message ).prependTo( "#log" );
       $( "#log" ).scrollTop( 0 );
@@ -265,12 +310,12 @@ function autocomplete_busqueda(){
     var lista=[];
     var bsq = document.getElementById("txtvalidar").value;
     $( "#txtvalidar" ).autocomplete({
-      
+
       source: function( request, response ) {
         //bsq= this.value;
         console.log(bsq);
         $.ajax({
-            
+
             url:'/filtrarNombres/',
             dataType:"json",
             contenType:"application/Json; charset=utf-8",
@@ -328,6 +373,7 @@ function autocomplete_busqueda(){
 
 //funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
 function mostrar_busqueda() {
+<<<<<<< HEAD
 	ELIMINAR("cuerpo_presentacion");
   	
 	var busqueda = document.getElementById("txtvalidar").value;
@@ -352,9 +398,37 @@ function mostrar_busqueda() {
 	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
 	    }
 	  });
+=======
+
+  ELIMINAR("cuerpo_presentacion");
+
+  var busqueda = document.getElementById("txtvalidar").value;
+  $.ajax({
+      type: "GET",
+      url:'/usuarios/',
+      async: true,
+      dataType:"Json",
+      contenType:"application/Json; charset=utf-8",
+      success: function(usuarios){
+        $.each(usuarios,function(i,usuario){
+
+          if(usuario.username==busqueda){
+            user=usuario.first_name + " " + usuario.last_name;
+            crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
+          }
+        })
+
+      },
+      error: function(data){
+        console.log(data.responseText);
+        swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+      }
+    });
+
+>>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
 }
 
- 
+
 
 //Función para el botón buscar amigos
 function F_buscar(evt) {
@@ -364,10 +438,10 @@ function F_buscar(evt) {
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_buscar', 'header_panel', 'labelpanel', 'BUSCAR');
   cargarComponentes_Buscar('#seccion_buscar');
-  
+
   document.getElementById('button_buscar').addEventListener('click',mostrar_busqueda, false);
   document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false); //autocompletar campo
-  
+
 }
 
 //Función para el botón iniciar ruta
@@ -432,7 +506,7 @@ function crear_cabecera(seccion,header,label,textlabel){
 
 }
 
-//crea cada cada tarjeta de presentacion 
+//crea cada cada tarjeta de presentacion
 function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
   $("<div>" ,{
     id : 'cuerpo_presentacion'
@@ -535,7 +609,7 @@ function cargarComponentes_Buscar(seccion){
   }),$('<img>',{
     id: 'button_buscar',
     src : '/static/imagenes/icon_buscar.png',
-    
+
   }),$('<div>',{
     id:'log',
     text: '',
@@ -687,9 +761,14 @@ function cargarComponentes_Ruta(seccion){
     class:'btn btn-primary center-block',
     text:'Guardar Ruta'
   }))).hide().appendTo(seccion).fadeIn('slow');
-  
+
 
   $("#btn_guardar").click(function () {
+    FB.ui({
+      method: 'feed',
+      link: 'https://developers.facebook.com/docs/',
+      caption: 'An example caption',
+    }, function(response){});
 
     var start = document.getElementById("start").value;
     var end = document.getElementById("end").value;
@@ -838,8 +917,8 @@ function cargarComponentes_MisRutas(seccion){
         $("#ListaRutas").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+i+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
 
       })
-      
-               
+
+
     },
     error: function(data){
       console.log(data.responseText);

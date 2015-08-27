@@ -10,7 +10,7 @@ from django.forms import ModelForm
     #    return self.usuario
 
 class Persona (models.Model):
-    is_carro = models.BooleanField(default=1)
+    is_carro = models.BooleanField(default=0)
     placa = models.CharField(max_length=7 , null = True, blank= True)
     fk_user = models.ForeignKey(User, related_name = 'personas')
 
@@ -31,7 +31,7 @@ class Coordenada_geografica(models.Model):
 
 
 class Peticion(models.Model):
-    comentario = models.CharField(max_length=30)
+    comentario = models.CharField(max_length=50)
     ubicacion_longitud = models.DecimalField( max_digits=10,decimal_places=10, null=True)
     ubicacion_latitude = models.DecimalField( max_digits=10,decimal_places=10, null=True)
     fecha_pe = models.DateField(auto_now=True)
