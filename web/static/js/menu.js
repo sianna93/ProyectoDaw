@@ -628,7 +628,7 @@ function cargarComponentes_Ruta(seccion){
   }).append($('<img>',{
     id: 'img_car_panel_ruta',
     src:'/static/imagenes/car1.png',
-    style:"width:350px;height:200px"
+    style:"width:310px;height:160px"
   }),$('<input>',{
     type: 'hidden',
     name: 'csrfmiddlewaretoken',
@@ -670,6 +670,10 @@ function cargarComponentes_Ruta(seccion){
     id: 'btn_guardar',
     class:'btn btn-primary center-block',
     text:'Guardar Ruta'
+  }),$('<button>',{
+    id: 'btn_Guardar_coord',
+    class: 'btn btn-primary center-block',
+    text:'Guardar Puntos'
   }))).hide().appendTo(seccion).fadeIn('slow');
 
 
