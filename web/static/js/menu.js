@@ -45,16 +45,41 @@ function F_cuenta(evt){
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",
     success: function(user){
-          usuario= user.first_name+" "+user.last_name;          
-          cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','Si tiene carro');      
+          //console.log(user)
+          usuario= user.first_name+" "+user.last_name;
+          $.ajax({
+            type: "GET",
+            url:'/datos/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(personas){
+                  $.each(personas,function(p,persona){
+                    car=persona.is_carro;
+                    console.log('id=',user.id,'fk',persona.fk_user_id)
+                    if(user.id==persona.fk_user_id){
+                      if(car=='True'){
+                        console.log(car)
+                        cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','Si tiene carro');
+                      }
+                      else if(car=='False'){
+                        console.log(car)
+                        cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','No tiene carro');
+                      }
+                    }
+                  });
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+            }
+          });    
     },
     error: function(data){
       console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
     }
   });
-  
- 
 }
 /*FIN CUENTA*/
 
