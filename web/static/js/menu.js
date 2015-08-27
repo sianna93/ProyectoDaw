@@ -54,13 +54,9 @@ function F_cuenta(evt){
     success: function(user){
           //console.log(user)
           usuario= user.first_name+" "+user.last_name;
-<<<<<<< HEAD
           cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
           //Si tiene o no carro
            $.ajax({
-=======
-          $.ajax({
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
             type: "GET",
             url:'/datos/',
             async: true,
@@ -68,8 +64,6 @@ function F_cuenta(evt){
             contenType:"application/Json; charset=utf-8",
             success: function(personas){
                   $.each(personas,function(p,persona){
-<<<<<<< HEAD
-
                     if(user.id==persona.fk_user_id){
                       if(persona.is_carro=='True'){
                         car = 'Si tiene carro'
@@ -90,8 +84,7 @@ function F_cuenta(evt){
           });
 
           //Numeros de siguiendos
-          list_siguiendos=[];
-          $.ajax({
+           $.ajax({
             type: "GET",
             url:'/siguiendos/',
             async: true,
@@ -111,7 +104,6 @@ function F_cuenta(evt){
           });
 
           //Numeros de siguidores
-          list_seguidores=[];
           $.ajax({
             type: "GET",
             url:'/seguidores/',
@@ -130,42 +122,12 @@ function F_cuenta(evt){
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
-          
-          
-
-
-=======
-                    car=persona.is_carro;
-                    console.log('id=',user.id,'fk',persona.fk_user_id)
-                    if(user.id==persona.fk_user_id){
-                      if(car=='True'){
-                        console.log(car)
-                        cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','Si tiene carro');
-                      }
-                      else if(car=='False'){
-                        console.log(car)
-                        cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','No tiene carro');
-                      }
-                    }
-                  });
-            },
-            error: function(data){
-              console.log(data.responseText);
-              swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
-            }
-          });
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
     },
     error: function(data){
       console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
     }
   });
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
 }
 
 
@@ -196,35 +158,21 @@ function F_siguiendo(evt) {
             dataType:"Json",
             contenType:"application/Json; charset=utf-8",
             success: function(usuarios){
-              var contador=0;
               $.each(usuarios,function(i,usuario){
 
                 if(usuario.username==seg.seguidor){
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', 'Siguiendo');
-                  contador=contador +1;
                 }
               })
-<<<<<<< HEAD
-              console.log(contador+ 'siguiendo')
-=======
-
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
             },
             error: function(data){
               console.log(data.responseText);
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
-<<<<<<< HEAD
+
         });      
-=======
-
-
-        });
-
-
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
     },
     error: function(data){
       console.log(data.responseText);
@@ -263,20 +211,13 @@ function F_seguidores(evt) {
             dataType:"Json",
             contenType:"application/Json; charset=utf-8",
             success: function(usuarios){
-              var contador=0;
               $.each(usuarios,function(i,usuario){
 
                 if(usuario.username==seg.siguiendo){
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', 'Siguiendo');
-                  contador=contador +1;
                 }
               })
-<<<<<<< HEAD
-              console.log(contador+ 'seguidoresssssssssssss')
-=======
-
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
             },
             error: function(data){
               console.log(data.responseText);
@@ -294,9 +235,6 @@ function F_seguidores(evt) {
       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
     }
   });
-
-
-
   //cargarDatosSeguidores();
   añadir_eventos();
 }
@@ -373,7 +311,7 @@ function autocomplete_busqueda(){
 
 //funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
 function mostrar_busqueda() {
-<<<<<<< HEAD
+
 	ELIMINAR("cuerpo_presentacion");
   	
 	var busqueda = document.getElementById("txtvalidar").value;
@@ -398,34 +336,6 @@ function mostrar_busqueda() {
 	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
 	    }
 	  });
-=======
-
-  ELIMINAR("cuerpo_presentacion");
-
-  var busqueda = document.getElementById("txtvalidar").value;
-  $.ajax({
-      type: "GET",
-      url:'/usuarios/',
-      async: true,
-      dataType:"Json",
-      contenType:"application/Json; charset=utf-8",
-      success: function(usuarios){
-        $.each(usuarios,function(i,usuario){
-
-          if(usuario.username==busqueda){
-            user=usuario.first_name + " " + usuario.last_name;
-            crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
-          }
-        })
-
-      },
-      error: function(data){
-        console.log(data.responseText);
-        swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
-      }
-    });
-
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
 }
 
 

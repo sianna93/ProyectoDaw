@@ -295,13 +295,7 @@ def inicio(request):
 @login_required()
 def menu(request):
     return render_to_response('menu.html', {'user': request.user}, context_instance=RequestContext(request))
-<<<<<<< HEAD
-	
 
-
-=======
-    
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
 def datos_person(request):
     if request.method == 'GET':
         personas=Persona.objects.all()
@@ -312,8 +306,4 @@ def datos_person(request):
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
-<<<<<<< HEAD
         return response
-=======
-        return response
->>>>>>> 5f12f1b7573c7b2a49d24abf84e348d931962bef
