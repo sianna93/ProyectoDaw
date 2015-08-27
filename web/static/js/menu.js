@@ -172,7 +172,7 @@ function F_siguiendo(evt) {
             }
           });
 
-        });      
+        });
     },
     error: function(data){
       console.log(data.responseText);
@@ -280,7 +280,7 @@ function autocomplete_busqueda(){
                   //log(user);
                   //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
                 }
-              });            
+              });
               */
             //},
             error: function(data){
@@ -313,7 +313,7 @@ function autocomplete_busqueda(){
 function mostrar_busqueda() {
 
 	ELIMINAR("cuerpo_presentacion");
-  	
+
 	var busqueda = document.getElementById("txtvalidar").value;
 	$.ajax({
 	    type: "GET",
@@ -328,7 +328,7 @@ function mostrar_busqueda() {
 	          user=usuario.first_name + " " + usuario.last_name;
 	          crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
 	        }
-	      })   	         
+	      })
 
 	    },
 	    error: function(data){

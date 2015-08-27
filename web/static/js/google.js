@@ -13,7 +13,7 @@ function initialize() {
     F_cerrar();
 
     guardarRuta_Puntos(puntos);
-    
+
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -23,7 +23,7 @@ function cargarMapa(){
     navigator.geolocation.getCurrentPosition(function (position) {
         var espol = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         var pos_espol = new google.maps.LatLng(-2.146104, -79.965814);
-       
+
         var mapOptions = {
             zoom: 17,
             center: pos_espol
@@ -34,14 +34,35 @@ function cargarMapa(){
 
         var marker = new google.maps.Marker({
              position: new google.maps.LatLng(-2.146104, -79.965814), title: 'YO :D', map: map, animation: google.maps.Animation.BOUNCE
-    
+
         });
 
 
         google.maps.event.addListener(map, 'click', function (event) {
+          #
+          #Kimba donde dice sianna pon el nombre de usuario al crear la ruta
+          #
+          #
+
+          var contentString = '<div id="content">'+
+              '<div id="siteNotice">'+
+              '</div>'+
+              '<h1 id="firstHeading" class="firstHeading">Ruta</h1>'+
+              '<div id="bodyContent">'+
+              '<p><b>Creado por : Sianna </b></p>'+
+              '</div>'+
+              '</div>';
+
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
             //Agrega un unevo marcador en el mapa
             var marker = new google.maps.Marker({
-               position: event.latLng, tittle: '#', draggable: true, map: map
+               position: event.latLng, tittle: '#', draggable: false, map: map
+            });
+
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
             });
 
             if (start == null) {
@@ -58,7 +79,7 @@ function cargarMapa(){
                 end =  event.latLng;
                 puntos.push(end.lat());
                 console.log(puntos.toString());
-                //guardarPuntos(end.lat(),end.lng());                           
+                //guardarPuntos(end.lat(),end.lng());
                 return;
             }
             else {
@@ -69,7 +90,7 @@ function cargarMapa(){
                 console.log("start-2");
                 puntos.push(end.lat());
                 console.log(puntos.toString());
-                //guardarPuntos(end.lat(),end.lng());  
+                //guardarPuntos(end.lat(),end.lng());
                 //alert("start2");
 
             }
@@ -85,9 +106,9 @@ function cargarMapa(){
                 }
             });
 
-            
+
         });
-        
+
 
    });
 }
@@ -117,7 +138,8 @@ function guardarRuta_Puntos(puntosC){
         swal({   title: 'Error!',   text: "nada",   timer: 2000 });
         console.log(puntosC.toString());
     });
-    
+
+
+
+
 }
-
-
