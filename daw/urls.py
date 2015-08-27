@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^login$', login, {'template_name': 'inicio.html', }, name="login"), #login con funcion de django
     url(r'^menu$', 'web.views.menu', name='menu'), 
     url(r'^logout$', logout, {'template_name': 'inicio.html', }, name="logout"),  #cerrar sesion
+    url(r'^datos', 'web.views.datos_person')
   
     
 	
