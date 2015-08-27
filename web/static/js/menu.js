@@ -1,9 +1,11 @@
 /*************************************************************
+
   Integrantes:
   Sianna Puente
   Janina Costa
   Stephany Quimba
   Kleber Díaz
+
   Funciones para el menu y página pincipal de la página
  **************************************************************/
 function initialize() {
@@ -21,15 +23,19 @@ function F_cerrar(){
   // var ancho=100%;
   $(document).ready(function(){
     $("#a_close").on( "click", function() {
-      $('#panel-derecho').hide(); //oculto mediante id
-      $('#map-canvas').width('100%');
-
+    $('#panel-derecho').hide(); //oculto mediante id
+    $('#map-canvas').width('100%');
     });
   });
 }
 
 /*INICIO CUENTA*/
 //Función para el botón de MICuenta
+
+
+  //cuentaPrueba
+
+
 function F_cuenta(evt){
   eliminar_todo();
   document.getElementById('map-canvas').style.width = "70%";
@@ -37,6 +43,7 @@ function F_cuenta(evt){
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_cuenta', 'header_panel', 'labelpanel', 'MI CUENTA');
 
+  var usuario, car="",contseg=0, contsig=0;
   //Se hace la llamada ajax del json para el user autenticado
   $.ajax({
     type: "GET",
@@ -45,17 +52,94 @@ function F_cuenta(evt){
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",
     success: function(user){
-          usuario= user.first_name+" "+user.last_name;          
-          cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0','Si tiene carro');      
+          //console.log(user)
+          usuario= user.first_name+" "+user.last_name;
+          cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
+          //Si tiene o no carro
+           $.ajax({
+            type: "GET",
+            url:'/datos/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(personas){
+                  $.each(personas,function(p,persona){
+
+                    if(user.id==persona.fk_user_id){
+                      if(persona.is_carro=='True'){
+                        car = 'Si tiene carro'
+                        $('#carro').text(car);
+                      }
+                      else if(persona.is_carro=='False'){
+                        car = 'No tiene carro'
+                        $('#carro').text(car);
+                      }
+                    }
+                  });
+
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+            }
+          });
+
+          //Numeros de siguiendos
+          list_siguiendos=[];
+          $.ajax({
+            type: "GET",
+            url:'/siguiendos/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(siguiendos){
+              list_siguiendos=siguiendos;
+              contsig=list_siguiendos.length;
+              $('#numseguidos').text(contsig);
+              console.log("numsiguiendos: "+ contsig);
+
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+            }
+          });
+
+          //Numeros de siguidores
+          list_seguidores=[];
+          $.ajax({
+            type: "GET",
+            url:'/seguidores/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(seguidores){
+              list_seguidores=seguidores;
+              contseg=list_seguidores.length;
+              $('#numseguidores').text(contseg);
+              console.log("numseguidores: "+ contseg);
+
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+            }
+          });
+          
+          
+
+
     },
     error: function(data){
       console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
     }
   });
-  
- 
+
+
 }
+
+
 /*FIN CUENTA*/
 
 //Función para el botón seguidos / siguiendo
@@ -83,25 +167,23 @@ function F_siguiendo(evt) {
             dataType:"Json",
             contenType:"application/Json; charset=utf-8",
             success: function(usuarios){
+              var contador=0;
               $.each(usuarios,function(i,usuario){
 
                 if(usuario.username==seg.seguidor){
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', 'Siguiendo');
+                  contador=contador +1;
                 }
-              })            
-
+              })
+              console.log(contador+ 'siguiendo')
             },
             error: function(data){
               console.log(data.responseText);
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
-           
-
-        });
-                   
-               
+        });      
     },
     error: function(data){
       console.log(data.responseText);
@@ -111,6 +193,8 @@ function F_siguiendo(evt) {
 
   añadir_eventos();
 }
+
+
 
 //Función para el botón seguidores
 function F_seguidores(evt) {
@@ -138,14 +222,16 @@ function F_seguidores(evt) {
             dataType:"Json",
             contenType:"application/Json; charset=utf-8",
             success: function(usuarios){
+              var contador=0;
               $.each(usuarios,function(i,usuario){
 
                 if(usuario.username==seg.siguiendo){
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', 'Siguiendo');
+                  contador=contador +1;
                 }
-              })            
-
+              })
+              console.log(contador+ 'seguidoresssssssssssss')
             },
             error: function(data){
               console.log(data.responseText);
@@ -192,8 +278,9 @@ function autocomplete_busqueda(){
             success: function(data){
               console.log(data);
               console.log(request);
-              var lista=[];
+              //$.each(usuarios,function(i,usuario){
 
+              //});
               $.each(data,function(i,usuario){
                 lista.push(usuario.username);
               });
@@ -201,6 +288,18 @@ function autocomplete_busqueda(){
               response(lista);
 
             },
+            /*success: function(usuarios){
+              $.each(usuarios,function(i,usuario){
+                console.log("json");
+                if(usuario.name==bsq){
+                  user=usuario.name + " " + usuario.apellido;
+                  response(user);
+                  //log(user);
+                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
+                }
+              });            
+              */
+            //},
             error: function(data){
               console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
@@ -210,7 +309,7 @@ function autocomplete_busqueda(){
       minLength: 1,
       select: function( event, ui ) {
         log( ui.item ?
-          ui.item.label:
+          ui.item.username:
           "Nothing selected, input was " + this.value);
         //log( "hola");
         console.log("por aqui");
@@ -229,32 +328,30 @@ function autocomplete_busqueda(){
 
 //funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
 function mostrar_busqueda() {
+	ELIMINAR("cuerpo_presentacion");
+  	
+	var busqueda = document.getElementById("txtvalidar").value;
+	$.ajax({
+	    type: "GET",
+	    url:'/usuarios/',
+	    async: true,
+	    dataType:"Json",
+	    contenType:"application/Json; charset=utf-8",
+	    success: function(usuarios){
+	      $.each(usuarios,function(i,usuario){
 
-  ELIMINAR("cuerpo_presentacion");
-    
-  var busqueda = document.getElementById("txtvalidar").value;
-  $.ajax({
-      type: "GET",
-      url:'/usuarios/',
-      async: true,
-      dataType:"Json",
-      contenType:"application/Json; charset=utf-8",
-      success: function(usuarios){
-        $.each(usuarios,function(i,usuario){
+	        if(usuario.username==busqueda){
+	          user=usuario.first_name + " " + usuario.last_name;
+	          crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
+	        }
+	      })   	         
 
-          if(usuario.username==busqueda){
-            user=usuario.first_name + " " + usuario.last_name;
-            crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
-          }
-        })             
-
-      },
-      error: function(data){
-        console.log(data.responseText);
-        swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
-      }
-    });
-
+	    },
+	    error: function(data){
+	      console.log(data.responseText);
+	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+	    }
+	  });
 }
 
  
@@ -547,7 +644,7 @@ function cargarComponentes_Ruta(seccion){
   }).append($('<img>',{
     id: 'img_car_panel_ruta',
     src:'/static/imagenes/car1.png',
-    style:"width:310px;height:160px"
+    style:"width:350px;height:200px"
   }),$('<input>',{
     type: 'hidden',
     name: 'csrfmiddlewaretoken',
@@ -589,10 +686,6 @@ function cargarComponentes_Ruta(seccion){
     id: 'btn_guardar',
     class:'btn btn-primary center-block',
     text:'Guardar Ruta'
-  }),$('<button>',{
-    id: 'btn_Guardar_coord',
-    class: 'btn btn-primary center-block',
-    text:'Guardar Puntos'
   }))).hide().appendTo(seccion).fadeIn('slow');
   
 
@@ -608,13 +701,13 @@ function cargarComponentes_Ruta(seccion){
 
     var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
-      type: "POST",
-      url:'/ruta',
-      data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
-      success: function(){
+    	type: "POST",
+    	url:'/ruta',
+    	data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
+    	success: function(){
          swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
       },
-      error: function(){
+    	error: function(){
         swal({   title: 'Error!',   text: 'Error al intentar guardad ruta',   timer: 2000 });
       }
     });
