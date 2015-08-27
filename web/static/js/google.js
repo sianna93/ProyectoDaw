@@ -39,77 +39,89 @@ function cargarMapa(){
 
 
         google.maps.event.addListener(map, 'click', function (event) {
-          #
-          #Kimba donde dice sianna pon el nombre de usuario al crear la ruta
-          #
-          #
+          
+          //Kimba donde dice sianna pon el nombre de usuario al crear la ruta
+          
+          
 
-          var contentString = '<div id="content">'+
-              '<div id="siteNotice">'+
-              '</div>'+
-              '<h1 id="firstHeading" class="firstHeading">Ruta</h1>'+
-              '<div id="bodyContent">'+
-              '<p><b>Creado por : Sianna </b></p>'+
-              '</div>'+
-              '</div>';
+              var usuario;
+              $.ajax({
+                type: "GET",
+                url:'/cuenta/',
+                async: true,
+                dataType:"Json",
+                contenType:"application/Json; charset=utf-8",
+                success: function(user){
+                      usuario= user.first_name+" "+user.last_name;
+                      var contentString = '<div id="content">'+
+                      '<div id="siteNotice">'+
+                      '</div>'+
+                      '<h1 id="firstHeading" class="firstHeading">Ruta</h1>'+
+                      '<div id="bodyContent">'+
+                      '<p><b>Creado por : ' + usuario +'</b></p>'+
+                      '</div>'+
+                      '</div>';
 
-          var infowindow = new google.maps.InfoWindow({
-            content: contentString
-          });
-            //Agrega un unevo marcador en el mapa
-            var marker = new google.maps.Marker({
-               position: event.latLng, tittle: '#', draggable: false, map: map
-            });
+                      var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                      });
+                        //Agrega un unevo marcador en el mapa
+                        var marker = new google.maps.Marker({
+                           position: event.latLng, tittle: '#', draggable: false, map: map
+                        });
 
-            marker.addListener('click', function() {
-              infowindow.open(map, marker);
-            });
+                        //marker 
+                        marker.addListener('click', function() {
+                          infowindow.open(map, marker);
+                        });
 
-            if (start == null) {
-                start = event.latLng;
-                console.log(start.lat());
-                punto.push(start.lat());
-                punto.push(start.lng());
-                puntos.push(punto);
-                console.log(puntos[0][0].valueOf());
-                //guardarPuntos(start.lat(),start.lng());
-                return;
-            }
-            else if (end == null) {
-                end =  event.latLng;
-                puntos.push(end.lat());
-                console.log(puntos.toString());
-                //guardarPuntos(end.lat(),end.lng());
-                return;
-            }
-            else {
-                waypts.push({
-                    location: end, stopover: false
-                });
-                end =  event.latLng;
-                console.log("start-2");
-                puntos.push(end.lat());
-                console.log(puntos.toString());
-                //guardarPuntos(end.lat(),end.lng());
-                //alert("start2");
+                        if (start == null) {
+                            start = event.latLng;
+                            console.log(start.lat());
+                            punto.push(start.lat());
+                            punto.push(start.lng());
+                            puntos.push(punto);
+                            console.log(puntos[0][0].valueOf());
+                            //guardarPuntos(start.lat(),start.lng());
+                            return;
+                        }
+                        else if (end == null) {
+                            end =  event.latLng;
+                            puntos.push(end.lat());
+                            console.log(puntos.toString());
+                            //guardarPuntos(end.lat(),end.lng());
+                            return;
+                        }
+                        else {
+                            waypts.push({
+                                location: end, stopover: false
+                            });
+                            end =  event.latLng;
+                            console.log("start-2");
+                            puntos.push(end.lat());
+                            console.log(puntos.toString());
+                            //guardarPuntos(end.lat(),end.lng());
+                            //alert("start2");
+                        }
+                        var request = {
+                            origin: start, destination: end, waypoints: waypts, optimizeWaypoints: true, travelMode: google.maps.TravelMode.DRIVING
+                        };
 
-            }
-
-
-
-            var request = {
-                origin: start, destination: end, waypoints: waypts, optimizeWaypoints: true, travelMode: google.maps.TravelMode.DRIVING
-            };
-            directionsService.route(request, function (response, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(response);
+                        directionsService.route(request, function (response, status) {
+                            if (status == google.maps.DirectionsStatus.OK) {
+                                directionsDisplay.setDirections(response);
+                            }
+                        });      
+                },
+                error: function(data){
+                  console.log(data.responseText);
+                  swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
                 }
-            });
+              });
 
 
+            
         });
-
-
    });
 }
 
