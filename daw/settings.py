@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 
 #SESSION_COOKIE_AGE =15
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 AUTO_LOGOUT_DELAY = 100
 
@@ -64,12 +64,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 	'web.views.AutoLogout',
-	
-	
-	
 
-	
-	
+
+
+
+
+
 )
 
 ROOT_URLCONF = 'daw.urls'
@@ -98,10 +98,10 @@ WSGI_APPLICATION = 'daw.wsgi.application'
 
 DATABASES = {
     'default': {
-	'ENGINE': 'django.db.backends.mysql', 
+	'ENGINE': 'django.db.backends.mysql',
         'NAME': 'daw',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }

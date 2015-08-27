@@ -13,7 +13,7 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-  
+
 }
 
 //Función para el botón cerrar sesión
@@ -73,7 +73,7 @@ function F_cuenta(evt){
               console.log(data.responseText);
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
-          });    
+          });
     },
     error: function(data){
       console.log(data.responseText);
@@ -114,7 +114,7 @@ function F_siguiendo(evt) {
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', 'Siguiendo');
                 }
-              })            
+              })
 
             },
             error: function(data){
@@ -122,11 +122,11 @@ function F_siguiendo(evt) {
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
-           
+
 
         });
-                   
-               
+
+
     },
     error: function(data){
       console.log(data.responseText);
@@ -169,7 +169,7 @@ function F_seguidores(evt) {
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', 'Siguiendo');
                 }
-              })            
+              })
 
             },
             error: function(data){
@@ -177,11 +177,11 @@ function F_seguidores(evt) {
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
-           
+
 
         });
-                   
-               
+
+
     },
     error: function(data){
       console.log(data.responseText);
@@ -190,13 +190,13 @@ function F_seguidores(evt) {
   });
 
 
-  
+
   //cargarDatosSeguidores();
   añadir_eventos();
 }
 
 function autocomplete_busqueda(){
-    
+
     function log( message ) {
       $( "<div>" ).text( message ).prependTo( "#log" );
       $( "#log" ).scrollTop( 0 );
@@ -204,12 +204,12 @@ function autocomplete_busqueda(){
     var lista=[];
     var bsq = document.getElementById("txtvalidar").value;
     $( "#txtvalidar" ).autocomplete({
-      
+
       source: function( request, response ) {
         //bsq= this.value;
         console.log(bsq);
         $.ajax({
-            
+
             url:'/filtrarNombres/',
             dataType:"json",
             contenType:"application/Json; charset=utf-8",
@@ -256,7 +256,7 @@ function autocomplete_busqueda(){
 function mostrar_busqueda() {
 
   ELIMINAR("cuerpo_presentacion");
-    
+
   var busqueda = document.getElementById("txtvalidar").value;
   $.ajax({
       type: "GET",
@@ -271,7 +271,7 @@ function mostrar_busqueda() {
             user=usuario.first_name + " " + usuario.last_name;
             crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
           }
-        })             
+        })
 
       },
       error: function(data){
@@ -282,7 +282,7 @@ function mostrar_busqueda() {
 
 }
 
- 
+
 
 //Función para el botón buscar amigos
 function F_buscar(evt) {
@@ -292,10 +292,10 @@ function F_buscar(evt) {
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_buscar', 'header_panel', 'labelpanel', 'BUSCAR');
   cargarComponentes_Buscar('#seccion_buscar');
-  
+
   document.getElementById('button_buscar').addEventListener('click',mostrar_busqueda, false);
   document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false); //autocompletar campo
-  
+
 }
 
 //Función para el botón iniciar ruta
@@ -360,7 +360,7 @@ function crear_cabecera(seccion,header,label,textlabel){
 
 }
 
-//crea cada cada tarjeta de presentacion 
+//crea cada cada tarjeta de presentacion
 function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
   $("<div>" ,{
     id : 'cuerpo_presentacion'
@@ -463,7 +463,7 @@ function cargarComponentes_Buscar(seccion){
   }),$('<img>',{
     id: 'button_buscar',
     src : '/static/imagenes/icon_buscar.png',
-    
+
   }),$('<div>',{
     id:'log',
     text: '',
@@ -619,9 +619,14 @@ function cargarComponentes_Ruta(seccion){
     class: 'btn btn-primary center-block',
     text:'Guardar Puntos'
   }))).hide().appendTo(seccion).fadeIn('slow');
-  
+
 
   $("#btn_guardar").click(function () {
+    FB.ui({
+      method: 'feed',
+      link: 'https://developers.facebook.com/docs/',
+      caption: 'An example caption',
+    }, function(response){});
 
     var start = document.getElementById("start").value;
     var end = document.getElementById("end").value;
@@ -770,8 +775,8 @@ function cargarComponentes_MisRutas(seccion){
         $("#ListaRutas").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+i+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
 
       })
-      
-               
+
+
     },
     error: function(data){
       console.log(data.responseText);

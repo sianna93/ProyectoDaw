@@ -26,6 +26,25 @@
 
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1620624664887061',
+      xfbml      : true,
+      version    : 'v2.4'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
     <!-- Latest compiled JavaScript -->
   </head>
   <body>
@@ -67,7 +86,7 @@
     <div id="panel-derecho">
       <a id="a_close" class="close" title="Cerrar">×</a>
       <div id="img_div"><img id="img_noti"src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/></div>
-     
+
     </div>
 
     <!-- Modal: Modal con información de los seguidores/seguidos que se me presenta al dar click en cada nombre -->
@@ -91,7 +110,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
   <script src="{% static 'js/google.js' %}"></script>
   <script src="{% static 'js/menu.js' %}"></script>
-  <script src="{% static 'js/sweetalert2.min.js' %}"></script> 
+  <script src="{% static 'js/sweetalert2.min.js' %}"></script>
 {% csrf_token %}
 
 

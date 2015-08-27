@@ -6,12 +6,30 @@
         <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
-<html lang="en"> 
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <title>Inicio de Sesión</title>
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/inicio.css' %}" />
 	<script type="text/javascript" src="{% static 'js/inicio.js' %}"></script>
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1620624664887061',
+      xfbml      : true,
+      version    : 'v2.4'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
 
 
 	{% ifequal error2 'true' %}
@@ -20,10 +38,10 @@
     </script>
 
   	{% endifequal %}
-		
+
 	<!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        
+
     </head>
     <body>
     <div class="container">
@@ -32,24 +50,24 @@
 		    <!--<form action="login" method="post">-->
             {% csrf_token %}
 			    <h1>Bienvenido</h1>
-			    
+
                 <div>
 				    <input type="text" name="username" placeholder="Username" required="" id="username" />
 			    </div>
-			    
+
                 <div>
 				    <input type="password" name="password" placeholder="Password" required="" id="password" />
 			    </div>
-			    
+
                 <div>
                     <input type="submit" value="login" id="button_login" name="login" href="{% url 'login' %}"/>
                     <input type="hidden" name="next" value="{{ next }}"/>
-				   
+
                     <a id="registrate" href="{% url 'signup' %}" >Regístrate!</a><b >¿No tienes una cuenta?</b>
 				    <!--<a href="#">Lost your password?</a>-->
          	    </div>
-		    </form><!-- form -->	
-            {% endblock %}	    
+		    </form><!-- form -->
+            {% endblock %}
 	    </section><!-- content -->
     </div><!-- container -->
     </body>
