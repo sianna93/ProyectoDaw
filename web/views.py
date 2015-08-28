@@ -249,42 +249,35 @@ def filtrarNombres(request):
         return response
 
 #funcion para registrar nuevosusuarios
+existe=0
 def signup(request):
+    #registra los valores Users
+    usuarios=User.objects.all()
     if request.method == 'POST':  # If the form has been submitted...
 
         form = SignUpForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
 
-                      # Process the data in form.cleaned_data
-            username1 = form.cleaned_data["username"]
-            password1 = form.cleaned_data["password"]
-
+            # Process the data in form.cleaned_data
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
-
-
-            user = User.objects.create_user(username=username1, password=password1)
+            
+            user = User.objects.create_user(username=username, password=password)
             user.first_name = first_name
             user.last_name = last_name
-
-
-
-
             user.save()
             print(form.fields)
 
-
-
+        #registra los valores de placa y si tiene carro
         form2= SignUpForm2(request.POST)  # A form bound to the POST data
         if form2.is_valid():  # All validation rules pass
-
                       # Process the data in form.cleaned_data
             is_carro1 = form2.cleaned_data["is_carro"]
             placa1 = form2.cleaned_data["placa"]
 
             usuarios= User.objects.all()
-
-
 
             persona = Persona(is_carro=is_carro1, placa=placa1, fk_user_id=usuarios[len(usuarios)-1].pk)
 
@@ -300,6 +293,64 @@ def signup(request):
         'form2': form2,
     }
     return render_to_response('registrarse.html', data, context_instance=RequestContext(request))
+
+def existeUsuario(request):
+    #registra los valores Users
+    usuarios=User.objects.all()
+    if request.method == 'POST':  # If the form has been submitted...
+
+        form = SignUpForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+
+            # Process the data in form.cleaned_data
+            username1 = form.cleaned_data["username"]
+            
+            existe=0       
+            for u in usuarios:
+                if u.username == username1:
+                    existe=1
+                    break
+
+            response = render_to_response(
+                'json/validar.json',
+                {'existe':existe},
+                context_instance=RequestContext(request)
+                )
+            response['Content-Type'] = 'application/json; charset=utf-8'
+            response['Cache-Control'] = 'no-cache'
+            return response
+
+
+
+
+def guardarUsuario(request):
+    if request.method == 'POST':
+        from django.utils import timezone
+       
+        nickname = request.POST.get('nick',None)
+        nombre = request.POST.get('first_name',None)
+        apellido=request.POST.get('last_name',None)
+        contraseña=request.POST.get('password',None)
+
+        carro=request.POST.get('isCarro',None)
+        placa=request.POST.get('plaquita',None)
+
+        
+        print(nickname)
+        print(nombre)
+        print(apellido)
+        print(contraseña)
+        print(carro)
+        if nickname is not None and contraseña is not None:
+            #Se guarda el usuario
+            user = User.objects.create_user(username=nickname, password=contraseña, first_name=nombre, last_name=apellido)
+            user.save()
+            #Se guarda la persona  con los datos de placa y si tiene o no carro
+            usuarios= User.objects.all()
+            persona = Persona(is_carro=carro, placa=placa, fk_user_id=usuarios[len(usuarios)-1].pk)
+            persona.save()
+            print("holaaa",user, "persona", persona)
+            return HttpResponse('Usuario Guardado')
 
 def inicio(request):
     return render_to_response('inicio.html', {}, context_instance=RequestContext(request))

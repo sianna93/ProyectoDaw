@@ -33,9 +33,10 @@ urlpatterns = [
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
     url(r'^busqueda', 'web.views.BuscarPer'),#para buscar una sola persona
     url(r'^filtrarNombres', 'web.views.filtrarNombres'),
-    
+    url(r'^validaruser', 'web.views.existeUsuario'),
     url(r'^$', 'web.views.inicio', name='inicio'),
     url(r'^signup$', 'web.views.signup', name='signup'), #registrar nuevo usuario
+    url(r'^registrar$', 'web.views.guardarUsuario'), #registrar nuevo usuario
     url(r'^login$', login, {'template_name': 'inicio.html', }, name="login"), #login con funcion de django
     url(r'^menu$', 'web.views.menu', name='menu'), 
     url(r'^logout$', logout, {'template_name': 'inicio.html', }, name="logout"),  #cerrar sesion
