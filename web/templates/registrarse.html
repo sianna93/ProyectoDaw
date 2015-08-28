@@ -11,9 +11,9 @@
         <!--hoja externa para menu.css-->
         <link rel="stylesheet" href="{% static 'CSS/registrarse.css' %}">
         <!--hoja externa para javsript-->
-        <script src="{% static 'js/registrarse.js' %}"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert2.css' %}">
         </head>
 
     <body>
@@ -26,13 +26,13 @@
 
             <!--section para el fomulario-->
             <section id="form">
-                  <form method="post" action="{% url 'signup' %}">
-                    {% csrf_token %}
-                        <input type="text" name="first_name" size="3"  class="txtvalidar" placeholder="Nombre" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+                  <form action='registrar' method='POST' > {% csrf_token %}                  
 
-                        <input type="text" name="last_name" class="txtvalidar" placeholder="Apellido" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+                        <input type="text" id="first_name" name="first_name" size="3"  class="txtvalidar" placeholder="Nombre" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
 
-                        <input type="text" name="username"  class="txtvalidar" placeholder="Username" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+                        <input type="text" id="last_name" name="last_name" class="txtvalidar" placeholder="Apellido" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+
+                        <input type="text" id="txtusername" name="username"  class="txtvalidar" placeholder="Username" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
 
                         <input type="password" name="password" id="txtPass"  class="password" placeholder="Password" required=""  > </br > </br >
                         <!--{{ form.password }}-->
@@ -45,11 +45,14 @@
 
                         <input id="plaquita" type="text"  placeholder="GSG2123" class="showpassword" name="placa"  disabled="disabled" pattern="[a-zA-Z]{3}\d{4}">
 
-                        <button type="submit" value="login"> Registrar</button>
+                        <button type="submit" value="login" id="btnRegistrar"> Registrar</button>
                    </form>
                {% endblock %}
             </section><!--fin de section-->
        </div>
     </body>
 
+    <script src="{% static 'js/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'js/registrarse.js' %}"></script>
+    
 </html>
