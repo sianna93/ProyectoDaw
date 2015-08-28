@@ -676,7 +676,7 @@ function cargarComponentes_Ruta(seccion){
     text:'Guardar Puntos'
   }))).hide().appendTo(seccion).fadeIn('slow');
 
-
+/*
   $("#btn_guardar").click(function () {
     FB.ui({
       method: 'feed',
@@ -704,7 +704,7 @@ function cargarComponentes_Ruta(seccion){
         swal({   title: 'Error!',   text: 'Error al intentar guardad ruta',   timer: 2000 });
       }
     });
-  });
+  });*/
 }
 
 /////////////////////////////////////////////////////////

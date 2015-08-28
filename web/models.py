@@ -20,7 +20,11 @@ class Seguidor(models.Model):
 
 class Ruta(models.Model):
     origen = models.CharField(max_length=30)
+    origen_lt =models.DecimalField( max_digits=11,decimal_places=7)
+    origen_lg = models.DecimalField( max_digits=11,decimal_places=7)
     destino= models.CharField(max_length=30)
+    destino_lt =models.DecimalField( max_digits=11,decimal_places=7)
+    destino_lg = models.DecimalField( max_digits=11,decimal_places=7)
     fecha = models.DateField(auto_now=True)
     fk_persona_ruta = models.ForeignKey(User, related_name = 'rutas')
 
@@ -37,5 +41,3 @@ class Peticion(models.Model):
     fecha_pe = models.DateField(auto_now=True)
     fk_persona_peticion = models.ForeignKey(User, related_name = 'peticiones')
     fk_pet_ruta = models.ForeignKey(Ruta, related_name = 'ruta', null=True)
-
-

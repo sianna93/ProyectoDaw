@@ -6,13 +6,11 @@ var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var puntos= [];
 var punto = [];
+var markers=[];
 
 ///<reference path="js/google-maps-3-vs-1-0.js/>
 function initialize() {
     cargarMapa();
-    F_cerrar();
-
-    guardarRuta_Puntos(puntos);
 
 }
 
@@ -39,10 +37,10 @@ function cargarMapa(){
 
 
         google.maps.event.addListener(map, 'click', function (event) {
-          
+
           //Kimba donde dice sianna pon el nombre de usuario al crear la ruta
-          
-          
+
+
 
               var usuario;
               $.ajax({
@@ -69,49 +67,88 @@ function cargarMapa(){
                         var marker = new google.maps.Marker({
                            position: event.latLng, tittle: '#', draggable: false, map: map
                         });
-
-                        //marker 
+                        markers.push(marker);
+                        //marker
                         marker.addListener('click', function() {
                           infowindow.open(map, marker);
+                          alert(infowindow.getContent());
+                          console.log(infowindow.getContent());
                         });
 
                         if (start == null) {
                             start = event.latLng;
                             console.log(start.lat());
-                            punto.push(start.lat());
-                            punto.push(start.lng());
-                            puntos.push(punto);
-                            console.log(puntos[0][0].valueOf());
+                            //punto.push(start.lat());
+                            //punto.push(start.lng());
+                            //puntos.push(punto);
+                            //console.log(puntos[0][0].valueOf());
                             //guardarPuntos(start.lat(),start.lng());
+
                             return;
                         }
                         else if (end == null) {
                             end =  event.latLng;
-                            puntos.push(end.lat());
-                            console.log(puntos.toString());
+                            //puntos.push(end.lat());
+                            //console.log(puntos.toString());
                             //guardarPuntos(end.lat(),end.lng());
+                            //guardarRutas(start.lat(), start.lng(), end.lat(), end.lng());
+
                             return;
                         }
                         else {
                             waypts.push({
                                 location: end, stopover: false
                             });
+
                             end =  event.latLng;
+
                             console.log("start-2");
-                            puntos.push(end.lat());
-                            console.log(puntos.toString());
+                            punto.push(start.lat());
+                            punto.push(start.lng());
+                            puntos.push(punto);
+                            console.log('yo soy el string' + puntos.toString());
                             //guardarPuntos(end.lat(),end.lng());
                             //alert("start2");
                         }
+
+
                         var request = {
                             origin: start, destination: end, waypoints: waypts, optimizeWaypoints: true, travelMode: google.maps.TravelMode.DRIVING
+
                         };
 
                         directionsService.route(request, function (response, status) {
                             if (status == google.maps.DirectionsStatus.OK) {
-                                directionsDisplay.setDirections(response);
+                              console.log(request);
+                              directionsDisplay.setDirections(response);
                             }
-                        });      
+                        });
+
+
+                          //guardarRutas(start.lat(), start.lng(), end.lat(), end.lng());
+                        $("#btn_Guardar_coord").click(function () {
+                          alert("diste click");
+                            guardarRutas(start.lat(), start.lng(), end.lat(), end.lng());
+
+                            for (var p in puntos){
+
+                              console.log(puntos[0].toString() +'   si estiy leyendote primera lista')
+                              console.log(puntos[1].toString() +'   si estiy leyendote segunda lista')
+                                for (var i in p){
+                                  console.log(p[i] +'   si estiy leyendote a i ')
+                                }
+
+
+                              //guardarPuntos(p[0],p[1]);
+
+                              //swal({   title: 'Exito',   text: p,   timer: 2000 });
+                            }
+                            swal({   title: 'Exito!',   text: "ruta guardada",   timer: 2000 });
+                            console.log(puntos.toString());
+                            //setMapOnAll(null);
+                            //directionsDisplay.setMap(null);
+                        });
+
                 },
                 error: function(data){
                   console.log(data.responseText);
@@ -120,7 +157,7 @@ function cargarMapa(){
               });
 
 
-            
+
         });
    });
 }
@@ -136,9 +173,41 @@ function guardarPuntos(latitude,longitude){
       },
         error: function(e){
         console.log(e)
-        swal({   title: 'Error!',   text: 'Error al intentar guardar ruta',   timer: 2000 });
+        swal({   title: 'Error!',   text: 'Error al intentar guardar puntos',   timer: 2000 });
       }
     });
+}
+
+function guardarRutas(orig_lat, orig_lng, dest_lat, dest_lng){
+
+    FB.ui({
+      method: 'feed',
+      link: 'https://developers.facebook.com/docs/',
+      caption: 'An example caption',
+    }, function(response){});
+
+    var start = document.getElementById("start").value;
+    var end = document.getElementById("end").value;
+    //eliminar_todo();
+    //crear_cabecera('seccion_misrutas', 'header_panel', 'labelpanel', 'MIS RUTAS');
+    //cargarComponentes_MisRutas('#seccion_misrutas');
+    //guardarRuta(start, end);
+    console.log(start);
+
+    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+      type: "POST",
+      url:'/ruta',
+      data: {'txtOrigen':start,'txtDestino':end,'origLat': orig_lat,'origLng': orig_lng,'dstgLat': dest_lat,'dstgLng': dest_lng,'csrfmiddlewaretoken':csrf },
+      success: function(){
+         swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
+      },
+      error: function(){
+        swal({   title: 'Error!',   text: 'Error al intentar guardad ruta',   timer: 2000 });
+      }
+    });
+
+
 }
 
 function guardarRuta_Puntos(puntosC){
@@ -150,8 +219,10 @@ function guardarRuta_Puntos(puntosC){
         swal({   title: 'Error!',   text: "nada",   timer: 2000 });
         console.log(puntosC.toString());
     });
+}
 
-
-
-
+function setMapOnAll(map){
+  for (var i=0;i<markers.length; i++){
+    markers[i].setMap(map);
+  }
 }

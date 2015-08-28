@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import csv
 from web.forms import SignUpForm, SignUpForm2
+from decimal import Decimal
 
 
 class AutoLogout:
@@ -25,7 +26,7 @@ class AutoLogout:
          return
         try:
             if datetime.now() - request.session['last_touch'] > timedelta( 0, settings.AUTO_LOGOUT_DELAY * 60, 0):
-                auth.logout(request) 
+                auth.logout(request)
                 del request.session['last_touch']
                 print ("holaaaaaaaaaaaa")
                 return
@@ -82,13 +83,13 @@ def login_s(request):
 def home(request):
     usuario=request.user
     template = 'inicio.html'
-    
+
     if usuario.is_authenticated():
         print(usuario.username)
         return render_to_response(
             'json/user.json',
             {'usuario': usuario}
-            )        
+            )
     else:
         return render(request, template, {})
 
@@ -98,13 +99,22 @@ def guardarRuta(request):
         from django.utils import timezone
         orig = request.POST.get('txtOrigen',None)
         dest = request.POST.get('txtDestino',None)
+        origLat=request.POST.get('origLat',None)
+        origLng=request.POST.get('origLng',None)
+        dstgLat=request.POST.get('dstgLat',None)
+        dstgLng=request.POST.get('dstgLng',None)
         user = request.user
         print(orig)
         print(dest)
+        print(origLat)
+        print(origLng)
+        print(dstgLng)
+        print(dstgLat)
+
         print(user.pk)
         if orig is not None and dest is not None:
-            ruta = Ruta(origen= orig, destino= dest,fk_persona_ruta_id= user.pk )
-            print(ruta)
+            ruta = Ruta(origen= orig, origen_lt= Decimal(origLat), origen_lg=Decimal(origLng),destino= dest,destino_lt=Decimal(dstgLat),destino_lg=Decimal(dstgLng),fk_persona_ruta_id= user.pk )
+            print("holaaa",ruta)
             ruta.save()
             return HttpResponse('todo posi')
 
@@ -117,6 +127,8 @@ def guardarCoordenadas(request):
         rutas = Ruta.objects.all()
         print("aqui:",Decimal(punto_lat))
         print(Decimal(punto_long))
+
+
         if punto_lat is not None and punto_long is not None:
 
             punto = Coordenada_geografica(latitude= Decimal(punto_lat), longitude= Decimal(punto_long),fk_ruta_id = rutas[len(rutas)-1].pk )
@@ -138,7 +150,7 @@ def obtenerRutas(request):
 
 def obtenerUsuarios(request):
     if request.method == 'GET':
-        
+
         users=User.objects.all()
         response = render_to_response(
             'json/users.json',
@@ -168,7 +180,7 @@ def obtenerSeguidores(request):
         #NumSeguidores=len(listSeguidores)
         #print(NumSeguidores)
         return response
-    
+
 
 def obtenerSiguiendos(request):
     if request.method == 'GET':
@@ -219,10 +231,10 @@ def filtrarNombres(request):
     if request.method == 'GET':
         bsq=request.GET["q"]
         print("2-->",bsq)
-        
-        users=User.objects.filter(username__contains=bsq) 
+
+        users=User.objects.filter(username__contains=bsq)
         list_user=list()
-        #users=User.objects.raw('SELECT * FROM auth_user WHERE auth_user.username LIKE ''%s'%'',[bsq])       
+        #users=User.objects.raw('SELECT * FROM auth_user WHERE auth_user.username LIKE ''%s'%'',[bsq])
         print("3-->",users)
         #for u in users:
         #   list_user.append(u.username)
@@ -239,50 +251,50 @@ def filtrarNombres(request):
 #funcion para registrar nuevosusuarios
 def signup(request):
     if request.method == 'POST':  # If the form has been submitted...
-        
+
         form = SignUpForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
-            
+
                       # Process the data in form.cleaned_data
             username1 = form.cleaned_data["username"]
             password1 = form.cleaned_data["password"]
- 
+
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
- 
-           
+
+
             user = User.objects.create_user(username=username1, password=password1)
             user.first_name = first_name
             user.last_name = last_name
- 
-         
-                     
+
+
+
 
             user.save()
             print(form.fields)
- 
-            
+
+
 
         form2= SignUpForm2(request.POST)  # A form bound to the POST data
         if form2.is_valid():  # All validation rules pass
-            
+
                       # Process the data in form.cleaned_data
             is_carro1 = form2.cleaned_data["is_carro"]
             placa1 = form2.cleaned_data["placa"]
- 
+
             usuarios= User.objects.all()
 
-            
-           
-            persona = Persona(is_carro=is_carro1, placa=placa1, fk_user_id=usuarios[len(usuarios)-1].pk)                     
+
+
+            persona = Persona(is_carro=is_carro1, placa=placa1, fk_user_id=usuarios[len(usuarios)-1].pk)
 
             persona.save()
- 
+
             return HttpResponseRedirect(reverse('login'))  # Redirect after POST
     else:
         form = SignUpForm()
         form2= SignUpForm2()
- 
+
     data = {
         'form': form,
         'form2': form2,
