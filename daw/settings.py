@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'daw.chat',
     'swampdragon',
     'web',
 )
@@ -65,12 +66,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'web.views.AutoLogout',
-
-
-
-
-
-
 )
 
 ROOT_URLCONF = 'daw.urls'
@@ -129,7 +124,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # SwampDragon settings
-SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
+#SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
+
+SWAMP_DRAGON_CONNECTION = ('daw.sockserver.DataConnection', '/data')
 
 DRAGON_URL = 'http://localhost:9999/'
 SWAMP_DRAGON_PORT = '9999'

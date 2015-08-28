@@ -11,7 +11,7 @@
         <!--hoja externa para menu.css-->
         <link rel="stylesheet" href="{% static 'CSS/registrarse.css' %}">
         <!--hoja externa para javsript-->
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert2.css' %}">
         </head>
@@ -26,7 +26,7 @@
 
             <!--section para el fomulario-->
             <section id="form">
-                  <form action='registrar' method='POST' > {% csrf_token %}                  
+                  <form action='registrar' method='POST' > {% csrf_token %}
 
                         <input type="text" id="first_name" name="first_name" size="3"  class="txtvalidar" placeholder="Nombre" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
 
@@ -54,5 +54,5 @@
 
     <script src="{% static 'js/sweetalert2.min.js' %}"></script>
     <script src="{% static 'js/registrarse.js' %}"></script>
-    
+
 </html>

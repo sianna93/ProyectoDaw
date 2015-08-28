@@ -1,4 +1,4 @@
-{% spaceless %}  
+{% spaceless %}
 {
     "is_existe":"{{ existe}}",
 }

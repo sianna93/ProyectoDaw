@@ -249,6 +249,7 @@ def filtrarNombres(request):
         return response
 
 #funcion para registrar nuevosusuarios
+#funcion para registrar nuevosusuarios
 existe=0
 def signup(request):
     #registra los valores Users
@@ -263,7 +264,7 @@ def signup(request):
             password = form.cleaned_data["password"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
-            
+
             user = User.objects.create_user(username=username, password=password)
             user.first_name = first_name
             user.last_name = last_name
@@ -294,6 +295,7 @@ def signup(request):
     }
     return render_to_response('registrarse.html', data, context_instance=RequestContext(request))
 
+
 def existeUsuario(request):
     #registra los valores Users
     usuarios=User.objects.all()
@@ -304,8 +306,8 @@ def existeUsuario(request):
 
             # Process the data in form.cleaned_data
             username1 = form.cleaned_data["username"]
-            
-            existe=0       
+
+            existe=0
             for u in usuarios:
                 if u.username == username1:
                     existe=1
@@ -320,13 +322,10 @@ def existeUsuario(request):
             response['Cache-Control'] = 'no-cache'
             return response
 
-
-
-
 def guardarUsuario(request):
     if request.method == 'POST':
         from django.utils import timezone
-       
+
         nickname = request.POST.get('nick',None)
         nombre = request.POST.get('first_name',None)
         apellido=request.POST.get('last_name',None)
@@ -335,7 +334,7 @@ def guardarUsuario(request):
         carro=request.POST.get('isCarro',None)
         placa=request.POST.get('plaquita',None)
 
-        
+
         print(nickname)
         print(nombre)
         print(apellido)
@@ -350,7 +349,8 @@ def guardarUsuario(request):
             persona = Persona(is_carro=carro, placa=placa, fk_user_id=usuarios[len(usuarios)-1].pk)
             persona.save()
             print("holaaa",user, "persona", persona)
-            return HttpResponse('Usuario Guardado')
+            return render_to_response('inico.html',{})
+
 
 def inicio(request):
     return render_to_response('inicio.html', {}, context_instance=RequestContext(request))
@@ -370,3 +370,14 @@ def datos_person(request):
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
         return response
+
+def getPerson(request):
+   from suds.xsd.doctor import ImportDoctor, Import
+   from suds.client import Client
+   url = 'http://ws.espol.edu.ec/saac/wsandroid.asmx?WSDL'
+   imp = Import('http://www.w3.org/2001/XMLSchema')
+   imp.filter.add('http://tempuri.org/')
+   doctor = ImportDoctor(imp)
+   client = Client(url, doctor=doctor)
+   content = client.service.wsInfoEstudianteGeneral(matricula)
+   #debes revisar el dato ye ir viendo los datos para sacar la informacion

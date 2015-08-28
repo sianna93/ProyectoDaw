@@ -8,7 +8,7 @@ body{
     /* CSS3 Radial Gradients */
     /*background-image:-moz-radial-gradient(center -100px 45deg, circle farthest-corner, #444 150px, #111 300px);
     background-image:-webkit-gradient(radial, 50% 0, 150, 50% 0, 300, from(#444), to(#111));*/
-    
+
     font-family:Arial, Helvetica, sans-serif;
 }
 
@@ -19,7 +19,7 @@ html,body,#map-canvas {
     margin: 0 10px;
     padding: 0;
     background:#55acee;
-    
+
 }
 
 body,#panel-derecho{
@@ -29,6 +29,17 @@ body,#panel-derecho{
     background:#f5f8fa;
 
 }
+
+
+#chat{
+    z-index:5;
+    top: -130px;
+    position:relative;
+    left: -10px;
+    width: 20%;
+
+}
+
 #map-canvas{
     float: left;
     width:100%;
@@ -55,7 +66,7 @@ body,#panel-derecho{
     height:71px;
     padding:2px;
     width:71px;
-    
+
 }
 
 #navigationMenu span{
@@ -189,7 +200,7 @@ body,#panel-derecho{
     background: #2b80c1; height: 50px
 }
 
-#labelpanel{ 
+#labelpanel{
     font-size: 20px;
     font-weight: 800;
     text-shadow: 0 1px 2px rgba(0,0,0,5);
@@ -198,7 +209,7 @@ body,#panel-derecho{
     text-align: center;
     color: #fff;
     font-family:"georgia", serif;
-    
+
 }
 
 #cuerpo_presentacion{
@@ -300,11 +311,11 @@ body,#panel-derecho{
     font: 150% Fantasía;
     font-size: 14px;
     text-align: center;
-    
+
     padding-left: 1em;
     position: relative;
     top: 50px;
-    
+
 }
 
 #seguidores{
@@ -313,11 +324,11 @@ body,#panel-derecho{
     font: 150% Fantasía;
     font-size:14px;
     text-align:center;
-    
+
     padding-left:1em;
     position: relative;
     top: 50px;
-    
+
 }
 #numseguidos{
      color: #fff;
@@ -334,7 +345,7 @@ body,#panel-derecho{
     font: 150% Fantasía;
     font-size:14px;
     text-align:center;
-    
+
     padding-left:1em;
     position: relative;
     top: 50px;
@@ -349,8 +360,8 @@ body,#panel-derecho{
     position: relative;
     top: 60px;
     clear: both;
-      
-      
+
+
 }
 
 /**** CSS INICIAR RUTA*/
@@ -377,7 +388,7 @@ body,#panel-derecho{
 /*boton guardar ru*/
 #btn_guardar, #btn_Guardar_coord, #btn_llevame{
     clear: both;
-    
+
     cursor: pointer;
     width: 135px;
     height: 36px;
@@ -408,7 +419,7 @@ body,#panel-derecho{
     -ms-transition: all .2s;
     position: relative;
     top: 20px;
-    
+
 }
 
 #btn_guardar:hover ,#btn_llevame:hover ,#btn_Guardar_coord:hover{
@@ -421,12 +432,12 @@ body,#panel-derecho{
     box-shadow:
         0 15px 30px 0 rgba(255,255,255,.15) inset,
         0 2px 7px 0 rgba(0,0,0,.2);
-   
+
 }
 /*para todas las cajas de texto de la pag*/
 
 input {
-    
+
     height: 35px;
     margin-top: 25px;
     padding: 0 15px;
@@ -477,7 +488,7 @@ footer{
 #cuerpo_misrutas{
     padding:20px 30px;
     float:left;text-align: center;
-    color: #4800ff; 
+    color: #4800ff;
     font-size: 15px;width:100%;
     font-family:georgia,serif;
 }
@@ -507,6 +518,6 @@ footer{
 	position: relative;
 	top : -23px;
 	left: 330px;
-	
-	
+
+
 }
