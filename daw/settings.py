@@ -128,5 +128,5 @@ STATIC_URL = '/static/'
 
 SWAMP_DRAGON_CONNECTION = ('daw.sockserver.DataConnection', '/data')
 
-DRAGON_URL = 'http://localhost:9999/'
+DRAGON_URL = 'http://0.0.0.0:9999/'
 SWAMP_DRAGON_PORT = '9999'

@@ -37,7 +37,7 @@ body,#panel-derecho{
     position:relative;
     left: -10px;
     width: 20%;
-
+    border: 5px solid gray;
 }
 
 #map-canvas{

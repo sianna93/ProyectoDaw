@@ -118,6 +118,25 @@ def guardarRuta(request):
             ruta.save()
             return HttpResponse('todo posi')
 
+def Seguir(request):
+    if request.method == 'POST':
+        from django.utils import timezone
+        Seguidor_conect = request.POST.get('seguidor',None)
+        usuarios = User.objects.all()
+        for u in usuarios:
+            if u.username==Seguidor_conect:
+                user_pk = u
+        user = request.user
+        print(Seguidor_conect,"soy el que va a seguir")
+        print("hola user",user.pk)
+        print("hola",user_pk.pk)
+        if Seguidor is not None:
+            vaseguir = Seguidor(fk_persona_id= user_pk.pk ,fk_seguidor_id = user.pk)
+            print("holaaa",vaseguir)
+            vaseguir.save()
+            return HttpResponse('todo posi')
+
+
 def guardarCoordenadas(request):
      if request.method == 'POST':
         from django.utils import timezone

@@ -15,7 +15,6 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-
 }
 
 //Función para el botón cerrar sesión
@@ -449,6 +448,123 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     class : 'btn btn-'+ typeButton+' center-block',
     text:txtButton
   }))))).hide().appendTo(seccion).fadeIn('slow');
+
+
+
+
+  $("#button_seguir").click(function () {
+    labelText = $("#presentacion_bodyID").text()
+    alert("Diste click");
+    alert(labelText);
+    seguir(labelText);
+  });
+
+
+  $('.presentacionTextNombre').click(function (e) {
+    var usuario, car="",contseg=0, contsig=0;
+        ELIMINAR("cuerpo_cuenta");
+        //aqui esta el ajax
+
+        $.ajax({
+          type: "GET",
+          url:'/cuenta/',
+          async: true,
+          dataType:"Json",
+          contenType:"application/Json; charset=utf-8",
+          success: function(user){
+                //console.log(user)
+                usuario= user.first_name+" "+user.last_name;
+                //cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
+                //Si tiene o no carro
+                 $.ajax({
+                  type: "GET",
+                  url:'/datos/',
+                  async: true,
+                  dataType:"Json",
+                  contenType:"application/Json; charset=utf-8",
+                  success: function(personas){
+                        $.each(personas,function(p,persona){
+                          if(user.id==persona.fk_user_id){
+                            if(persona.is_carro=='True'){
+                              car = 'Si tiene carro'
+                              $('#carro').text(car);
+                            }
+                            else if(persona.is_carro=='False'){
+                              car = 'No tiene carro'
+                              $('#carro').text(car);
+                            }
+                          }
+                        });
+
+                  },
+                  error: function(data){
+                    console.log(data.responseText);
+                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                  }
+                });
+
+                //Numeros de siguiendos
+                 $.ajax({
+                  type: "GET",
+                  url:'/siguiendos/',
+                  async: true,
+                  dataType:"Json",
+                  contenType:"application/Json; charset=utf-8",
+                  success: function(siguiendos){
+                    list_siguiendos=siguiendos;
+                    contsig=list_siguiendos.length;
+                    $('#numseguidos').text(contsig);
+                    console.log("numsiguiendos: "+ contsig);
+
+                  },
+                  error: function(data){
+                    console.log(data.responseText);
+                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                  }
+                });
+
+                //Numeros de siguidores
+                $.ajax({
+                  type: "GET",
+                  url:'/seguidores/',
+                  async: true,
+                  dataType:"Json",
+                  contenType:"application/Json; charset=utf-8",
+                  success: function(seguidores){
+                    list_seguidores=seguidores;
+                    contseg=list_seguidores.length;
+                    $('#numseguidores').text(contseg);
+                    console.log("numseguidores: "+ contseg);
+
+                  },
+                  error: function(data){
+                    console.log(data.responseText);
+                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                  }
+                });
+          },
+          error: function(data){
+            console.log(data.responseText);
+            swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+          }
+        });
+        //muestro mi modal
+        $('#myModal_usuario').modal('show');
+        cargarComponentes_Cuenta(".modal-body", nombre, id, 'seguidores', contseg, 'seguidos', contsig, car);
+        $('#modal_usuario').css({ 'width': '440px', 'height': '400px' });
+        $('#cuerpo_cuenta').css({ 'width': '100%', 'height': '390px', 'padding': '0', 'background': 'none' });
+        $('#presentacion_imagenCuenta').css({ 'width': '120px', 'height': '130px', 'margin-left': '40%', 'margin-top': '0' });
+        $('#datos_cuenta').css({ 'width': '100%', 'vertical-aling': 'center' });
+        $('#cuerpo_cuenta').append($('<button>', {
+          id:"btn_llevame",
+          text: "Llevame!",
+          style: 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'
+        }));
+
+
+  });
+
+
 }
 
 
@@ -1012,4 +1128,23 @@ function cargarDatosSeguidores(){
     }
   }
 }
+
+function seguir(seguidor_a){
+    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+      type : "POST",
+      url:'/seguir',
+      data: {'seguidor':seguidor_a,'csrfmiddlewaretoken':csrf },
+      success: function(){
+         swal({   title: 'Exito!',   text: 'Se ha seguido con Exito',   timer: 2000 });
+      },
+      error: function(){
+        swal({   title: 'Error!',   text: 'Error al Seguir',   timer: 2000 });
+      }
+
+    });
+
+}
+
+
 google.maps.event.addDomListener(window, 'load', initialize);

@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^chat$', include('daw.chat.urls')),
     url(r'^validaruser', 'web.views.existeUsuario'),
     url(r'^registrar', 'web.views.guardarUsuario'),
+    url(r'^seguir','web.views.Seguir'),
 
 
 ]
