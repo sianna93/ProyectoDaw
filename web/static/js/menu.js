@@ -162,7 +162,7 @@ function F_siguiendo(evt) {
 
                 if(usuario.username==seg.seguidor){
                   user=usuario.first_name + " " + usuario.last_name;
-                  crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', estado);
+                  crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', "Siguiendo");
                 }
               })
             },
@@ -215,7 +215,7 @@ function F_seguidores(evt) {
 
                 if(usuario.username==seg.siguiendo){
                   user=usuario.first_name + " " + usuario.last_name;
-                  estado = "";
+                  estado = "Seguir";
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', estado);
                 }
               })
@@ -447,24 +447,25 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     id:'presentacion_bodyID',
     text:id
   })),$('<div>',{
+    class: 'click_button'
+  }).append($('<div>',{
     class : ' center-block '
-  }).append($('<button>',{
+  })).append($('<button>',{
     id:'button_seguir',
     class : 'btn btn-'+ typeButton+' center-block',
-    text:txtButton
+    text:txtButton,
+    name : 'botones__seguir'
   }))))).hide().appendTo(seccion).fadeIn('slow');
 
 
-
-
-  $("#button_seguir").click(function () {
+  $('.click_button').click(function () {
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     labelText = $("#presentacion_bodyID").text()
     //alert("boton seguirrr");
     //alert(labelText);
     //seguir(labelText);
     existe =0;
-
+    //funcion ajax para el evento del boton seguir/siguiendo
     $.ajax({
       type: "GET",
       url:'/siguiendos/',
@@ -478,12 +479,13 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
           }
         })
         if (existe > 1){
-              alert("ya existe");
-              swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+              //alert("ya existe");
+             swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+              //cambiar_estado(labelText);
         }else if(existe < 1){
               seguir(labelText);
               //console.log(data.responseText);
-              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });
+              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });   
         }
       },
 

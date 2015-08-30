@@ -28,7 +28,7 @@ class AutoLogout:
             if datetime.now() - request.session['last_touch'] > timedelta( 0, settings.AUTO_LOGOUT_DELAY * 60, 0):
                 auth.logout(request)
                 del request.session['last_touch']
-                print ("holaaaaaaaaaaaa")
+                print ("La sesion se ha cerrado por inactividad")
                 return
         except KeyError:
          pass
@@ -92,6 +92,7 @@ def home(request):
             )
     else:
         return render(request, template, {})
+
 
 @login_required
 def guardarRuta(request):
