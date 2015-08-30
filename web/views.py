@@ -294,6 +294,7 @@ def filtrarNombres(request):
 #funcion para registrar nuevosusuarios
 #funcion para registrar nuevosusuarios
 existe=0
+"""
 def signup(request):
     #registra los valores Users
     usuarios=User.objects.all()
@@ -338,7 +339,7 @@ def signup(request):
     }
     return render_to_response('registrarse.html', data, context_instance=RequestContext(request))
 
-
+"""
 def existeUsuario(request):
     #registra los valores Users
     usuarios=User.objects.all()
@@ -366,6 +367,8 @@ def existeUsuario(request):
             return response
 
 def guardarUsuario(request):
+	#registra los valores Users
+    usuarios=User.objects.all()
     if request.method == 'POST':
         from django.utils import timezone
 
@@ -391,12 +394,20 @@ def guardarUsuario(request):
             usuarios= User.objects.all()
             persona = Persona(is_carro=carro, placa=placa, fk_user_id=usuarios[len(usuarios)-1].pk)
             persona.save()
-            print("holaaa",user, "persona", persona)
-            return render_to_response('inico.html',{})
+            #for i in users:
+            #	print("entro al for")
+            #	if i.username == nickname:
+            #		print("error!!!! user: ",nickname)
+            #		return render_to_response('registrarse.html',{}, context_instance=RequestContext(request))
+    return render_to_response('inicio.html',{}, context_instance=RequestContext(request))
 
 
 def inicio(request):
     return render_to_response('inicio.html', {}, context_instance=RequestContext(request))
+
+def regis(request):
+    return render_to_response('registrarse.html', {}, context_instance=RequestContext(request))
+
 
 @login_required()
 def menu(request):

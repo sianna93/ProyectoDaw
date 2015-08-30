@@ -53,14 +53,16 @@ function testaPlaca(plaquita) {
          dataType:"Json",
          contenType:"application/Json; charset=utf-8",
          success: function(usuarios){
-          /* $.each(usuarios,function(i,usuario){
-
-             if(usuario.username==nickname){
-               swal({  title: 'Error!!',   text: 'Ya existe el usuario',   timer: 2000 });
-               existe =1;
-             }
-         });*/
-         //if(existe==0){
+         	$.each(usuarios,function(i,usuario){
+         		console.log("entro al each");
+         		if(usuario.username==nickname){
+         			console.log("entro al if");
+	           		swal({  title: 'Error!!',text: 'El usuario ya existe',timer: 3000 });
+	              	windows.alert("El usuario ya existe");
+	               	existe =1;
+	             }
+         	});
+         if(existe==0){
 
              if ($("input[name='is_carro']:checked").val()==1){
                  carro=1;
@@ -79,8 +81,7 @@ function testaPlaca(plaquita) {
              });
              //swal({  title: 'Exito!!',   text: 'Usuario registrado',   timer: 2000 });
 
-         //}
-
+         }
          },
          error: function(data){
            console.log(data.responseText);

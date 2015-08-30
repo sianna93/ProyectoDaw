@@ -26,16 +26,17 @@ urlpatterns = [
     url(r'^ruta','web.views.guardarRuta'),
     url(r'^coordenadas','web.views.guardarCoordenadas'),
     url(r'^misRutas','web.views.obtenerRutas'),
-    url(r'^Rutas','web.views.obtenerTodasRutas'),
     url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^cuenta', 'web.views.home'),
+    url(r'^Rutas','web.views.obtenerTodasRutas'),
+    url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^todosSeguidores', 'web.views.obtenerTablaSeguidores'),
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
     url(r'^busqueda', 'web.views.BuscarPer'),#para buscar una sola persona
     url(r'^filtrarNombres', 'web.views.filtrarNombres'),
     url(r'^$', 'web.views.inicio', name='inicio'),
-    url(r'^signup$', 'web.views.signup', name='signup'), #registrar nuevo usuario
+    #url(r'^signup$', 'web.views.signup', name='signup'), #registrar nuevo usuario
     url(r'^login$', login, {'template_name': 'inicio.html', }, name="login"), #login con funcion de django
     url(r'^menu$', 'web.views.menu', name='menu'),
     url(r'^logout$', logout, {'template_name': 'inicio.html', }, name="logout"),  #cerrar sesion
@@ -44,6 +45,7 @@ urlpatterns = [
     url(r'^validaruser', 'web.views.existeUsuario'),
     url(r'^registrar', 'web.views.guardarUsuario'),
     url(r'^seguir','web.views.Seguir'),
-
+    url(r'^registrar$', 'web.views.guardarUsuario',name="guardarUsuario"),#guarda usuario en la base
+    url(r'^registro$', 'web.views.regis',name="regis"),#acceso a la pag registrar
 
 ]
