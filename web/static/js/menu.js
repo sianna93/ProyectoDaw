@@ -461,11 +461,13 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
   $('.click_button').click(function () {
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     labelText = $("#presentacion_bodyID").text()
+    alert(labelText);
     //alert("boton seguirrr");
     //alert(labelText);
     //seguir(labelText);
     existe =0;
-    //funcion ajax para el evento del boton seguir/siguiendo
+    
+    //PARA LOS QUE YO ESTOY SIGUIENDO
     $.ajax({
       type: "GET",
       url:'/siguiendos/',
@@ -475,6 +477,36 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
       success: function(siguiendos){
         $.each(siguiendos,function(i,sig){
           if(sig.seguidor==labelText){
+            existe = existe + 1;
+          }
+        })
+        if (existe > 1){
+              //alert("ya existe");
+             swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+              //cambiar_estado(labelText);
+        }else if(existe < 1){
+              seguir(labelText);
+              //console.log(data.responseText);
+              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });   
+        }
+      },
+
+      error: function(data){
+        console.log(data.responseText);
+        swal({  title: 'Error!!',   text: 'dsfdfdf',   timer: 2000 });
+      }
+    });
+
+    //PARA LOS QUE YO SIGO
+    $.ajax({
+      type: "GET",
+      url:'/seguidores/',
+      async: true,
+      dataType:"Json",
+      contenType:"application/Json; charset=utf-8",
+      success: function(seguidores){
+        $.each(seguidores,function(i,seg){
+          if(seg.seguidor==labelText){
             existe = existe + 1;
           }
         })
@@ -654,8 +686,39 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
 }
 
+//FUNCION QUE DEJE DE SEGUIR A UN SEGUIDO
+function dejar_de_seguir(){
+   //PARA LOS QUE YO ESTOY SIGUIENDO
+    $.ajax({
+      type: "GET",
+      url:'/siguiendos/',
+      async: true,
+      dataType:"Json",
+      contenType:"application/Json; charset=utf-8",
+      success: function(siguiendos){
+        $.each(siguiendos,function(i,sig){
+          if(sig.seguidor==labelText){
+            existe = existe + 1;
+          }
+        })
+        if (existe > 1){
+              //alert("ya existe");
+             swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+              //cambiar_estado(labelText);
+        }else if(existe < 1){
+              seguir(labelText);
+              //console.log(data.responseText);
+              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });   
+        }
+      },
 
+      error: function(data){
+        console.log(data.responseText);
+        swal({  title: 'Error!!',   text: 'dsfdfdf',   timer: 2000 });
+      }
+    }); 
 
+}
 
 
 
