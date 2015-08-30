@@ -464,7 +464,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     //alert(labelText);
     //seguir(labelText);
     existe =0;
-    
+
     $.ajax({
       type: "GET",
       url:'/siguiendos/',
@@ -483,7 +483,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
         }else if(existe < 1){
               seguir(labelText);
               //console.log(data.responseText);
-              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });   
+              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });
         }
       },
 
@@ -586,6 +586,8 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
           }
         });
         //muestro mi modal
+
+        $('#cuerpo_cuenta').remove();
         $('#myModal_usuario').modal('show');
         cargarComponentes_Cuenta(".modal-body", nombre, id, 'seguidores', contseg, 'seguidos', contsig, car);
         $('#modal_usuario').css({ 'width': '440px', 'height': '400px' });
@@ -803,7 +805,7 @@ function cargarComponentes_Ruta(seccion){
     name:'txtOrigen',
     id:'start',
     placeholder:'Origen',
-    onchange:'calcRoute();',
+    //onchange:'calcRoute();',
     required:'true'
   }),$('<h4>',{
     id:'label_destino_ruta',
@@ -814,7 +816,7 @@ function cargarComponentes_Ruta(seccion){
     name:'txtDestino',
     id:'end',
     placeholder:'Destino',
-    onchange:'calcRoute();',
+    //onchange:'calcRoute();',
     required:'true'
   }),$('<h4>',{
     id:'label_fecha_ruta',

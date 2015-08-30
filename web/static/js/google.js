@@ -5,7 +5,6 @@ var end;
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var puntos= [];
-var punto = [];
 var markers=[];
 
 ///<reference path="js/google-maps-3-vs-1-0.js/>
@@ -37,10 +36,6 @@ function cargarMapa(){
 
 
         google.maps.event.addListener(map, 'click', function (event) {
-
-          //Kimba donde dice sianna pon el nombre de usuario al crear la ruta
-
-
 
               var usuario;
               $.ajax({
@@ -77,12 +72,13 @@ function cargarMapa(){
 
                         if (start == null) {
                             start = event.latLng;
-                            console.log(start.lat());
+                            //console.log(start.lat());
                             //punto.push(start.lat());
                             //punto.push(start.lng());
                             //puntos.push(punto);
                             //console.log(puntos[0][0].valueOf());
                             //guardarPuntos(start.lat(),start.lng());
+                            puntos.push({lt: start.lat(), lg: start.lng()});
 
                             return;
                         }
@@ -92,7 +88,7 @@ function cargarMapa(){
                             //console.log(puntos.toString());
                             //guardarPuntos(end.lat(),end.lng());
                             //guardarRutas(start.lat(), start.lng(), end.lat(), end.lng());
-
+                            puntos.push({lt: end.lat(), lg: end.lng()});
                             return;
                         }
                         else {
@@ -101,14 +97,9 @@ function cargarMapa(){
                             });
 
                             end =  event.latLng;
+                            puntos.push({lt: end.lat(), lg: end.lng()});
 
-                            console.log("start-2");
-                            punto.push(start.lat());
-                            punto.push(start.lng());
-                            puntos.push(punto);
                             console.log('yo soy el string' + puntos.toString());
-                            //guardarPuntos(end.lat(),end.lng());
-                            //alert("start2");
                         }
 
 
@@ -119,7 +110,7 @@ function cargarMapa(){
 
                         directionsService.route(request, function (response, status) {
                             if (status == google.maps.DirectionsStatus.OK) {
-                              console.log(request);
+                              //console.log(request);
                               directionsDisplay.setDirections(response);
                             }
                         });
@@ -127,26 +118,31 @@ function cargarMapa(){
 
                           //guardarRutas(start.lat(), start.lng(), end.lat(), end.lng());
                         $("#btn_Guardar_coord").click(function () {
-                          alert("diste click");
-                            guardarRutas(start.lat(), start.lng(), end.lat(), end.lng());
-
-                            for (var p in puntos){
-
-                              console.log(puntos[0].toString() +'   si estiy leyendote primera lista')
-                              console.log(puntos[1].toString() +'   si estiy leyendote segunda lista')
-                                for (var i in p){
-                                  console.log(p[i] +'   si estiy leyendote a i ')
-                                }
-
-
-                              //guardarPuntos(p[0],p[1]);
-
-                              //swal({   title: 'Exito',   text: p,   timer: 2000 });
+                            //alert("diste click");
+                            var p_start= puntos[0];
+                            var p_end= puntos[puntos.length-1];
+                            //console.log("start: "+ p_start['lt']);
+                            guardarRutas(p_start['lt'], p_start['lg'], p_end['lt'], p_end['lg']);
+                            var i;
+                            //recorriendo la lista de puntos y guardando la lat y lon
+                            for (i=0; i<puntos.length; i++){
+                              var punto = puntos[i];
+                              var plt=punto['lt'];
+                              var plg=punto['lg'];
+                              guardarPuntos(plt,plg);
+                              console.log('puntos' + plt + plg);
                             }
-                            swal({   title: 'Exito!',   text: "ruta guardada",   timer: 2000 });
+
+                            //swal({   title: 'Exito!',   text: "ruta guardada",   timer: 2000 });
                             console.log(puntos.toString());
-                            //setMapOnAll(null);
+                            setMapOnAll(null);
                             //directionsDisplay.setMap(null);
+                            end=null;
+                            start = null;
+                            puntos=[];
+                            waypts=[];
+
+
                         });
 
                 },
@@ -169,7 +165,7 @@ function guardarPuntos(latitude,longitude){
         url:'/coordenadas',
         data: {'coord_lat':latitude,'coord_long':longitude,'csrfmiddlewaretoken':csrf },
         success: function(){
-         swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
+         //swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
       },
         error: function(e){
         console.log(e)
@@ -180,11 +176,7 @@ function guardarPuntos(latitude,longitude){
 
 function guardarRutas(orig_lat, orig_lng, dest_lat, dest_lng){
 
-    FB.ui({
-      method: 'feed',
-      link: 'https://developers.facebook.com/docs/',
-      caption: 'An example caption',
-    }, function(response){});
+
 
     var start = document.getElementById("start").value;
     var end = document.getElementById("end").value;
@@ -203,10 +195,14 @@ function guardarRutas(orig_lat, orig_lng, dest_lat, dest_lng){
          swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
       },
       error: function(){
-        swal({   title: 'Error!',   text: 'Error al intentar guardad ruta',   timer: 2000 });
+        swal({   title: 'Error!',   text: 'Error al intentar guardar ruta',   timer: 2000 });
       }
     });
-
+    FB.ui({
+          method: 'feed',
+          link: 'https://developers.facebook.com/docs/',
+          caption: 'An example caption',
+        }, function(response){});
 
 }
 
