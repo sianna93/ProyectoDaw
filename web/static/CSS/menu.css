@@ -279,11 +279,14 @@ body,#panel-derecho{
     text-shadow: 0 1px 4px rgba(0,0,0,5);
     font: sansserif;
     text-align:center;
-    float:left;
+    /*float:left;*/
     width:100%;
     margin:  0 auto;
 }
-
+#div_listas_rutas{
+  width: 100%;
+  clear: both;
+}
 
 #nombreUsuario{
     font-size: 20px;

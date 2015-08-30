@@ -26,8 +26,10 @@ urlpatterns = [
     url(r'^ruta','web.views.guardarRuta'),
     url(r'^coordenadas','web.views.guardarCoordenadas'),
     url(r'^misRutas','web.views.obtenerRutas'),
+    url(r'^Rutas','web.views.obtenerTodasRutas'),
     url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^cuenta', 'web.views.home'),
+    url(r'^todosSeguidores', 'web.views.obtenerTablaSeguidores'),
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
     url(r'^busqueda', 'web.views.BuscarPer'),#para buscar una sola persona

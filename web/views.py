@@ -19,7 +19,7 @@ import csv
 from web.forms import SignUpForm, SignUpForm2
 from decimal import Decimal
 
-#funcion que 
+#funcion que
 class AutoLogout:
      def process_request(self, request):
         if not request.user.is_authenticated() :
@@ -167,6 +167,16 @@ def obtenerRutas(request):
         response['Cache-Control'] = 'no-cache'
         return response
 
+def obtenerTodasRutas(request):
+    if request.method == 'GET':
+        routes = Ruta.objects.all()
+        response = render_to_response(
+            'json/routes.json',
+            {'routes': routes}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
 
 def obtenerUsuarios(request):
     if request.method == 'GET':
@@ -180,6 +190,19 @@ def obtenerUsuarios(request):
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
         return response
+
+def obtenerTablaSeguidores(request):
+    if request.method == 'GET':
+        seguidores = Seguidor.objects.all()
+        response = render_to_response(
+            'json/seguidores.json',
+            {'seguidores':seguidores},
+            context_instance=RequestContext(request)
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
 
 def obtenerSeguidores(request):
     if request.method == 'GET':

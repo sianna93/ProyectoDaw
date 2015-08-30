@@ -2,9 +2,11 @@
 [
   {% for route in routes %}
   {
+    "id":"{{route.pk}}",
     "origen":"{{ route.origen}}",
     "destino":"{{ route.destino}}",
-    "fecha":"{{route.fecha}}"
+    "fecha":"{{route.fecha}}",
+    "fk_user":"{{route.fk_persona_ruta}}"
 
   }{% if not forloop.last %},{% endif %}
   {% endfor %}

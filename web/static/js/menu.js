@@ -179,7 +179,7 @@ function F_siguiendo(evt) {
       swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
     }
   });
-
+ $('#seccion_siguiendo').css({'overflow':'auto'});
   //añadir_eventos();
 }
 
@@ -236,6 +236,8 @@ function F_seguidores(evt) {
       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
     }
   });
+
+  $('#seccion_seguidores').css({'overflow':'auto'});
   //cargarDatosSeguidores();
   //añadir_eventos();
 }
@@ -536,90 +538,6 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     var usuario, car="",contseg=0, contsig=0;
         ELIMINAR("cuerpo_cuenta");
         //aqui esta el ajax
-
-        $.ajax({
-          type: "GET",
-          url:'/cuenta/',
-          async: true,
-          dataType:"Json",
-          contenType:"application/Json; charset=utf-8",
-          success: function(user){
-                //console.log(user)
-                usuario= user.first_name+" "+user.last_name;
-                //cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
-                //Si tiene o no carro
-                 $.ajax({
-                  type: "GET",
-                  url:'/datos/',
-                  async: true,
-                  dataType:"Json",
-                  contenType:"application/Json; charset=utf-8",
-                  success: function(personas){
-                        $.each(personas,function(p,persona){
-                          if(user.id==persona.fk_user_id){
-                            if(persona.is_carro=='True'){
-                              car = 'Si tiene carro'
-                              $('#carro').text(car);
-                            }
-                            else if(persona.is_carro=='False'){
-                              car = 'No tiene carro'
-                              $('#carro').text(car);
-                            }
-                          }
-                        });
-
-                  },
-                  error: function(data){
-                    console.log(data.responseText);
-                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                  }
-                });
-
-                //Numeros de siguiendos
-                 $.ajax({
-                  type: "GET",
-                  url:'/siguiendos/',
-                  async: true,
-                  dataType:"Json",
-                  contenType:"application/Json; charset=utf-8",
-                  success: function(siguiendos){
-                    list_siguiendos=siguiendos;
-                    contsig=list_siguiendos.length;
-                    $('#numseguidos').text(contsig);
-                    console.log("numsiguiendos: "+ contsig);
-
-                  },
-                  error: function(data){
-                    console.log(data.responseText);
-                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                  }
-                });
-
-                //Numeros de siguidores
-                $.ajax({
-                  type: "GET",
-                  url:'/seguidores/',
-                  async: true,
-                  dataType:"Json",
-                  contenType:"application/Json; charset=utf-8",
-                  success: function(seguidores){
-                    list_seguidores=seguidores;
-                    contseg=list_seguidores.length;
-                    $('#numseguidores').text(contseg);
-                    console.log("numseguidores: "+ contseg);
-
-                  },
-                  error: function(data){
-                    console.log(data.responseText);
-                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                  }
-                });
-          },
-          error: function(data){
-            console.log(data.responseText);
-            swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-          }
-        });
         //muestro mi modal
 
         $('#cuerpo_cuenta').remove();
@@ -627,61 +545,170 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
         cargarComponentes_Cuenta(".modal-body", nombre, id, 'seguidores', contseg, 'seguidos', contsig, car);
         $('#modal_usuario').css({ 'width': '440px', 'height': '400px' });
         //$('#cuerpo_cuenta').css({ 'width': '100%', 'height': '390px', 'padding': '0', 'background': 'none' });
-        $('#presentacion_imagenCuenta').css({ 'width': '120px', 'height': '130px', 'margin-left': '40%', 'margin-top': '0' });
+        $('#nombreCuenta').css({'position':'relative','top':'-70px'});
+        $('#presentacion_imagenCuenta').css({ 'position':'relative','top':'-90px','width': '120px', 'height': '130px', 'margin-left': '40%', 'margin-top': '0' });
         $('#datos_cuenta').css({ 'width': '100%', 'vertical-aling': 'center' });
-        /*
-        $("<button>", {
-          id:"btn_llevame",
-          text: "Llevame!",
-          style: 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'
-        }).hide().appendTo('#cuerpo_cuenta').fadeIn('slow');
-
-
-        $("<div>",{
-          id:'div_listas_rutas'
-        }).append($('<ol>',{
-          id:'ListaRutas_seg'
-        })).hide().appendTo('#cuerpo_cuenta').fadeIn('slow');
-        $('#div_listas_rutas').css({ 'width': '500px', 'height': '500px' });
-        */
-
-        $('.class_cuenta').append("<button id='btn_llevame' text= 'Llevame!' style= 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'> LLEVAME</button>");
-
-        $('.class_cuenta').append($('<div>',{
-          id:'div_listas_rutas'
-        }).append($('<ol>',{
-          id:'ListaRutas_seg',
-          class :'ListaRutas_seg_class'
-        })));
 
         $.ajax({
           type: "GET",
-          url:'/misRutas/',
+          url:'/usuarios/',
           async: true,
           dataType:"Json",
           contenType:"application/Json; charset=utf-8",
-          success: function(rutas){
+          success: function(users){
+            $.each(users,function(i,user){
+                //console.log(user)
 
-            $.each(rutas,function(i,ruta){
-              console.log(ruta.origen);
-              origen=ruta.origen;
-              destino=ruta.destino;
-              $(".ListaRutas_seg_class").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+i+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
+                if(user.username==id){
+                  console.log("si entre",user.username);
+                  usuario= user.first_name+" "+user.last_name;
+                  //cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
+                  //Si tiene o no carro
+                   $.ajax({
+                    type: "GET",
+                    url:'/datos/',
+                    async: true,
+                    dataType:"Json",
+                    contenType:"application/Json; charset=utf-8",
+                    success: function(personas){
+                          $.each(personas,function(p,persona){
 
-            })
+                            console.log("aqui las personas",personas);
+                            console.log("",user.id,"   ",persona.fk_user_id);
+                            if(user.id==persona.fk_user_id){
+                              console.log("si entre a carro");
+                              if(persona.is_carro=='True'){
+                                car = 'Si tiene carro'
+                                $('.carroclass').text(car);
+                                console.log("carro ahorraaa "+ car);
+                              }
+                              else if(persona.is_carro=='False'){
+                                car = 'No tiene carro'
+                                $('.carroclass').text(car);
+                                console.log("carro ahorraaa "+ car);
+                              }
+                            }else{console.log("no entre a carro");}
+                          });
 
+                    },
+                    error: function(data){
+                      console.log(data.responseText);
+                      swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                    }
+                  });
 
+                  //Numeros de siguiendos
+                   $.ajax({
+                    type: "GET",
+                    url:'/todosSeguidores/',
+                    async: true,
+                    dataType:"Json",
+                    contenType:"application/Json; charset=utf-8",
+                    success: function(siguiendos){
+                      console.log("si entre " ,siguiendos , "usuario: ", user.username);
+                      list_siguiendos=[];
+                      $.each(siguiendos,function(p,seguido){
+                        if(seguido.seguidor==user.username){
+                          list_siguiendos.push(seguido);
+                          contsig=list_siguiendos.length;
+                          $('.numseguidosclass').text(contsig);
+                          console.log("numsiguiendos: ahorraaa "+ contsig);
+                        }
+                      });
+                    },
+                    error: function(data){
+                      console.log(data.responseText);
+                      swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                    }
+                  });
+
+                  //Numeros de siguidores
+                  $.ajax({
+                    type: "GET",
+                    url:'/todosSeguidores/',
+                    async: true,
+                    dataType:"Json",
+                    contenType:"application/Json; charset=utf-8",
+                    success: function(seguidores){
+                      list_siguiendos=[];
+                      $.each(seguidores,function(p,seguidor){
+                        if(seguidor.siguiendo==user.username){
+                          list_siguiendos.push(seguidor);
+                          contseg=list_siguiendos.length;
+                          $('.numseguidoresclass').text(contseg);
+                          console.log("contseg numseguidores: "+ contseg);
+                        }
+                      });
+
+                    },
+                    error: function(data){
+                      console.log(data.responseText);
+                      swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                    }
+                  });
+                }
+            });
           },
           error: function(data){
             console.log(data.responseText);
-            swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+            swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
           }
         });
 
 
+        //$('.class_cuenta').append("<button id='btn_llevame' text= 'Llevame!' style= 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'> LLEVAME</button>");
 
+        $('.class_cuenta').append($('<div>',{
+          id:'div_listas_rutas',
+          style:'position:relative;top:57px;overflow:auto;'
+        }).append($('<ol>',{
+          id:'ListaRutas_seg',
+          class :'ListaRutas_seg_class'
+        })));
+        $.ajax({
+      	    type: "GET",
+      	    url:'/usuarios/',
+      	    async: true,
+      	    dataType:"Json",
+      	    contenType:"application/Json; charset=utf-8",
+      	    success: function(usuarios){
+      	      $.each(usuarios,function(i,usuario){
+                console.log("aqui "+usuario.username);
+      	        if(usuario.username==id){
+                  console.log("aqui mi segunda entrada "+usuario.username);
+                  $.ajax({
+                    type: "GET",
+                    url:'/Rutas/',
+                    async: true,
+                    dataType:"Json",
+                    contenType:"application/Json; charset=utf-8",
+                    success: function(rutas){
 
+                      $.each(rutas,function(i,ruta){
+                        console.log("fk_user: ",ruta.fk_user);
+                        if (ruta.fk_user==usuario.username){
+                          console.log(ruta.origen);
+                          origen=ruta.origen;
+                          destino=ruta.destino;
+                          $(".ListaRutas_seg_class").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
+                        "<button id='btn_llevame' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
 
+                        }
+                      })
+                    },
+                    error: function(data){
+                      console.log(data.responseText);
+                      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+                    }
+                  });
+      	        }
+      	      })
+      	    },
+      	    error: function(data){
+      	      console.log(data.responseText);
+      	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+      	    }
+      	  });
   });
 
 
@@ -741,6 +768,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
     text: nombreUsuario
   }),$('<label>',{
     id: 'numseguidores' ,
+    class: 'numseguidoresclass',
     text: numseguidores,
     onMouseover: "this.style.color='yellow'"
       ,onMouseout: "this.style.color='#fff'"
@@ -749,6 +777,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
     text: seguidores
   }),$('<label>',{
     id: 'numseguidos',
+    class: 'numseguidosclass',
     text:numseguidos,
     onMouseover: "this.style.color='yellow'"
       ,onMouseout: "this.style.color='#fff'"
@@ -757,6 +786,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
     text:seguidos
   }),$('<label>',{
     id: 'carro',
+    class: 'carroclass',
     text:carro
   }))
 
