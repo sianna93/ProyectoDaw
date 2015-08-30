@@ -19,7 +19,7 @@ import csv
 from web.forms import SignUpForm, SignUpForm2
 from decimal import Decimal
 
-
+#funcion que 
 class AutoLogout:
      def process_request(self, request):
         if not request.user.is_authenticated() :
@@ -200,7 +200,7 @@ def obtenerSeguidores(request):
         #print(NumSeguidores)
         return response
 
-
+#pregunta si el fk_seguidor es igual al usuario osea si el seguidor soy yo entonces yo lo sigo
 def obtenerSiguiendos(request):
     if request.method == 'GET':
         seguidores = Seguidor.objects.all()
