@@ -1,0 +1,10 @@
+{% spaceless %}
+[
+	{% for seguidor in seguidores %}
+	{
+		"seguidor":"{{ seguidor.fk_seguidor}}",
+		"siguiendo":"{{ seguidor.fk_persona}}"
+	}{% if not forloop.last %},{% endif %}
+	{% endfor %}
+]
+{% endspaceless %}

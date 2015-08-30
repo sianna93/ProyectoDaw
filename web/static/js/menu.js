@@ -158,10 +158,11 @@ function F_siguiendo(evt) {
             contenType:"application/Json; charset=utf-8",
             success: function(usuarios){
               $.each(usuarios,function(i,usuario){
+                estado ="siguiendo";
 
                 if(usuario.username==seg.seguidor){
                   user=usuario.first_name + " " + usuario.last_name;
-                  crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', 'Siguiendo');
+                  crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', estado);
                 }
               })
             },
@@ -214,7 +215,8 @@ function F_seguidores(evt) {
 
                 if(usuario.username==seg.siguiendo){
                   user=usuario.first_name + " " + usuario.last_name;
-                  crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', 'Siguiendo');
+                  estado = "";
+                  crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', estado);
                 }
               })
             },
@@ -308,6 +310,8 @@ function autocomplete_busqueda(){
 }
 
 
+
+
 //funcion que toma los datos de la persona a buscar (del json) y los presenta en el panel derecho
 function mostrar_busqueda() {
 
@@ -325,7 +329,7 @@ function mostrar_busqueda() {
 
 	        if(usuario.username==busqueda){
 	          user=usuario.first_name + " " + usuario.last_name;
-	          crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Siguiendo');
+	          crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Seguir');
 	        }
 	      })
 
@@ -349,7 +353,8 @@ function F_buscar(evt) {
   cargarComponentes_Buscar('#seccion_buscar');
 
   document.getElementById('button_buscar').addEventListener('click',mostrar_busqueda, false);
-  document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false); //autocompletar campo
+  document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false); //llama a la funcion que autocompleta el nombre del usuasario
+
 
 }
 
@@ -453,13 +458,45 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
 
   $("#button_seguir").click(function () {
+    //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     labelText = $("#presentacion_bodyID").text()
-    alert("Diste click");
-    alert(labelText);
-    seguir(labelText);
+    //alert("boton seguirrr");
+    //alert(labelText);
+    //seguir(labelText);
+    existe =0;
+    
+    $.ajax({
+      type: "GET",
+      url:'/siguiendos/',
+      async: true,
+      dataType:"Json",
+      contenType:"application/Json; charset=utf-8",
+      success: function(siguiendos){
+        $.each(siguiendos,function(i,sig){
+          if(sig.seguidor==labelText){
+            existe = existe + 1;
+          }
+        })
+        if (existe > 1){
+              alert("ya existe");
+              swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+        }else if(existe < 1){
+              seguir(labelText);
+              //console.log(data.responseText);
+              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });   
+        }
+      },
+
+      error: function(data){
+        console.log(data.responseText);
+        swal({  title: 'Error!!',   text: 'dsfdfdf',   timer: 2000 });
+      }
+    });
+
+
   });
 
-
+//MODAL
   $('.presentacionTextNombre').click(function (e) {
     var usuario, car="",contseg=0, contsig=0;
         ELIMINAR("cuerpo_cuenta");
@@ -568,6 +605,11 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 }
 
 
+
+
+
+
+//
 /*INICIO DEL CONTENIDO CUENTA*/
 
 //Crea dinamicamente la estructura del contenido de MiCuenta
