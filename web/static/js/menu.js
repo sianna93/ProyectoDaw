@@ -180,7 +180,7 @@ function F_siguiendo(evt) {
     }
   });
 
-  añadir_eventos();
+  //añadir_eventos();
 }
 
 
@@ -237,7 +237,7 @@ function F_seguidores(evt) {
     }
   });
   //cargarDatosSeguidores();
-  añadir_eventos();
+  //añadir_eventos();
 }
 
 function autocomplete_busqueda(){
@@ -591,14 +591,60 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
         $('#myModal_usuario').modal('show');
         cargarComponentes_Cuenta(".modal-body", nombre, id, 'seguidores', contseg, 'seguidos', contsig, car);
         $('#modal_usuario').css({ 'width': '440px', 'height': '400px' });
-        $('#cuerpo_cuenta').css({ 'width': '100%', 'height': '390px', 'padding': '0', 'background': 'none' });
+        //$('#cuerpo_cuenta').css({ 'width': '100%', 'height': '390px', 'padding': '0', 'background': 'none' });
         $('#presentacion_imagenCuenta').css({ 'width': '120px', 'height': '130px', 'margin-left': '40%', 'margin-top': '0' });
         $('#datos_cuenta').css({ 'width': '100%', 'vertical-aling': 'center' });
-        $('#cuerpo_cuenta').append($('<button>', {
+        /*
+        $("<button>", {
           id:"btn_llevame",
           text: "Llevame!",
           style: 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'
-        }));
+        }).hide().appendTo('#cuerpo_cuenta').fadeIn('slow');
+
+
+        $("<div>",{
+          id:'div_listas_rutas'
+        }).append($('<ol>',{
+          id:'ListaRutas_seg'
+        })).hide().appendTo('#cuerpo_cuenta').fadeIn('slow');
+        $('#div_listas_rutas').css({ 'width': '500px', 'height': '500px' });
+        */
+
+        $('.class_cuenta').append("<button id='btn_llevame' text= 'Llevame!' style= 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'> LLEVAME</button>");
+
+        $('.class_cuenta').append($('<div>',{
+          id:'div_listas_rutas'
+        }).append($('<ol>',{
+          id:'ListaRutas_seg',
+          class :'ListaRutas_seg_class'
+        })));
+
+        $.ajax({
+          type: "GET",
+          url:'/misRutas/',
+          async: true,
+          dataType:"Json",
+          contenType:"application/Json; charset=utf-8",
+          success: function(rutas){
+
+            $.each(rutas,function(i,ruta){
+              console.log(ruta.origen);
+              origen=ruta.origen;
+              destino=ruta.destino;
+              $(".ListaRutas_seg_class").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+i+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
+
+            })
+
+
+          },
+          error: function(data){
+            console.log(data.responseText);
+            swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+          }
+        });
+
+
+
 
 
   });
@@ -617,6 +663,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 //Crea dinamicamente la estructura del contenido de MiCuenta
 function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidores,numseguidores,seguidos,numseguidos,carro){
   $("<div>",{
+    class: 'class_cuenta',
     id:'cuerpo_cuenta',
     style:"padding:80px;"
   }).append($('<label>',{
