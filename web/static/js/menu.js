@@ -440,23 +440,32 @@ function eliminar_todo(){
 
 //crea la cabecera del panel derecho en el que ambiará eltitulo del panel según
 //los botones del menu que seleccione
+
+
 function crear_cabecera(seccion,header,label,textlabel){
   $("<div>", {
     id: seccion
   }).append($('<div>', {
     id: header
-
   }).append($('<label>',{
     id : label,
     text: textlabel,
+<<<<<<< Updated upstream
     style: "text-align:center;width:100%;position: relative;top: -10px;"
   })),$('<div>',{
     class: 'list_seg'
     //style: "overflow: auto; height: 520px"
+=======
+    style: "text-align:center;width:100%;position: relative;top: -10px; heigth:520px"
+  })),$('<div>',{
+    class: 'list_seg',
+    style: "overflow: scroll"
+>>>>>>> Stashed changes
   })).hide().appendTo('#panel-derecho').fadeIn('slow');
 
 
 }
+
 
 //crea cada cada tarjeta de presentacion
 function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
@@ -483,6 +492,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     text: nombre
   })),$('<label>',{
     id:'presentacion_bodyID',
+    class: 'label_user',
     text:id
   })),$('<div>',{
     class: 'click_button'
@@ -498,7 +508,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
   $('.click_button').click(function () {
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-    labelText = $("#presentacion_bodyID").text()
+    labelText = $('#presentacion_bodyID').text();
 
     //alert("boton seguirrr");
     //alert(labelText);
@@ -518,9 +528,11 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
             existe = existe + 1;
           }
         })
-        if (existe > 1){
+        if (existe >= 1){
               //alert("ya existe");
+              dejar_de_seguir(labelText);
              swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+
               //cambiar_estado(labelText);
         }else if(existe < 1){
               seguir(labelText);
@@ -763,11 +775,18 @@ $.ajax({
     async: true,
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",
-    success: function(seguidores){
-        $.each(seguidores,function(i,seg){
+    success: function(siguiendos){
+        $.each(siguiendos,function(i,sig){
           //console.log(seguidores);
-          console.log(seg.siguiendo);
-          
+          if(sig.seguidor==labelText){
+              //console.log("aaaaa "+sig.siguiendo);
+              //console.log("bbbb "+nombre_usuario);
+              alert("entro a if " + nombre_usuario);
+          }else{
+            //console.log("no entra al If");
+            //console.log("ccc " + nombre_usuario);
+            alert("entro a else");
+          }
 
         });
     },
@@ -778,6 +797,40 @@ $.ajax({
   });
 
 }
+
+/*
+function delete_seguidos(labelText){
+ nombre_usuario = labelText; 
+$.ajax({
+    type: "POST",
+    url:'/siguiendos/',
+    async: true,
+    dataType:"Json",
+    contenType:"application/Json; charset=utf-8",
+    success: function(siguiendos){
+        $.each(siguiendos,function(i,sig){
+          //console.log(seguidores);
+          if(sig.seguidor==labelText){
+              console.log("aaaaa "+sig.siguiendo);
+              console.log("bbbb "+nombre_usuario);
+              //alert("entro a if");
+          }else{
+            console.log("no entra al If");
+            console.log("ccc " + nombre_usuario);
+            //alert("entro a else");
+          }
+
+        });
+    },
+    error: function(data){
+      console.log(data.responseText);
+      swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
+    }
+  });
+
+}
+
+*/
 
 
 
