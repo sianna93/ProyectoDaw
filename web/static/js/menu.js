@@ -490,13 +490,8 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     class: 'label_user',
     text:id
   })),$('<div>',{
-<<<<<<< Updated upstream
     value: id,
     class: 'click_button'
-=======
-    class: 'click_button',
-    value: id
->>>>>>> Stashed changes
   }).append($('<div>',{
     class : ' center-block '
   })).append($('<button>',{
@@ -509,15 +504,11 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
   $('.click_button').click(function () {
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-<<<<<<< Updated upstream
+
     //labelText = $('.label_user').text();
     labelText = $(this).attr('value');
     var lbl = $('#button_seguir').text();
-=======
-    labelText = $(this).attr("value");
 
-    //alert("boton seguirrr");
->>>>>>> Stashed changes
     //alert(labelText);
 
     existe =0;
