@@ -17,6 +17,12 @@ from django.contrib import admin
 from web.views import *
 from django.contrib.auth.views import login, logout
 
+from rest_framework import routers, serializers, viewsets
+
+from web.viewsets import *
+router = routers.DefaultRouter()
+router.register(r'Persona', PersonaViewSet)
+router.register(r'Ruta', RutaViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -49,6 +55,6 @@ urlpatterns = [
     url(r'^registrar$', 'web.views.guardarUsuario',name="guardarUsuario"),#guarda usuario en la base
     url(r'^registro$', 'web.views.regis',name="regis"),#acceso a la pag registrar
     url(r'^noseguir','web.views.Dejar_de_seguir'),#para el views de dejar_de_seguir
-    
+    url(r'^api/', include(router.urls)),
 
 ]

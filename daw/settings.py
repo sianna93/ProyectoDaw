@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'daw.chat',
     'swampdragon',
     'web',
@@ -98,7 +99,7 @@ DATABASES = {
         'NAME': 'daw',
         'USER': 'root',
 
-        'PASSWORD': 'root',
+        'PASSWORD': '1234',
 
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
@@ -127,6 +128,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # SwampDragon settings
 #SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
+"""
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+"""
 
 SWAMP_DRAGON_CONNECTION = ('daw.sockserver.DataConnection', '/data')
 
