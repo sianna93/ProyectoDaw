@@ -490,6 +490,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     class: 'label_user',
     text:id
   })),$('<div>',{
+    value: id,
     class: 'click_button'
   }).append($('<div>',{
     class : ' center-block '
@@ -497,8 +498,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     id:'button_seguir',
     class : 'btn btn-'+ typeButton+' center-block',
     text:txtButton,
-    name : 'botones__seguir',
-    value: id
+    name : 'botones__seguir'
   }))))).hide().appendTo(".list_seg").fadeIn('slow');
 
 
@@ -506,7 +506,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     //labelText = $('.label_user').text();
     labelText = $(this).attr('value');
-
+    alert(labelText);
     //alert("boton seguirrr");
     //alert(labelText);
     //seguir(labelText);

@@ -372,13 +372,13 @@ def guardarUsuario(request):
     if request.method == 'POST':
         from django.utils import timezone
 
-        nickname = request.POST.get('nick',None)
+        nickname = request.POST.get('username',None)
         nombre = request.POST.get('first_name',None)
         apellido=request.POST.get('last_name',None)
         contraseña=request.POST.get('password',None)
 
-        carro=request.POST.get('isCarro',None)
-        placa=request.POST.get('plaquita',None)
+        carro=request.POST.get('is_carro',None)
+        placa=request.POST.get('placa',None)
 
 
         print(nickname)

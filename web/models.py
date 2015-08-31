@@ -10,7 +10,7 @@ from django.forms import ModelForm
     #    return self.usuario
 
 class Persona (models.Model):
-    is_carro = models.BooleanField(default=0)
+    is_carro = models.BooleanField(default=False)
     placa = models.CharField(max_length=7 , null = True, blank= True)
     fk_user = models.ForeignKey(User, related_name = 'personas')
 

@@ -64,14 +64,15 @@ function testaPlaca(plaquita) {
          	});
          if(existe==0){
 
-             if ($("input[name='is_carro']:checked").val()==1){
+             if ($("input[name='is_carro']:checked").val()==1){ //si tiene carro
                  carro=1;
+                 alert("si tiene carro carro = 1");
              }
 
              $.ajax({
                  type: "POST",
                  url:'/registrar',
-                 data: {'nick':nickname,'first_name':nombre,'last_name':apellido,'password': contraseña,'isCarro':carro,'plaquita':placa,'csrfmiddlewaretoken':csrf },
+                 data: {'username':nickname,'first_name':nombre,'last_name':apellido,'password': contraseña,'is_carro':carro,'placa':placa,'csrfmiddlewaretoken':csrf },
                  success: function(){
                   swal({   title: 'Exito!',   text: 'El usuario ha sido registrada con exito',   timer: 2000 });
                },
