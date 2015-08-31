@@ -47,5 +47,7 @@ urlpatterns = [
     url(r'^seguir','web.views.Seguir'),
     url(r'^registrar$', 'web.views.guardarUsuario',name="guardarUsuario"),#guarda usuario en la base
     url(r'^registro$', 'web.views.regis',name="regis"),#acceso a la pag registrar
+    url(r'^noseguir','web.views.Dejar_de_seguir'),#para el views de dejar_de_seguir
+    
 
 ]

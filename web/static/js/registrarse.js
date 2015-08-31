@@ -74,10 +74,12 @@ function testaPlaca(plaquita) {
                  url:'/registrar',
                  data: {'username':nickname,'first_name':nombre,'last_name':apellido,'password': contraseña,'is_carro':carro,'placa':placa,'csrfmiddlewaretoken':csrf },
                  success: function(){
+
                   swal({   title: 'Exito!',   text: 'El usuario ha sido registrada con exito',   timer: 2000 });
                },
                  error: function(){
                  swal({   title: 'Error!',   text: 'Error al intentar guardar usuario',   timer: 2000 });
+                 
                }
              });
              //swal({  title: 'Exito!!',   text: 'Usuario registrado',   timer: 2000 });

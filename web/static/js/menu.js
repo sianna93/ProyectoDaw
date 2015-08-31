@@ -216,8 +216,8 @@ function F_seguidores(evt) {
 
                 if(usuario.username==seg.siguiendo){
                   user=usuario.first_name + " " + usuario.last_name;
-                  estado = "Seguir";
-                  crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', estado);
+                  
+                  crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "depende");
                 }
               })
             },
@@ -506,10 +506,9 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     //labelText = $('.label_user').text();
     labelText = $(this).attr('value');
-    alert(labelText);
-    //alert("boton seguirrr");
+    var lbl = $('#button_seguir').text();
     //alert(labelText);
-    //seguir(labelText);
+
     existe =0;
     
     //PARA LOS QUE YO ESTOY SIGUIENDO
@@ -526,15 +525,17 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
           }
         })
         if (existe >= 1){
-              //alert("ya existe");
               dejar_de_seguir(labelText);
-             swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+              //swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
 
-              //cambiar_estado(labelText);
+              
+        
         }else if(existe < 1){
+              $(".click_button").attr('value', 'Nuevo Texto');
+
+              //console.log("michu");
               seguir(labelText);
-              //console.log(data.responseText);
-              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });   
+              
         }
       },
 
@@ -765,34 +766,19 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 //buscar el label y comparar el nombre regresarlo
 //hacer con post el delete//mandar ese valor al views
 function dejar_de_seguir(labelText){
- nombre_usuario = labelText; 
-$.ajax({
-    type: "GET",
-    url:'/siguiendos/',
-    async: true,
-    dataType:"Json",
-    contenType:"application/Json; charset=utf-8",
-    success: function(siguiendos){
-        $.each(siguiendos,function(i,sig){
-          //console.log(seguidores);
-          if(sig.seguidor==labelText){
-              //console.log("aaaaa "+sig.siguiendo);
-              //console.log("bbbb "+nombre_usuario);
-              alert("entro a if " + nombre_usuario);
-          }else{
-            //console.log("no entra al If");
-            //console.log("ccc " + nombre_usuario);
-            alert("entro a else");
-          }
+    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+    $.ajax({
+      type : "POST",
+      url:'/noseguir',
+      data: {'seguidor':labelText,'csrfmiddlewaretoken':csrf },
+      success: function(){
+         swal({   title: 'Exito!',   text: 'Se ha eliminado con Exito',   timer: 2000 });
+      },
+      error: function(){
+        swal({   title: 'Error!',   text: 'Error al dejar Seguir',   timer: 2000 });
+      }
 
-        });
-    },
-    error: function(data){
-      console.log(data.responseText);
-      swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
-    }
-  });
-
+    });
 }
 
 /*
