@@ -450,17 +450,12 @@ function crear_cabecera(seccion,header,label,textlabel){
   }).append($('<label>',{
     id : label,
     text: textlabel,
-<<<<<<< Updated upstream
+
     style: "text-align:center;width:100%;position: relative;top: -10px;"
   })),$('<div>',{
     class: 'list_seg'
     //style: "overflow: auto; height: 520px"
-=======
-    style: "text-align:center;width:100%;position: relative;top: -10px; heigth:520px"
-  })),$('<div>',{
-    class: 'list_seg',
-    style: "overflow: scroll"
->>>>>>> Stashed changes
+
   })).hide().appendTo('#panel-derecho').fadeIn('slow');
 
 
@@ -502,13 +497,15 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     id:'button_seguir',
     class : 'btn btn-'+ typeButton+' center-block',
     text:txtButton,
-    name : 'botones__seguir'
+    name : 'botones__seguir',
+    value: id
   }))))).hide().appendTo(".list_seg").fadeIn('slow');
 
 
   $('.click_button').click(function () {
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-    labelText = $('#presentacion_bodyID').text();
+    //labelText = $('.label_user').text();
+    labelText = $(this).attr('value');
 
     //alert("boton seguirrr");
     //alert(labelText);
