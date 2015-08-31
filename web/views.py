@@ -141,7 +141,7 @@ def Seguir(request):
 def Dejar_de_seguir(request):
     if request.method == 'POST':
         from django.utils import timezone
-        Seguidor_conect = request.POST.get('siguiendo',None)
+        Seguidor_conect = request.POST.get('seguidor',None)
         usuarios = User.objects.all()
         for u in usuarios:
             if u.username==Seguidor_conect:
@@ -151,11 +151,21 @@ def Dejar_de_seguir(request):
         print("hola user",user.pk)
         print("hola",user_pk.pk)
         if Seguidor_conect is not None:
-            dejar_seguir = Seguidor(fk_persona_id= user_pk.pk ,fk_seguidor_id = user.pk)
-            print("holaaa",dejar_seguir)
-            dejar_seguir.delete()
+            print('dddd')
+            try:
+                print(user_pk.id)
+                print(user.id)
+                dejar_seguirs = Seguidor.objects.all()
+                for d in dejar_seguirs:
+                    if d.fk_persona == user_pk and d.fk_seguidor == user:
+                        dejar_seguir = d
+                dejar_seguir.delete()
+                print('ddddddd')
+            except e:
+                print(e)
             return HttpResponse('todo posi')
-    #return render_to_response('menu.html', data, context_instance=RequestContext(request))
+    return HttpResponseBadRequest('d')
+    #return ender_to_response('menu.html', data, context_instance=RequestContext(request))
 
 
 def guardarCoordenadas(request):

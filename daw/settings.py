@@ -99,7 +99,7 @@ DATABASES = {
         'NAME': 'daw',
         'USER': 'root',
 
-        'PASSWORD': '1234',
+        'PASSWORD': '',
 
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',

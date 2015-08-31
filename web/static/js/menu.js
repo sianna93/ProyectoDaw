@@ -185,6 +185,56 @@ function F_siguiendo(evt) {
 }
 
 
+function getSiguiendos(){
+  /*if (document.getElementsByTagName("cuerpo_presentacion_class")) {
+    var o = document.getElementsByTagName("cuerpo_presentacion_class");
+    o.parentNode.removeChild(o);
+  }*/
+
+  $( ".cuerpo_presentacion_class" ).remove();
+
+  $.ajax({
+    type: "GET",
+    url:'/siguiendos/',
+    async: true,
+    dataType:"Json",
+    contenType:"application/Json; charset=utf-8",
+    success: function(seguidores){
+        $.each(seguidores,function(i,seg){
+          //console.log(seguidores);
+          console.log(seg.siguiendo);
+          $.ajax({
+            type: "GET",
+            url:'/usuarios/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(usuarios){
+              $.each(usuarios,function(i,usuario){
+                estado ="siguiendo";
+
+                if(usuario.username==seg.seguidor){
+                  user=usuario.first_name + " " + usuario.last_name;
+                  crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', "Siguiendo");
+                }
+              })
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
+            }
+          });
+
+        });
+    },
+    error: function(data){
+      console.log(data.responseText);
+      swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
+    }
+  });
+}
+
+
 
 //Función para el botón seguidores
 function F_seguidores(evt) {
@@ -216,7 +266,7 @@ function F_seguidores(evt) {
 
                 if(usuario.username==seg.siguiendo){
                   user=usuario.first_name + " " + usuario.last_name;
-                  
+
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "Seguir");
                 }
               })
@@ -465,7 +515,8 @@ function crear_cabecera(seccion,header,label,textlabel){
 //crea cada cada tarjeta de presentacion
 function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
   $("<div>" ,{
-    id : 'cuerpo_presentacion'
+    id : 'cuerpo_presentacion',
+    class: 'cuerpo_presentacion_class'
   }).append($('<div>',{
     id: 'panel-primary',
     class : 'panel panel-primary'
@@ -484,7 +535,8 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     title: 'Ver Perfil'
   }).append($('<span>',{
     class: 'presentacionTextNombre',
-    text: nombre
+    text: nombre,
+    value: id
   })),$('<label>',{
     id:'presentacion_bodyID',
     class: 'label_user',
@@ -503,6 +555,17 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
 
   $('.click_button').click(function () {
+    if ($(this).text()=='Siguiendo'){
+      $(this).text('Seguir+');
+      $(this).class('btn btn-primary center-block');
+      //alert("click");
+    }
+    else{
+      //e.target.class = 'btn btn-primary center-block';
+      $(this).text('Siguiendo');
+      $(this).class('btn btn-primary center-block');
+    }
+
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
 
     //labelText = $('.label_user').text();
@@ -512,7 +575,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     //alert(labelText);
 
     existe =0;
-    
+
     //PARA LOS QUE YO ESTOY SIGUIENDO
     $.ajax({
       type: "GET",
@@ -527,17 +590,17 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
           }
         })
         if (existe >= 1){
-              //dejar_de_seguir(labelText);
-              swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+              dejar_de_seguir(labelText);
+              //swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
 
-              
-        
+
+
         }else if(existe < 1){
               $(".click_button").attr('value', 'Nuevo Texto');
 
               //console.log("michu");
               seguir(labelText);
-              
+
         }
       },
 
@@ -546,44 +609,12 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
         swal({  title: 'Error!!',   text: 'dsfdfdf',   timer: 2000 });
       }
     });
-
-    //PARA LOS QUE YO SIGO
-    /*existe2=0;
-    $.ajax({
-      type: "GET",
-      url:'/seguidores/',
-      async: true,
-      dataType:"Json",
-      contenType:"application/Json; charset=utf-8",
-      success: function(seguidores){
-        $.each(seguidores,function(i,seg){
-          if(seg.seguidor==labelText){
-            existe2 = existe2 + 1;
-          }
-        })
-        if (existe > 1){
-              //alert("ya existe");
-             swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
-              //cambiar_estado(labelText);
-        }else if(existe2 < 1){
-              seguir(labelText);
-              //console.log(data.responseText);
-              //swal({  title: ':D!!',   text: ' felicidaaades',   timer: 2000 });   
-        }
-      },
-
-      error: function(data){
-        console.log(data.responseText);
-        swal({  title: 'Error!!',   text: 'dsfdfdf',   timer: 2000 });
-      }
-    });
-*/
 
   });
 
 //MODAL
   $('.presentacionTextNombre').click(function (e) {
-    var label_username=$(this).text();
+    var label_username=$(this).attr("value");
     var usuario, car="",contseg=0, contsig=0;
         ELIMINAR("cuerpo_cuenta");
         //aqui esta el ajax
@@ -607,10 +638,12 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
           success: function(users){
             $.each(users,function(i,user){
                 //console.log(user)
-
-                if(user.username==id){
+                console.log("hooooooooooooooooollallalalalalal",label_username);
+                if(user.username==label_username){
                   console.log("si entre",user.username);
                   usuario= user.first_name+" "+user.last_name;
+                  $('.nombreCuentaclass').text(usuario);
+                  $('.nombreUsuarioclass').text(user.username);
                   //cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
                   //Si tiene o no carro
                    $.ajax({
@@ -767,6 +800,9 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
 //buscar el label y comparar el nombre regresarlo
 //hacer con post el delete//mandar ese valor al views
+/*var cleanFollowers = function(){
+  //$('div followers').empty(); &&
+};*/
 function dejar_de_seguir(labelText){
     var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
@@ -775,6 +811,7 @@ function dejar_de_seguir(labelText){
       data: {'seguidor':labelText,'csrfmiddlewaretoken':csrf },
       success: function(){
          swal({   title: 'Exito!',   text: 'Se ha eliminado con Exito',   timer: 2000 });
+         getSiguiendos();
       },
       error: function(){
         swal({   title: 'Error!',   text: 'Error al dejar Seguir',   timer: 2000 });
@@ -783,39 +820,7 @@ function dejar_de_seguir(labelText){
     });
 }
 
-/*
-function delete_seguidos(labelText){
- nombre_usuario = labelText; 
-$.ajax({
-    type: "POST",
-    url:'/siguiendos/',
-    async: true,
-    dataType:"Json",
-    contenType:"application/Json; charset=utf-8",
-    success: function(siguiendos){
-        $.each(siguiendos,function(i,sig){
-          //console.log(seguidores);
-          if(sig.seguidor==labelText){
-              console.log("aaaaa "+sig.siguiendo);
-              console.log("bbbb "+nombre_usuario);
-              //alert("entro a if");
-          }else{
-            console.log("no entra al If");
-            console.log("ccc " + nombre_usuario);
-            //alert("entro a else");
-          }
 
-        });
-    },
-    error: function(data){
-      console.log(data.responseText);
-      swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
-    }
-  });
-
-}
-
-*/
 
 
 
@@ -830,6 +835,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
     style:"padding:80px;"
   }).append($('<label>',{
     id: 'nombreCuenta',
+    class : 'nombreCuentaclass',
     text:nombreCuenta
   }),$('<img>',{
     id: 'presentacion_imagenCuenta',
@@ -840,6 +846,7 @@ function cargarComponentes_Cuenta(seccion, nombreCuenta, nombreUsuario, seguidor
     style:"padding:0px;"
   }).append($('<label>',{
     id: 'nombreUsuario',
+    class : 'nombreUsuarioclass',
     text: nombreUsuario
   }),$('<label>',{
     id: 'numseguidores' ,
@@ -1048,118 +1055,8 @@ function cargarComponentes_Ruta(seccion){
     text:'Guardar Puntos'
   }))).hide().appendTo(seccion).fadeIn('slow');
 
-/*
-  $("#btn_guardar").click(function () {
-    FB.ui({
-      method: 'feed',
-      link: 'https://developers.facebook.com/docs/',
-      caption: 'An example caption',
-    }, function(response){});
-
-    var start = document.getElementById("start").value;
-    var end = document.getElementById("end").value;
-    //eliminar_todo();
-    //crear_cabecera('seccion_misrutas', 'header_panel', 'labelpanel', 'MIS RUTAS');
-    //cargarComponentes_MisRutas('#seccion_misrutas');
-    //guardarRuta(start, end);
-    console.log(start);
-
-    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-    $.ajax({
-    	type: "POST",
-    	url:'/ruta',
-    	data: {'txtOrigen':start,'txtDestino':end,'csrfmiddlewaretoken':csrf },
-    	success: function(){
-         swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
-      },
-    	error: function(){
-        swal({   title: 'Error!',   text: 'Error al intentar guardad ruta',   timer: 2000 });
-      }
-    });
-  });*/
 }
 
-/////////////////////////////////////////////////////////
-//FUNCIONES NECESARIAS PARA GUARDAR
-////////////////////////////////////////////////////////
-function addNodes(xmlDoc,node){
-  //xmlDoc=loadXMLDoc(xml);
-
-  newNode=xmlDoc.createElement(node);
-
-  //Tomo el tamaño de cantidad de nodos hay
-  var lenght_node=xmlDoc.getElementsByTagName(node).length;
-
-  x=xmlDoc.documentElement;
-  y=xmlDoc.getElementsByTagName(node)[0];
-
-  x.insertBefore(newNode,y);
-  // alert(xmlDoc.getElementsByTagName(node).length);
-}
-
-function appendChild(xmlDoc,node,child){
-  //xmlDoc=loadXMLDoc(xml);
-
-  newel=xmlDoc.createElement(child);
-
-  //Tomo el tamaño de cantidad de nodos hay
-  var lenght_node=xmlDoc.getElementsByTagName(node).length;
-
-  x=xmlDoc.getElementsByTagName(node)[0];
-  x.appendChild(newel);
-}
-
-function insertDatos(xmlDoc,node,child,dato){
-  //xmlDoc=loadXMLDoc(xml);
-
-  x=xmlDoc.getElementsByTagName(node)[0].getElementsByTagName(child)[0].childNodes[0];
-
-  x.insertData(0,dato);
-}
-function guardar(){
-  var xml = '/xml/rutas.xml';
-  xmlDoc = loadXMLDoc('../../templates/rutas.xml');
-  var node = "ruta";
-  var id = "id_usuario";
-  var origen = "origen";
-  var destino = "destino";
-
-  addNodes( xmlDoc, node);
-  var length =xmlDoc.getElementsByTagName("ruta").length-2;
-  //alert(xmlDoc.getElementsByTagName("ruta").length);
-  appendChild( xmlDoc, node, id);
-  appendChild( xmlDoc, node, origen);
-  appendChild( xmlDoc, node, destino);
-
-  insertDatos( xmlDoc,node, id, "sppuente");
-  insertDatos( xmlDoc,node, origen, "FIEC ESPOL");
-  insertDatos( xmlDoc,node, destino, "Mapasingue Guayaquil");
-
-
-  var rutas=xmlDoc.getElementsByTagName("ruta");
-
-  for (var i = 0; i < rutas.length; i++) {
-    id_usuario = rutas[i].getElementsByTagName("id_usuario")[0].childNodes[0].nodeValue;
-    origen = rutas[i].getElementsByTagName("origen")[0].childNodes[0].nodeValue;
-    destino = rutas[i].getElementsByTagName("destino")[0].childNodes[0].nodeValue;
-    // alert(i + "  "+origen);
-    //$("#ListaRutas").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+rutas.length-1+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
-  }
-
-}
-
-function guardarRuta(start, end){
-  xmlDoc=loadXMLDoc('/xml/rutas.xml');
-  origen=xmlDoc.createElement("origen");
-
-  //ruta=xmlDoc.documentElement;
-  ruta=xmlDoc.getElementsByTagName("ruta")[0];
-  ruta.appendChild(origen);
-
-}
-////////////////////////////////////////////////////////
-////////// *FIN* ///////////////////////////////////////
-///////////////////////////////////////////////////////////
 function calcRoute() {
   var start = document.getElementById("start").value;
   var end = document.getElementById("end").value;
@@ -1209,9 +1106,9 @@ function cargarComponentes_MisRutas(seccion){
         //Se realiza el evento al seleccionar ruta
         $(".miRuta").click(function (e) {
           var id_ruta = e.target.id;
-          
+
           var start_lt,start_lg,end_lt,end_lg;
-          
+
 
           console.log("Inicio Ajax ruta");
 
@@ -1234,12 +1131,13 @@ function cargarComponentes_MisRutas(seccion){
                 //Nuevo posiciones
                 inicio=new google.maps.LatLng(start_lt,start_lg);
                 fin=new google.maps.LatLng(end_lt,end_lg);
+                console.log("start. ", start_lt, "end.", end_lt);
                 //Se guarda en una lista
                 list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
                 //list_ini_fin.push({lt:end_lt, lg: end_lg});
 
                 //console.log("Inicio funcion calcular ruta");
-                //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());              
+                //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
               }//Fin del if
             })
 
@@ -1270,7 +1168,7 @@ function cargarComponentes_MisRutas(seccion){
                   p = new google.maps.LatLng(latitude,longitude);
                   console.log("punto2: ",p.lat());
                   list_puntos.push({location: p, stopover: false});
-                  
+
                 }
 
               });
@@ -1282,16 +1180,16 @@ function cargarComponentes_MisRutas(seccion){
           });
 
           console.log("lista puntos medios ", list_puntos);
-          calcRoute2(); 
+          calcRoute2();
           //console.log("Inicio funcion calcular ruta");
           //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
-          
+
           //var ruta = $('#' + id_ruta + '').text().split('-');
           //var origen = ruta[0];
           //var destino = ruta[1];
           //swal({  title: 'Error!',   text: origen,   timer: 2000 });
           //calcRoute2(origen, destino);
-        
+
         });
 
       })
@@ -1304,40 +1202,9 @@ function cargarComponentes_MisRutas(seccion){
     }
   });
 
-  
-  
 
-}
 
-function loadXMLDoc(filename)
-{
-  if (window.XMLHttpRequest)
-  {
-    xhttp=new XMLHttpRequest();
-  }
-  else // code for IE5 and IE6
-  {
-    xhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xhttp.open("GET",filename,false);
-  xhttp.send();
-  return xhttp.responseXML;
-}
 
-/*abre el archivo xml, lee las rutas guardadas y las presenta*/
-function cargarRutas(){
-  xmlDoc = loadXMLDoc('../../templates/xml/rutas.xml');
-  // Obtenemos todos los nodos denominados foro del archivo xml
-  var rutas=xmlDoc.getElementsByTagName("ruta");
-  // Hacemos un bucle por todos los elementos foro
-  for (var i = 0; i < rutas.length; i++) {
-    // Del elemento foro, obtenemos del primer elemento denominado "titulo"
-    // el valor del primer elemento interno
-    id_usuario = rutas[i].getElementsByTagName("id_usuario")[0].childNodes[0].nodeValue;
-    origen = rutas[i].getElementsByTagName("origen")[0].childNodes[0].nodeValue;
-    destino = rutas[i].getElementsByTagName("destino")[0].childNodes[0].nodeValue;
-    $("#ListaRutas").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+i+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
-  }
 }
 
 function calcRoute2() {
@@ -1367,10 +1234,10 @@ function calcRoute2() {
 
   console.log("inicio: ",start,"fin: ", end ,"lista: ",list_ini_fin);
   var request = {
-    origin: start, 
-    destination: end, 
-    waypoints: list_puntos, 
-    optimizeWaypoints: true, 
+    origin: start,
+    destination: end,
+    waypoints: list_puntos,
+    optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING
   };
 
@@ -1390,59 +1257,10 @@ function añadir_eventos(){
   $('.presentacionNombre').on("click",perfil_usuario);
   // $('#button_seguir').on("click", boton_seguir);
   $('.btn btn-primary center-block').on("click", boton_seguir);
-  $('.btn btn-primary center-block')
-}
-
-
-//Abre un modal con la informacion del los seguidores / seguidos
-function perfil_usuario(evt){
-
-  //muestro mi modal
-  //$('#myModal_usuario').modal('show')  ;
-  //$('.modal-title').text('PERFIL');
-
-
-  $('.presentacionTextNombre').click(function (e) {
-    var target_nombre = $(this).text();
-
-    //alert(target_nombre);
-    xmlDoc = loadXMLDoc('../../templates/xml/usuarios.xml');
-    var usuarios = xmlDoc.getElementsByTagName("usuario");
-    for (var i = 0; i < usuarios.length; i++) {
-      categoria = xmlDoc.getElementsByTagName("usuario")[i].getAttributeNode("categoria").nodeValue;
-      nombre = usuarios[i].getElementsByTagName("nombre")[0].childNodes[0].nodeValue;
-
-      id = usuarios[i].getElementsByTagName("id")[0].childNodes[0].nodeValue;
-
-      img = usuarios[i].getElementsByTagName("imagen")[0].childNodes[0].nodeValue;
-      if (nombre == target_nombre) {
-        //alert(nombre);
-        ELIMINAR("cuerpo_cuenta");
-        //muestro mi modal
-        $('#myModal_usuario').modal('show');
-        // $('.modal-title').text('PERFIL');
-        cargarComponentes_Cuenta(".modal-body", nombre, id, 'seguidores', '0', 'seguidos', '0', 'Si tiene carro');
-        $('#modal_usuario').css({ 'width': '440px', 'height': '400px' });
-        $('#cuerpo_cuenta').css({ 'width': '100%', 'height': '390px', 'padding': '0', 'background': 'none' });
-        $('#presentacion_imagenCuenta').css({ 'width': '120px', 'height': '130px', 'margin-left': '40%', 'margin-top': '0' });
-        $('#datos_cuenta').css({ 'width': '100%', 'vertical-aling': 'center' });
-        $('#cuerpo_cuenta').append($('<button>', {
-          id:"btn_llevame",
-          text: "Llevame!",
-          style: 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'
-        }));
-
-      }
-
-
-    }
-
-  });
-
-
-
 
 }
+
+
 
 //Boton cambia cada vez que se da click, cambia de seguir a siguiendo
 function boton_seguir(e){
@@ -1459,48 +1277,7 @@ function boton_seguir(e){
     e.target.text = "Siguiendo";
   }
 }
-//Extrae de los XML la informacion de los seguidores
-function cargarDatosSeguidores(){
-  if (window.XMLHttpRequest)
-  {
-    // Objeto para IE7+, Firefox, Chrome, Opera, Safari
-    xmlhttp=new XMLHttpRequest();
-  }else{
-    // Objeto para IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
 
-  // Abrimos el archivo que esta alojado en el servidor cd_catalog.xml
-  xmlhttp.open("GET",'../../templates/xml/usuarios.xml',false);
-  xmlhttp.send();
-
-  // Obtenemos un objeto XMLDocument con el contenido del archivo xml del servidor
-  xmlDoc=xmlhttp.responseXML;
-
-  // Obtenemos todos los nodos denominados foro del archivo xml
-  var usuarios=xmlDoc.getElementsByTagName("usuario");
-
-
-  // Hacemos un bucle por todos los elementos foro
-  for(var i=0;i<usuarios.length;i++)
-  {
-    // Del elemento foro, obtenemos del primer elemento denominado "titulo"
-    // el valor del primer elemento interno
-    categoria=xmlDoc.getElementsByTagName("usuario")[i].getAttributeNode("categoria").nodeValue;
-    nombre = usuarios[i].getElementsByTagName("nombre")[0].childNodes[0].nodeValue;
-
-    id = usuarios[i].getElementsByTagName("id")[0].childNodes[0].nodeValue;
-
-    img = usuarios[i].getElementsByTagName("imagen")[0].childNodes[0].nodeValue;
-
-    if (categoria == "seguidor") {
-      crear_presentancion_usuario('#seccion_seguidores', nombre, id, 'primary', 'Siguiendo');
-    }
-    if (categoria == "siguiendo") {
-      crear_presentancion_usuario('#seccion_siguiendo', nombre, id, 'primary', 'Siguiendo');
-    }
-  }
-}
 
 function seguir(seguidor_a){
     var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
@@ -1518,8 +1295,5 @@ function seguir(seguidor_a){
     });
 
 }
-
-
-
 
 google.maps.event.addDomListener(window, 'load', initialize);
