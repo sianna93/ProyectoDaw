@@ -367,6 +367,43 @@ function F_iniciaruta(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_ruta', 'header_panel', 'labelpanel', 'INICIAR RUTA');
+  //validado para los que tienen carro
+  $.ajax({
+    type: "GET",
+    url:'/cuenta/',
+    async: true,
+    dataType:"Json",
+    contenType:"application/Json; charset=utf-8",
+    success: function(user){
+          //console.log(user)
+          //Si tiene o no carro
+           $.ajax({
+            type: "GET",
+            url:'/datos/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(personas){
+                  $.each(personas,function(p,persona){
+                    if(user.id==persona.fk_user_id){
+                      if(persona.is_carro=='True'){
+                         cargarComponentes_Ruta('#seccion_ruta');
+                      }
+                      else if(persona.is_carro=='False'){
+                        console.log("nadaaaa");
+                      }
+                    }
+                  });
+
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+            }
+          });
+    }
+  });
+  
   cargarComponentes_Ruta('#seccion_ruta');
 
   //Guardar ruta
