@@ -150,12 +150,12 @@ def Dejar_de_seguir(request):
         print(Seguidor_conect,"soy el que va a seguir")
         print("hola user",user.pk)
         print("hola",user_pk.pk)
-        if Seguidor is not None:
+        if Seguidor_conect is not None:
             dejar_seguir = Seguidor(fk_persona_id= user_pk.pk ,fk_seguidor_id = user.pk)
             print("holaaa",dejar_seguir)
             dejar_seguir.delete()
             return HttpResponse('todo posi')
-    return render_to_response('menu.html', data, context_instance=RequestContext(request))
+    #return render_to_response('menu.html', data, context_instance=RequestContext(request))
 
 
 def guardarCoordenadas(request):

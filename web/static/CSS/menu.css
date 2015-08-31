@@ -206,7 +206,7 @@ body,#panel-derecho{
 
 #cuerpo_presentacion{
     padding: 20px;
-    /*height: 100%;*/
+    height: 100px;
 }
 
 #panel-primary {

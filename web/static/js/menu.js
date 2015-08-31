@@ -217,7 +217,7 @@ function F_seguidores(evt) {
                 if(usuario.username==seg.siguiendo){
                   user=usuario.first_name + " " + usuario.last_name;
                   
-                  crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "depende");
+                  crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "Seguir");
                 }
               })
             },
@@ -527,8 +527,8 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
           }
         })
         if (existe >= 1){
-              dejar_de_seguir(labelText);
-              //swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
+              //dejar_de_seguir(labelText);
+              swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
 
               
         
