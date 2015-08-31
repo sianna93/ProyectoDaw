@@ -139,6 +139,7 @@ function F_siguiendo(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_siguiendo', 'header_panel', 'labelpanel', 'SIGUIENDO');
+  $('.list_seg').css({'overflow':'auto','height':'520px'});
 
   $.ajax({
     type: "GET",
@@ -179,7 +180,7 @@ function F_siguiendo(evt) {
       swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
     }
   });
- $('#seccion_siguiendo').css({'overflow':'auto'});
+ //$('#seccion_siguiendo').css({'overflow':'auto'});
   //añadir_eventos();
 }
 
@@ -192,7 +193,7 @@ function F_seguidores(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_seguidores', 'header_panel', 'labelpanel', 'SEGUIDORES');
-
+  $('.list_seg').css({'overflow':'auto','height':'520px'});
 
   $.ajax({
     type: "GET",
@@ -237,7 +238,7 @@ function F_seguidores(evt) {
     }
   });
 
-  $('#seccion_seguidores').css({'overflow':'auto'});
+  //$('#seccion_seguidores').css({'overflow':'auto'});
   //cargarDatosSeguidores();
   //añadir_eventos();
 }
@@ -403,12 +404,6 @@ function F_iniciaruta(evt) {
           });
     }
   });
-  
-  cargarComponentes_Ruta('#seccion_ruta');
-
-  //Guardar ruta
-  //addNodes("xml/rutas.xml","ruta");
-  guardar();
 }
 
 //Función para el botón misRutas
@@ -455,7 +450,11 @@ function crear_cabecera(seccion,header,label,textlabel){
     id : label,
     text: textlabel,
     style: "text-align:center;width:100%;position: relative;top: -10px;"
-  }))).hide().appendTo('#panel-derecho').fadeIn('slow');
+  })),$('<div>',{
+    class: 'list_seg'
+    //style: "overflow: auto; height: 520px"
+  })).hide().appendTo('#panel-derecho').fadeIn('slow');
+
 
 }
 
@@ -494,7 +493,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     class : 'btn btn-'+ typeButton+' center-block',
     text:txtButton,
     name : 'botones__seguir'
-  }))))).hide().appendTo(seccion).fadeIn('slow');
+  }))))).hide().appendTo(".list_seg").fadeIn('slow');
 
 
   $('.click_button').click(function () {
@@ -572,6 +571,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
 //MODAL
   $('.presentacionTextNombre').click(function (e) {
+    var label_username=$(this).text();
     var usuario, car="",contseg=0, contsig=0;
         ELIMINAR("cuerpo_cuenta");
         //aqui esta el ajax

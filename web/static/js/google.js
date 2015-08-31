@@ -108,6 +108,10 @@ function cargarMapa(){
 
                         };
 
+                        console.log("Mi start",start.lat());
+                        console.log("Mi end",end.lat());
+                        
+
                         directionsService.route(request, function (response, status) {
                             if (status == google.maps.DirectionsStatus.OK) {
                               //console.log(request);
