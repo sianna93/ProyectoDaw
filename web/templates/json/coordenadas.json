@@ -1,0 +1,12 @@
+{% spaceless %}
+[
+  {% for punto in puntos %}
+  {
+    "fk_ruta":"{{punto.fk_ruta_id}}",
+    "latitude":"{{ punto.latitude}}",
+    "longitude":"{{ punto.longitude}}"
+
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+]
+{% endspaceless %}

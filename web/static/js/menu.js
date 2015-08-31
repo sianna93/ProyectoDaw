@@ -490,8 +490,13 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     class: 'label_user',
     text:id
   })),$('<div>',{
+<<<<<<< Updated upstream
     value: id,
     class: 'click_button'
+=======
+    class: 'click_button',
+    value: id
+>>>>>>> Stashed changes
   }).append($('<div>',{
     class : ' center-block '
   })).append($('<button>',{
@@ -504,9 +509,15 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
   $('.click_button').click(function () {
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+<<<<<<< Updated upstream
     //labelText = $('.label_user').text();
     labelText = $(this).attr('value');
     var lbl = $('#button_seguir').text();
+=======
+    labelText = $(this).attr("value");
+
+    //alert("boton seguirrr");
+>>>>>>> Stashed changes
     //alert(labelText);
 
     existe =0;
@@ -1174,6 +1185,11 @@ function calcRoute() {
   });
 }
 
+
+//Variables necesarias para trazar ruta
+var list_puntos= [];
+var list_ini_fin=[];
+var inicio,fin;
 /*lista de rutas que tengo guardadas*/
 function cargarComponentes_MisRutas(seccion){
   $("<div>", {
@@ -1198,7 +1214,94 @@ function cargarComponentes_MisRutas(seccion){
         console.log(ruta.origen);
         origen=ruta.origen;
         destino=ruta.destino;
-        $("#ListaRutas").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+i+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
+        $("#ListaRutas").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
+        //Se realiza el evento al seleccionar ruta
+        $(".miRuta").click(function (e) {
+          var id_ruta = e.target.id;
+          
+          var start_lt,start_lg,end_lt,end_lg;
+          
+
+          console.log("Inicio Ajax ruta");
+
+          //Se leen las rutas
+          $.ajax({
+            type: "GET",
+            url:'/Rutas/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(rutas){
+
+            $.each(rutas,function(i,ruta){
+              if(ruta.id==id_ruta){
+                console.log(ruta.origen);
+                start_lt=ruta.origen_lt;
+                start_lg=ruta.origen_lg;
+                end_lt=ruta.destino_lt;
+                end_lg=ruta.destino_lg;
+                //Nuevo posiciones
+                inicio=new google.maps.LatLng(start_lt,start_lg);
+                fin=new google.maps.LatLng(end_lt,end_lg);
+                //Se guarda en una lista
+                list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
+                //list_ini_fin.push({lt:end_lt, lg: end_lg});
+
+                //console.log("Inicio funcion calcular ruta");
+                //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());              
+              }//Fin del if
+            })
+
+
+          },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Errooor al leer Rutas',   timer: 2000 });
+            }
+          });
+          console.log("lista inicio -fin ", list_ini_fin);
+          console.log("Inicio Ajax coordenadas");
+          $.ajax({
+            type: "GET",
+            url:'/coordenadas/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(puntos){
+
+              $.each(puntos,function(i,punto){
+                console.log("fk_ruta: ",punto.fk_ruta, " ruta: ",id_ruta);
+                if(punto.fk_ruta==id_ruta){
+
+                  console.log("punto: ",punto.latitude);
+                  latitude=punto.latitude;
+                  longitude=punto.longitude;
+                  p = new google.maps.LatLng(latitude,longitude);
+                  console.log("punto2: ",p.lat());
+                  list_puntos.push({location: p, stopover: false});
+                  
+                }
+
+              });
+            },
+            error: function(data){
+              console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Errooor al leer coordenadas',   timer: 2000 });
+            }
+          });
+
+          console.log("lista puntos medios ", list_puntos);
+          calcRoute2(); 
+          //console.log("Inicio funcion calcular ruta");
+          //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
+          
+          //var ruta = $('#' + id_ruta + '').text().split('-');
+          //var origen = ruta[0];
+          //var destino = ruta[1];
+          //swal({  title: 'Error!',   text: origen,   timer: 2000 });
+          //calcRoute2(origen, destino);
+        
+        });
 
       })
 
@@ -1210,14 +1313,9 @@ function cargarComponentes_MisRutas(seccion){
     }
   });
 
-  $(".miRuta").click(function (e) {
-    var id_ruta = e.target.id;
-    var ruta = $('#' + id_ruta + '').text().split('-');
-    var origen = ruta[0];
-    var destino = ruta[1];
-    swal({  title: 'Error!',   text: origen,   timer: 2000 });
-    calcRoute2(origen, destino);
-  });
+  
+  
+
 }
 
 function loadXMLDoc(filename)
@@ -1251,19 +1349,49 @@ function cargarRutas(){
   }
 }
 
-function calcRoute2(uno,dos) {
-  var start = uno;
-  var end = dos;
+function calcRoute2() {
+   /*var pos_espol = new google.maps.LatLng(-2.146104, -79.965814);
+   var mapOptions = {
+            zoom: 17,
+            center: pos_espol
+        }
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  console.log("s_lat: ", orig_lat)
+  var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(orig_lat, orig_lng), tittle: '#', draggable: false, map: map
+  });*/
+  var puntoA = list_ini_fin[0];
+  var puntoB = list_ini_fin[1];
+  var puntoC = list_ini_fin[2];
+  var puntoD = list_ini_fin[3];
+  //var pltA=puntoA['lt'];
+  //var plgA=puntoA['lg'];
+  //var pltB=puntoB['lt'];
+  //var plgB=puntoB['lg'];
+  //var start= new google.maps.LatLng(parseFloat(pltA),parseFloat(plgA));
+  //var end= new google.maps.LatLng(parseFloat(pltB),parseFloat(plgB));
+  var start= new google.maps.LatLng(parseFloat(puntoA),parseFloat(puntoB));
+  var end= new google.maps.LatLng(parseFloat(puntoC),parseFloat(puntoD));
+
+  console.log("inicio: ",start,"fin: ", end ,"lista: ",list_ini_fin);
   var request = {
-    origin:start,
-    destination:end,
+    origin: start, 
+    destination: end, 
+    waypoints: list_puntos, 
+    optimizeWaypoints: true, 
     travelMode: google.maps.TravelMode.DRIVING
   };
-  directionsService.route(request, function(result, status) {
-    if (status == google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(result);
-    }
+
+  directionsService.route(request, function (response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        //console.log(request);
+        directionsDisplay.setDirections(response);
+      }
   });
+
+  list_ini_fin=[];
+  list_puntos=[];
 }
 
 function añadir_eventos(){

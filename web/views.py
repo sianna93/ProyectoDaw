@@ -176,6 +176,18 @@ def guardarCoordenadas(request):
             punto.save()
             return HttpResponse('Guardado con exito')
 
+def obtenerCoordenadas(request):
+    if request.method == 'GET':
+        coordenadas = Coordenada_geografica.objects.all()
+        response = render_to_response(
+            'json/coordenadas.json',
+            {'puntos': coordenadas}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
+
 def obtenerRutas(request):
     if request.method == 'GET':
         routes = Ruta.objects.filter(fk_persona_ruta=request.user)

@@ -108,9 +108,8 @@ function cargarMapa(){
 
                         };
 
-                        console.log("Mi start",start.lat());
-                        console.log("Mi end",end.lat());
                         
+
 
                         directionsService.route(request, function (response, status) {
                             if (status == google.maps.DirectionsStatus.OK) {
@@ -122,14 +121,17 @@ function cargarMapa(){
 
                           //guardarRutas(start.lat(), start.lng(), end.lat(), end.lng());
                         $("#btn_Guardar_coord").click(function () {
+                            console.log("Mi start",start.lat());
+                            console.log("Mi end",end.lat());
                             //alert("diste click");
                             var p_start= puntos[0];
                             var p_end= puntos[puntos.length-1];
                             //console.log("start: "+ p_start['lt']);
                             guardarRutas(p_start['lt'], p_start['lg'], p_end['lt'], p_end['lg']);
+                            //guardarRutas(start.lat(), start.lng(),end.lat(), end.lng());
                             var i;
                             //recorriendo la lista de puntos y guardando la lat y lon
-                            for (i=0; i<puntos.length; i++){
+                            for (i=1; i<puntos.length-1; i++){
                               var punto = puntos[i];
                               var plt=punto['lt'];
                               var plg=punto['lg'];
@@ -138,7 +140,8 @@ function cargarMapa(){
                             }
 
                             //swal({   title: 'Exito!',   text: "ruta guardada",   timer: 2000 });
-                            console.log(puntos.toString());
+                            console.log(puntos);
+                            console.log(waypts);
                             setMapOnAll(null);
                             //directionsDisplay.setMap(null);
                             end=null;
@@ -166,7 +169,7 @@ function guardarPuntos(latitude,longitude){
     var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
         type: "POST",
-        url:'/coordenadas',
+        url:'/saveCoordenadas',
         data: {'coord_lat':latitude,'coord_long':longitude,'csrfmiddlewaretoken':csrf },
         success: function(){
          //swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
