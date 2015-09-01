@@ -759,7 +759,7 @@ funcion que crea un modal donde se presenta los datos de los seguidores
       	    success: function(usuarios){
       	      $.each(usuarios,function(i,usuario){
                 console.log("aqui "+usuario.username);
-      	        if(usuario.username==id){
+      	        if(usuario.username==label_username){
                   console.log("aqui mi segunda entrada "+usuario.username);
                   $.ajax({
                     type: "GET",
@@ -784,13 +784,13 @@ funcion que crea un modal donde se presenta los datos de los seguidores
                             $.ajax({
                                 type: "POST",
                                 url:'/guardarPeticion',
-                                data: {'comentario':"Hola me podrias llevar ya que paso por la ruta"+origen+"-"+destino+". Muchas gracias",'glongitud':"0",'glatitud':"0",'gfecha':"21-12-15",'gruta':idruta,'csrfmiddlewaretoken':csrf },
+                                data: {'comentario':"Hola me podrias llevar!",'glongitud':'0','glatitud':'0','gruta':idruta,'csrfmiddlewaretoken':csrf },
                                 success: function(){
-                                 //swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
+                                 swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
                               },
                                 error: function(e){
                                 console.log(e)
-                                swal({   title: 'Error!',   text: 'Error al intentar guardar puntos',   timer: 2000 });
+                                swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
                               }
                             });
                           });

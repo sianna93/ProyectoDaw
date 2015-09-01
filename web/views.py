@@ -120,26 +120,30 @@ def guardarRuta(request):
             return HttpResponse('todo posi')
 
 
-
+@login_required
 def guardarPeticion(request):
     if request.method == 'POST':
         from django.utils import timezone
         Rcomentario = request.POST.get('comentario',None)
         Rubicacion_longitud = request.POST.get('glongitud',None)
         Rubicacion_latitude=request.POST.get('glatitud',None)
-        Rfecha_pe=request.POST.get('gfecha',None)
+        #Rfecha_pe=request.POST.get('gfecha',None)
         user = request.user
         #fk_pcomentarioersona_peticion =request.POST.get('dstgLat',None)
         Rfk_pet_ruta=request.POST.get('gruta',None)
         print(Rcomentario)
         print(Rubicacion_latitude)
         print(Rubicacion_longitud)
-        print(Rfecha_pe)
-        print(user.id)
+        #print(Rfecha_pe)
         print(Rfk_pet_ruta)
         print(user.pk)
+
+        miRuta=Ruta.objects.filter(id=Rfk_pet_ruta)
+        print (miRuta[0].origen)
+        AllRutas= Ruta.objects.all()
+        
         if Rcomentario is not None :
-            peticion = Peticion(comentario= Rcomentario, ubicacion_longitud= Decimal(Rubicacion_longitud), ubicacion_latitude=Decimal(Rubicacion_latitude),fecha_pe=Rfecha_pe,fk_persona_peticion= user.pk,fk_pet_ruta= Rfk_pet_ruta.id)
+            peticion = Peticion(comentario= Rcomentario, ubicacion_longitud= Decimal(Rubicacion_longitud), ubicacion_latitude=Decimal(Rubicacion_latitude),fk_persona_peticion= user,fk_pet_ruta= miRuta[0])
             print("holaaa",peticion)
             peticion.save()
             return HttpResponse('todo posi')
