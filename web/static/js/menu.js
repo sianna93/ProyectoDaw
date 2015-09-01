@@ -556,14 +556,14 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
 
   $('.click_button').click(function () {
     if ($(this).text()=='Siguiendo'){
-      $(this).text('Seguir+');
-      $(this).class('btn btn-primary center-block');
+      //$(this).text('Seguir+');
+      //$(this).class('btn btn-primary center-block');
       //alert("click");
     }
     else{
       //e.target.class = 'btn btn-primary center-block';
-      $(this).text('Siguiendo');
-      $(this).class('btn btn-primary center-block');
+      //$(this).text('Siguiendo');
+      //$(this).class('btn btn-primary center-block');
     }
 
     //var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
@@ -611,8 +611,11 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     });
 
   });
+/*
+funcion que crea un modal donde se presenta los datos de los seguidores
 
-//MODAL
+
+*/
   $('.presentacionTextNombre').click(function (e) {
     var label_username=$(this).attr("value");
     var usuario, car="",contseg=0, contsig=0;
@@ -773,8 +776,24 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
                           origen=ruta.origen;
                           destino=ruta.destino;
                           $(".ListaRutas_seg_class").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
-                        "<button id='btn_llevame' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
-
+                        "<button id='btn_llevame' class='btn_llevame_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
+                          $('.btn_llevame_class').click(function (e) {
+                            alert("has dado click en esta ruta"+ruta.id+ "    nada");
+                            var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+                            var idruta = ruta.id;
+                            $.ajax({
+                                type: "POST",
+                                url:'/guardarPeticion',
+                                data: {'comentario':"Hola me podrias llevar ya que paso por la ruta"+origen+"-"+destino+". Muchas gracias",'glongitud':"0",'glatitud':"0",'gfecha':"21-12-15",'gruta':idruta,'csrfmiddlewaretoken':csrf },
+                                success: function(){
+                                 //swal({   title: 'Exito!',   text: 'La ruta ha sido registrada con exito',   timer: 2000 });
+                              },
+                                error: function(e){
+                                console.log(e)
+                                swal({   title: 'Error!',   text: 'Error al intentar guardar puntos',   timer: 2000 });
+                              }
+                            });
+                          });
                         }
                       })
                     },

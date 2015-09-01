@@ -30,6 +30,7 @@ urlpatterns = [
     #url(r'^inicio','web.views.inicio'),
     #url(r'^login','web.views.login'),
     url(r'^ruta','web.views.guardarRuta'),
+    url(r'^guardarPeticion','web.views.guardarPeticion'),
     url(r'^saveCoordenadas','web.views.guardarCoordenadas'),
     url(r'^misRutas','web.views.obtenerRutas'),
     url(r'^usuarios','web.views.obtenerUsuarios'),
