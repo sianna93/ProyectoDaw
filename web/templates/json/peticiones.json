@@ -1,0 +1,16 @@
+{% spaceless %}
+[
+  {% for peticion in peticiones %}
+  {
+    "id":"{{peticion.pk}}",
+    "comentario":"{{ peticion.comentario}}",
+    "ulongitud":"{{ peticion.ubicacion_longitud}}",
+    "fecha":"{{peticion.ubicacion_latitude}}",
+    "fecha":"{{peticion.fecha_pe}}",
+    "persona_peticion":"{{peticion.fk_persona_peticion}}",
+    "pet_ruta":"{{peticion.fk_pet_ruta_id}}"
+
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+]
+{% endspaceless %}

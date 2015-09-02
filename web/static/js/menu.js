@@ -15,6 +15,100 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
+    $('#img_noti').click(function () {
+      $('.listas_notificaciones').remove();
+      $('.btn_no_class').remove();
+      $('.btn_si_class').remove();
+      var nombre_user ;
+      $('#modal_notificaciones').modal('show');
+      $.ajax({
+       type: "GET",
+       url:'/cuenta/',
+       async: true,
+       dataType:"Json",
+       contenType:"application/Json; charset=utf-8",
+       success: function(user){
+          nombre_user= user.username;
+
+       },
+       error: function(data){
+         console.log(data.responseText);
+         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+       }
+     });
+
+      console.log(nombre_user);
+      $.ajax({
+        type: "GET",
+        url:'/usuarios/',
+        async: true,
+        dataType:"Json",
+        contenType:"application/Json; charset=utf-8",
+        success: function(users){
+          $.each(users,function(i,user){
+               if(user.username==nombre_user){
+                 console.log("si entre");
+                 $.ajax({
+                  type: "GET",
+                  url:'/Rutas/',
+                  async: true,
+                  dataType:"Json",
+                  contenType:"application/Json; charset=utf-8",
+                  success: function(routes){
+                    console.log(routes);
+                    $.each(routes,function(r,ruta){
+                      if(ruta.fk_user==user.username){
+                        console.log("Hola entre en rutas");
+                        $.ajax({
+                         type: "GET",
+                         url:'/todosPeticiones/',
+                         async: true,
+                         dataType:"Json",
+                         contenType:"application/Json; charset=utf-8",
+                         success: function(peticiones){
+                               $.each(peticiones,function(pe,peticion){
+                                 if(ruta.id == peticion.pet_ruta){
+                                   console.log(peticion);
+                                   $(".notifications_class").append("<li class='listas_notificaciones'>"+peticion.persona_peticion+":"+peticion.comentario+"</li>"+"<button id='btn_si' class='btn_si_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> si</button>"+"<button id='btn_no' class='btn_no_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 5px;position:relative;top:-20px;left:200px;font-size:10px'> No</button>");
+
+                                 }
+                               });
+
+                         },
+                         error: function(data){
+                           console.log(data.responseText);
+                           swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                         }
+                       });
+
+
+
+
+
+
+
+                      }
+                    });
+                  },
+                  error: function(data){
+                    console.log(data.responseText);
+                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                  }
+                });
+
+
+                }
+             });
+
+       },
+       error: function(data){
+         console.log(data.responseText);
+         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+       }
+     });
+
+  });
+
 }
 
 //Función para el botón cerrar sesión
@@ -745,7 +839,7 @@ funcion que crea un modal donde se presenta los datos de los seguidores
 
         $('.class_cuenta').append($('<div>',{
           id:'div_listas_rutas',
-          style:'position:relative;top:57px;overflow:auto;'
+          style:'position:relative;top:57px;overflow:auto;width:400px;height:200px'
         }).append($('<ol>',{
           id:'ListaRutas_seg',
           class :'ListaRutas_seg_class'
@@ -775,10 +869,9 @@ funcion que crea un modal donde se presenta los datos de los seguidores
                           console.log(ruta.origen);
                           origen=ruta.origen;
                           destino=ruta.destino;
-                          $(".ListaRutas_seg_class").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
+                          $(".ListaRutas_seg_class").append("<li class='rutaslistas'><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
                         "<button id='btn_llevame' class='btn_llevame_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
                           $('.btn_llevame_class').click(function (e) {
-                            alert("has dado click en esta ruta"+ruta.id+ "    nada");
                             var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
                             var idruta = ruta.id;
                             $.ajax({

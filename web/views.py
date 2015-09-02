@@ -105,13 +105,6 @@ def guardarRuta(request):
         dstgLat=request.POST.get('dstgLat',None)
         dstgLng=request.POST.get('dstgLng',None)
         user = request.user
-        print(orig)
-        print(dest)
-        print(origLat)
-        print(origLng)
-        print(dstgLng)
-        print(dstgLat)
-
         print(user.pk)
         if orig is not None and dest is not None:
             ruta = Ruta(origen= orig, origen_lt= Decimal(origLat), origen_lg=Decimal(origLng),destino= dest,destino_lt=Decimal(dstgLat),destino_lg=Decimal(dstgLng),fk_persona_ruta_id= user.pk )
@@ -141,7 +134,7 @@ def guardarPeticion(request):
         miRuta=Ruta.objects.filter(id=Rfk_pet_ruta)
         print (miRuta[0].origen)
         AllRutas= Ruta.objects.all()
-        
+
         if Rcomentario is not None :
             peticion = Peticion(comentario= Rcomentario, ubicacion_longitud= Decimal(Rubicacion_longitud), ubicacion_latitude=Decimal(Rubicacion_latitude),fk_persona_peticion= user,fk_pet_ruta= miRuta[0])
             print("holaaa",peticion)
@@ -244,6 +237,17 @@ def obtenerTodasRutas(request):
         response = render_to_response(
             'json/routes.json',
             {'routes': routes}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
+def obtenerTodasPeticiones(request):
+    if request.method == 'GET':
+        peticiones = Peticion.objects.all()
+        response = render_to_response(
+            'json/peticiones.json',
+            {'peticiones': peticiones}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'

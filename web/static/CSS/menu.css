@@ -381,7 +381,7 @@ body,#panel-derecho{
 }
 
 /*boton guardar ru*/
-#btn_guardar, #btn_Guardar_coord, #btn_llevame{
+#btn_guardar, #btn_Guardar_coord, #btn_llevame,#btn_si,#btn_no{
     clear: both;
 
     cursor: pointer;
