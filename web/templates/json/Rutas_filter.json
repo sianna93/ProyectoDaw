@@ -1,0 +1,18 @@
+{% spaceless %}
+[
+  {% for route in routes_f %}
+  {
+    "id":"{{route.pk}}",
+    "origen":"{{ route.origen}}",
+    "destino":"{{ route.destino}}",
+    "fecha":"{{route.fecha}}",
+    "origen_lt":"{{route.origen_lt}}",
+    "origen_lg":"{{route.origen_lg}}",
+    "destino_lt":"{{route.destino_lt}}",
+    "destino_lg":"{{route.destino_lg}}",
+    "fk_user":"{{route.fk_persona_ruta}}"
+
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+]
+{% endspaceless %}

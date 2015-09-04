@@ -8,7 +8,6 @@ from django.forms import ModelForm
 
     #def __unicode__(self):
     #    return self.usuario
-
 class Persona (models.Model):
     is_carro = models.BooleanField(default=False)
     placa = models.CharField(max_length=7 , null = True, blank= True)
@@ -41,3 +40,5 @@ class Peticion(models.Model):
     fecha_pe = models.DateField(auto_now=True)
     fk_persona_peticion = models.ForeignKey(User, related_name = 'peticiones')
     fk_pet_ruta = models.ForeignKey(Ruta, related_name = 'ruta', null=True)
+    estado = models.CharField(max_length=50)
+    fecha = models.DateField(auto_now=True)

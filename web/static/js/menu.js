@@ -8,6 +8,7 @@
 
   Funciones para el menu y página pincipal de la página
  **************************************************************/
+
 function initialize() {
   document.getElementById('a_cuenta').addEventListener('click',F_cuenta, false);
   document.getElementById('a_siguiendo').addEventListener('click',F_siguiendo, false);
@@ -15,8 +16,146 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-    $('#img_noti').click(function () {
+
+
+
+    $(".img_noti_class").click(function()
+    {
       $('.listas_notificaciones').remove();
+      $('.notificationContainer').append("<div id='notificationTitle'>Notifications</div><div id='notificationsBody' class='notifications' style:'overflow:auto'></div><div id='notificationFooter'><a href='#'>See All</a></div>")
+      $("#notificationContainer").fadeToggle(300);
+      $("#notification_count").fadeOut("slow");
+      var nombre_user ;
+            $.ajax({
+             type: "GET",
+             url:'/cuenta/',
+             async: true,
+             dataType:"Json",
+             contenType:"application/Json; charset=utf-8",
+             success: function(user){
+               console.log(user.username);
+                nombre_user= user.username;
+
+             },
+             error: function(data){
+               //console.log(data.responseText);
+               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+             }
+           });
+
+            //console.log(nombre_user);
+            $.ajax({
+              type: "GET",
+              url:'/usuarios/',
+              async: true,
+              dataType:"Json",
+              contenType:"application/Json; charset=utf-8",
+              success: function(users){
+                $.each(users,function(i,user){
+                     if(user.username==nombre_user){
+                       //console.log("si entre");
+                       $.ajax({
+                        type: "GET",
+                        url:'/Rutas/',
+                        async: true,
+                        dataType:"Json",
+                        contenType:"application/Json; charset=utf-8",
+                        success: function(routes){
+                        console.log(routes);
+                          $.each(routes,function(r,ruta){
+                            if(ruta.fk_user==user.username){
+                             console.log("Hola entre en rutas");
+                              $.ajax({
+                               type: "GET",
+                               url:'/filtro/',
+                               async: true,
+                               dataType:"Json",
+                               contenType:"application/Json; charset=utf-8",
+                               success: function(peticiones){
+                                     $.each(peticiones,function(pe,peticion){
+                                       if(ruta.id == peticion.pet_ruta){
+                                         if(peticion.pet_estado=="Pendiente"){
+                                           $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</p><div>");
+                                         }
+                                       }
+                                     });
+
+                               },
+                               error: function(data){
+                                // console.log(data.responseText);
+                                 swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                               }
+                             });
+
+
+
+
+
+
+
+                            }
+                          });
+                        },
+                        error: function(data){
+                          //console.log(data.responseText);
+                          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                        }
+                      });
+
+
+                      }
+                   });
+
+             },
+             error: function(data){
+               //console.log(data.responseText);
+               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+             }
+           });
+
+           $.ajax({
+            type: "GET",
+            url:'/filtro_rutas/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(routes_f){
+                  $.each(routes_f,function(rf,route_f){
+                    console.log(nombre_user);
+                    if(route_f.fk_user!==nombre_user){
+                        $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El Usuario :"+route_f.fk_user+"  Ha creado una nueva ruta "+route_f.origen+"-"+route_f.destino+"</p><div>");
+                    }
+                  });
+
+            },
+            error: function(data){
+             // console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+            }
+           });
+
+
+
+
+
+      return false;
+    });
+
+    //Document Click hiding the popup
+    $(document).click(function()
+    {
+      $("#notificationContainer").hide();
+    });
+
+    //Popup on click
+    $("#notificationContainer").click(function()
+    {
+      return false;
+    });
+
+    /*$('#img_noti').click(function () {
+
+     $('.listas_notificaciones').remove();
       $('.btn_no_class').remove();
       $('.btn_si_class').remove();
       var nombre_user ;
@@ -32,12 +171,12 @@ function initialize() {
 
        },
        error: function(data){
-         console.log(data.responseText);
+         //console.log(data.responseText);
          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
        }
      });
 
-      console.log(nombre_user);
+      //console.log(nombre_user);
       $.ajax({
         type: "GET",
         url:'/usuarios/',
@@ -47,7 +186,7 @@ function initialize() {
         success: function(users){
           $.each(users,function(i,user){
                if(user.username==nombre_user){
-                 console.log("si entre");
+                 //console.log("si entre");
                  $.ajax({
                   type: "GET",
                   url:'/Rutas/',
@@ -55,10 +194,10 @@ function initialize() {
                   dataType:"Json",
                   contenType:"application/Json; charset=utf-8",
                   success: function(routes){
-                    console.log(routes);
+                  //  console.log(routes);
                     $.each(routes,function(r,ruta){
                       if(ruta.fk_user==user.username){
-                        console.log("Hola entre en rutas");
+                      //  console.log("Hola entre en rutas");
                         $.ajax({
                          type: "GET",
                          url:'/todosPeticiones/',
@@ -68,15 +207,15 @@ function initialize() {
                          success: function(peticiones){
                                $.each(peticiones,function(pe,peticion){
                                  if(ruta.id == peticion.pet_ruta){
-                                   console.log(peticion);
-                                   $(".notifications_class").append("<li class='listas_notificaciones'>"+peticion.persona_peticion+":"+peticion.comentario+"</li>"+"<button id='btn_si' class='btn_si_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> si</button>"+"<button id='btn_no' class='btn_no_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 5px;position:relative;top:-20px;left:200px;font-size:10px'> No</button>");
+                                  // console.log(peticion);
+                                   $(".notifications_class").append("<li class='listas_notificaciones' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</li>"+"<button id='btn_si' class='btn_si_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 15px auto;position:relative;top:-20px;left:200px;font-size:10px'> si</button>"+"<button id='btn_no' class='btn_no_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 5px;position:relative;top:-20px;left:200px;font-size:10px'> No</button>");
 
                                  }
                                });
 
                          },
                          error: function(data){
-                           console.log(data.responseText);
+                          // console.log(data.responseText);
                            swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
                          }
                        });
@@ -91,7 +230,7 @@ function initialize() {
                     });
                   },
                   error: function(data){
-                    console.log(data.responseText);
+                    //console.log(data.responseText);
                     swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
                   }
                 });
@@ -102,15 +241,16 @@ function initialize() {
 
        },
        error: function(data){
-         console.log(data.responseText);
+         //console.log(data.responseText);
          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
        }
      });
-
-  });
+  });*/
 
 }
-
+var list_puntos= [];
+var list_ini_fin=[];
+var inicio,fin;
 //Función para el botón cerrar sesión
 function F_cerrar(){
   // var ancho=100%;
@@ -171,7 +311,7 @@ function F_cuenta(evt){
 
             },
             error: function(data){
-              console.log(data.responseText);
+            //  console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
@@ -187,11 +327,11 @@ function F_cuenta(evt){
               list_siguiendos=siguiendos;
               contsig=list_siguiendos.length;
               $('#numseguidos').text(contsig);
-              console.log("numsiguiendos: "+ contsig);
+            //  console.log("numsiguiendos: "+ contsig);
 
             },
             error: function(data){
-              console.log(data.responseText);
+            //  console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
@@ -207,17 +347,17 @@ function F_cuenta(evt){
               list_seguidores=seguidores;
               contseg=list_seguidores.length;
               $('#numseguidores').text(contseg);
-              console.log("numseguidores: "+ contseg);
+            //  console.log("numseguidores: "+ contseg);
 
             },
             error: function(data){
-              console.log(data.responseText);
+              //console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
     },
     error: function(data){
-      console.log(data.responseText);
+    //  console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
     }
   });
@@ -244,7 +384,7 @@ function F_siguiendo(evt) {
     success: function(seguidores){
         $.each(seguidores,function(i,seg){
           //console.log(seguidores);
-          console.log(seg.siguiendo);
+        //  console.log(seg.siguiendo);
           $.ajax({
             type: "GET",
             url:'/usuarios/',
@@ -262,7 +402,7 @@ function F_siguiendo(evt) {
               })
             },
             error: function(data){
-              console.log(data.responseText);
+              //console.log(data.responseText);
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
@@ -270,7 +410,7 @@ function F_siguiendo(evt) {
         });
     },
     error: function(data){
-      console.log(data.responseText);
+    //  console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
     }
   });
@@ -296,7 +436,7 @@ function getSiguiendos(){
     success: function(seguidores){
         $.each(seguidores,function(i,seg){
           //console.log(seguidores);
-          console.log(seg.siguiendo);
+          //console.log(seg.siguiendo);
           $.ajax({
             type: "GET",
             url:'/usuarios/',
@@ -314,7 +454,7 @@ function getSiguiendos(){
               })
             },
             error: function(data){
-              console.log(data.responseText);
+            //  console.log(data.responseText);
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
@@ -322,7 +462,7 @@ function getSiguiendos(){
         });
     },
     error: function(data){
-      console.log(data.responseText);
+      //console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
     }
   });
@@ -348,7 +488,7 @@ function F_seguidores(evt) {
     success: function(seguidores){
         $.each(seguidores,function(i,seg){
           //console.log(seguidores);
-          console.log(seg.seguidor);
+          //console.log(seg.seguidor);
           $.ajax({
             type: "GET",
             url:'/usuarios/',
@@ -366,7 +506,7 @@ function F_seguidores(evt) {
               })
             },
             error: function(data){
-              console.log(data.responseText);
+            //  console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
@@ -377,7 +517,7 @@ function F_seguidores(evt) {
 
     },
     error: function(data){
-      console.log(data.responseText);
+      //console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
     }
   });
@@ -399,7 +539,7 @@ function autocomplete_busqueda(){
 
       source: function( request, response ) {
         //bsq= this.value;
-        console.log(bsq);
+      //  console.log(bsq);
         $.ajax({
 
             url:'/filtrarNombres/',
@@ -407,15 +547,15 @@ function autocomplete_busqueda(){
             contenType:"application/Json; charset=utf-8",
             data: {q: request.term},
             success: function(data){
-              console.log(data);
-              console.log(request);
+              //console.log(data);
+              //console.log(request);
               //$.each(usuarios,function(i,usuario){
 
               //});
               $.each(data,function(i,usuario){
                 lista.push(usuario.username);
               });
-              console.log(lista);
+            //  console.log(lista);
               response(lista);
 
             },
@@ -432,7 +572,7 @@ function autocomplete_busqueda(){
               */
             //},
             error: function(data){
-              console.log(data.responseText);
+            //  console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
@@ -443,7 +583,7 @@ function autocomplete_busqueda(){
           ui.item.username:
           "Nothing selected, input was " + this.value);
         //log( "hola");
-        console.log("por aqui");
+      //  console.log("por aqui");
       },
       open: function() {
         $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -482,7 +622,7 @@ function mostrar_busqueda() {
 
 	    },
 	    error: function(data){
-	      console.log(data.responseText);
+	      //console.log(data.responseText);
 	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
 	    }
 	  });
@@ -535,14 +675,14 @@ function F_iniciaruta(evt) {
                          cargarComponentes_Ruta('#seccion_ruta');
                       }
                       else if(persona.is_carro=='False'){
-                        console.log("nadaaaa");
+                      //  console.log("nadaaaa");
                       }
                     }
                   });
 
             },
             error: function(data){
-              console.log(data.responseText);
+              //console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
@@ -699,7 +839,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
       },
 
       error: function(data){
-        console.log(data.responseText);
+      //  console.log(data.responseText);
         swal({  title: 'Error!!',   text: 'dsfdfdf',   timer: 2000 });
       }
     });
@@ -710,6 +850,9 @@ funcion que crea un modal donde se presenta los datos de los seguidores
 
 
 */
+list_puntos= [];
+list_ini_fin=[];
+inicio,fin;
   $('.presentacionTextNombre').click(function (e) {
     var label_username=$(this).attr("value");
     var usuario, car="",contseg=0, contsig=0;
@@ -725,7 +868,7 @@ funcion que crea un modal donde se presenta los datos de los seguidores
         $('#nombreCuenta').css({'position':'relative','top':'-70px'});
         $('#presentacion_imagenCuenta').css({ 'position':'relative','top':'-90px','width': '120px', 'height': '130px', 'margin-left': '40%', 'margin-top': '0' });
         $('#datos_cuenta').css({ 'width': '100%', 'vertical-aling': 'center' });
-
+        var entre = 0;
         $.ajax({
           type: "GET",
           url:'/usuarios/',
@@ -735,12 +878,16 @@ funcion que crea un modal donde se presenta los datos de los seguidores
           success: function(users){
             $.each(users,function(i,user){
                 //console.log(user)
-                console.log("hooooooooooooooooollallalalalalal",label_username);
+                //console.log("hooooooooooooooooollallalalalalal",label_username);
+                //console.log("estoy comparando "+user.username + label_username);
                 if(user.username==label_username){
-                  console.log("si entre",user.username);
+                //  entre = entre + 1;
+                  //console.log(entre);
+                //  console.log("si entre",user.username);
                   usuario= user.first_name+" "+user.last_name;
                   $('.nombreCuentaclass').text(usuario);
                   $('.nombreUsuarioclass').text(user.username);
+                //  console.log(usuario);
                   //cargarComponentes_Cuenta('#seccion_cuenta', usuario, user.username ,'seguidores','0', 'seguidos','0',"");
                   //Si tiene o no carro
                    $.ajax({
@@ -752,26 +899,26 @@ funcion que crea un modal donde se presenta los datos de los seguidores
                     success: function(personas){
                           $.each(personas,function(p,persona){
 
-                            console.log("aqui las personas",personas);
-                            console.log("",user.id,"   ",persona.fk_user_id);
+                          //  console.log("aqui las personas",personas);
+                          //  console.log("",user.id,"   ",persona.fk_user_id);
                             if(user.id==persona.fk_user_id){
-                              console.log("si entre a carro");
+                            //  console.log("si entre a carro");
                               if(persona.is_carro=='True'){
                                 car = 'Si tiene carro'
                                 $('.carroclass').text(car);
-                                console.log("carro ahorraaa "+ car);
+                              //  console.log("carro ahorraaa "+ car);
                               }
                               else if(persona.is_carro=='False'){
                                 car = 'No tiene carro'
                                 $('.carroclass').text(car);
-                                console.log("carro ahorraaa "+ car);
+                              //  console.log("carro ahorraaa "+ car);
                               }
-                            }else{console.log("no entre a carro");}
+                            }
                           });
 
                     },
                     error: function(data){
-                      console.log(data.responseText);
+                      //console.log(data.responseText);
                       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
                     }
                   });
@@ -784,19 +931,19 @@ funcion que crea un modal donde se presenta los datos de los seguidores
                     dataType:"Json",
                     contenType:"application/Json; charset=utf-8",
                     success: function(siguiendos){
-                      console.log("si entre " ,siguiendos , "usuario: ", user.username);
+                      //console.log("si entre " ,siguiendos , "usuario: ", user.username);
                       list_siguiendos=[];
                       $.each(siguiendos,function(p,seguido){
                         if(seguido.seguidor==user.username){
                           list_siguiendos.push(seguido);
                           contsig=list_siguiendos.length;
                           $('.numseguidosclass').text(contsig);
-                          console.log("numsiguiendos: ahorraaa "+ contsig);
+                          //console.log("numsiguiendos: ahorraaa "+ contsig);
                         }
                       });
                     },
                     error: function(data){
-                      console.log(data.responseText);
+                    //  console.log(data.responseText);
                       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
                     }
                   });
@@ -815,28 +962,29 @@ funcion que crea un modal donde se presenta los datos de los seguidores
                           list_siguiendos.push(seguidor);
                           contseg=list_siguiendos.length;
                           $('.numseguidoresclass').text(contseg);
-                          console.log("contseg numseguidores: "+ contseg);
+                          //console.log("contseg numseguidores: "+ contseg);
                         }
                       });
 
                     },
                     error: function(data){
-                      console.log(data.responseText);
+                      //console.log(data.responseText);
                       swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
                     }
                   });
+
                 }
             });
           },
           error: function(data){
-            console.log(data.responseText);
+          //  console.log(data.responseText);
             swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
           }
         });
 
 
         //$('.class_cuenta').append("<button id='btn_llevame' text= 'Llevame!' style= 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'> LLEVAME</button>");
-
+        var label=$(this).attr("value");
         $('.class_cuenta').append($('<div>',{
           id:'div_listas_rutas',
           style:'position:relative;top:57px;overflow:auto;width:400px;height:200px'
@@ -852,9 +1000,9 @@ funcion que crea un modal donde se presenta los datos de los seguidores
       	    contenType:"application/Json; charset=utf-8",
       	    success: function(usuarios){
       	      $.each(usuarios,function(i,usuario){
-                console.log("aqui "+usuario.username);
-      	        if(usuario.username==label_username){
-                  console.log("aqui mi segunda entrada "+usuario.username);
+                //console.log("aqui "+usuario.username);
+      	        if(usuario.username==label){
+                  //console.log("aqui mi segunda entrada "+usuario.username);
                   $.ajax({
                     type: "GET",
                     url:'/Rutas/',
@@ -862,27 +1010,98 @@ funcion que crea un modal donde se presenta los datos de los seguidores
                     dataType:"Json",
                     contenType:"application/Json; charset=utf-8",
                     success: function(rutas){
-
+                      var cont = 0;
+                      var c = 0;
                       $.each(rutas,function(i,ruta){
-                        console.log("fk_user: ",ruta.fk_user);
+                        c = c +1;
+                        console.log("comparando"+ruta.fk_user+"   "+usuario.username +"  "+c);
                         if (ruta.fk_user==usuario.username){
-                          console.log(ruta.origen);
+                          cont = cont +1 ;
+                          console.log("estoy entrando" + cont);
                           origen=ruta.origen;
                           destino=ruta.destino;
                           $(".ListaRutas_seg_class").append("<li class='rutaslistas'><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
                         "<button id='btn_llevame' class='btn_llevame_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
+
+                        $(".miRuta").click(function (e) {
+                          var id_ruta = e.target.id;
+
+                          var start_lt,start_lg,end_lt,end_lg;
+
+
+                          //Se leen las rutas
+                          $.ajax({
+                            type: "GET",
+                            url:'/Rutas/',
+                            async: true,
+                            dataType:"Json",
+                            contenType:"application/Json; charset=utf-8",
+                            success: function(rutas){
+
+                            $.each(rutas,function(i,ruta){
+                              if(ruta.id==id_ruta){
+                                start_lt=ruta.origen_lt;
+                                start_lg=ruta.origen_lg;
+                                end_lt=ruta.destino_lt;
+                                end_lg=ruta.destino_lg;
+                                //Nuevo posiciones
+                                inicio=new google.maps.LatLng(start_lt,start_lg);
+                                fin=new google.maps.LatLng(end_lt,end_lg);
+                                //Se guarda en una lista
+                                list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
+                                //list_ini_fin.push({lt:end_lt, lg: end_lg});
+
+                                //console.log("Inicio funcion calcular ruta");
+                                //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
+                              }//Fin del if
+                            })
+
+
+                          },
+                            error: function(data){
+                              swal({  title: 'Error!',   text: 'Errooor al leer Rutas',   timer: 2000 });
+                            }
+                          });
+                          $.ajax({
+                            type: "GET",
+                            url:'/coordenadas/',
+                            async: true,
+                            dataType:"Json",
+                            contenType:"application/Json; charset=utf-8",
+                            success: function(puntos){
+
+                              $.each(puntos,function(i,punto){
+                                if(punto.fk_ruta==id_ruta){
+                                  latitude=punto.latitude;
+                                  longitude=punto.longitude;
+                                  p = new google.maps.LatLng(latitude,longitude);
+                                  list_puntos.push({location: p, stopover: false});
+
+                                }
+
+                              });
+                            },
+                            error: function(data){
+                              swal({  title: 'Error!',   text: 'Errooor al leer coordenadas',   timer: 2000 });
+                            }
+                          });
+
+                          calcRoute2();
+
+                        });
+
                           $('.btn_llevame_class').click(function (e) {
                             var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
                             var idruta = ruta.id;
+                            var estadop = "Pendiente"
                             $.ajax({
                                 type: "POST",
                                 url:'/guardarPeticion',
-                                data: {'comentario':"Hola me podrias llevar!",'glongitud':'0','glatitud':'0','gruta':idruta,'csrfmiddlewaretoken':csrf },
+                                data: {'comentario':"Hola me podrias llevar!",'glongitud':'0','glatitud':'0','gruta':idruta,'pestado':estadop,'csrfmiddlewaretoken':csrf },
                                 success: function(){
                                  swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
                               },
                                 error: function(e){
-                                console.log(e)
                                 swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
                               }
                             });
@@ -891,7 +1110,6 @@ funcion que crea un modal donde se presenta los datos de los seguidores
                       })
                     },
                     error: function(data){
-                      console.log(data.responseText);
                       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
                     }
                   });
@@ -899,7 +1117,6 @@ funcion que crea un modal donde se presenta los datos de los seguidores
       	      })
       	    },
       	    error: function(data){
-      	      console.log(data.responseText);
       	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
       	    }
       	  });
@@ -926,7 +1143,7 @@ function dejar_de_seguir(labelText){
          getSiguiendos();
       },
       error: function(){
-        swal({   title: 'Error!',   text: 'Error al dejar Seguir',   timer: 2000 });
+        //swal({   title: 'Error!',   text: 'Error al dejar Seguir',   timer: 2000 });
       }
 
     });
@@ -1187,9 +1404,9 @@ function calcRoute() {
 
 
 //Variables necesarias para trazar ruta
-var list_puntos= [];
+/*var list_puntos= [];
 var list_ini_fin=[];
-var inicio,fin;
+var inicio,fin;*/
 /*lista de rutas que tengo guardadas*/
 function cargarComponentes_MisRutas(seccion){
   $("<div>", {
@@ -1201,7 +1418,9 @@ function cargarComponentes_MisRutas(seccion){
   })).hide().appendTo(seccion).fadeIn('slow');
 
   //cargarRutas();
-
+  list_puntos= [];
+  list_ini_fin=[];
+  inicio,fin;
   $.ajax({
     type: "GET",
     url:'/misRutas/',
@@ -1211,7 +1430,6 @@ function cargarComponentes_MisRutas(seccion){
     success: function(rutas){
 
       $.each(rutas,function(i,ruta){
-        console.log(ruta.origen);
         origen=ruta.origen;
         destino=ruta.destino;
         $("#ListaRutas").append("<li><a class='linkRuta' title= 'Trazar Ruta' href='#' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>");
@@ -1221,8 +1439,6 @@ function cargarComponentes_MisRutas(seccion){
 
           var start_lt,start_lg,end_lt,end_lg;
 
-
-          console.log("Inicio Ajax ruta");
 
           //Se leen las rutas
           $.ajax({
@@ -1235,7 +1451,6 @@ function cargarComponentes_MisRutas(seccion){
 
             $.each(rutas,function(i,ruta){
               if(ruta.id==id_ruta){
-                console.log(ruta.origen);
                 start_lt=ruta.origen_lt;
                 start_lg=ruta.origen_lg;
                 end_lt=ruta.destino_lt;
@@ -1243,7 +1458,6 @@ function cargarComponentes_MisRutas(seccion){
                 //Nuevo posiciones
                 inicio=new google.maps.LatLng(start_lt,start_lg);
                 fin=new google.maps.LatLng(end_lt,end_lg);
-                console.log("start. ", start_lt, "end.", end_lt);
                 //Se guarda en una lista
                 list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
                 //list_ini_fin.push({lt:end_lt, lg: end_lg});
@@ -1256,12 +1470,9 @@ function cargarComponentes_MisRutas(seccion){
 
           },
             error: function(data){
-              console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor al leer Rutas',   timer: 2000 });
             }
           });
-          console.log("lista inicio -fin ", list_ini_fin);
-          console.log("Inicio Ajax coordenadas");
           $.ajax({
             type: "GET",
             url:'/coordenadas/',
@@ -1271,14 +1482,10 @@ function cargarComponentes_MisRutas(seccion){
             success: function(puntos){
 
               $.each(puntos,function(i,punto){
-                console.log("fk_ruta: ",punto.fk_ruta, " ruta: ",id_ruta);
                 if(punto.fk_ruta==id_ruta){
-
-                  console.log("punto: ",punto.latitude);
                   latitude=punto.latitude;
                   longitude=punto.longitude;
                   p = new google.maps.LatLng(latitude,longitude);
-                  console.log("punto2: ",p.lat());
                   list_puntos.push({location: p, stopover: false});
 
                 }
@@ -1286,12 +1493,10 @@ function cargarComponentes_MisRutas(seccion){
               });
             },
             error: function(data){
-              console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Errooor al leer coordenadas',   timer: 2000 });
             }
           });
 
-          console.log("lista puntos medios ", list_puntos);
           calcRoute2();
           //console.log("Inicio funcion calcular ruta");
           //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
@@ -1309,7 +1514,7 @@ function cargarComponentes_MisRutas(seccion){
 
     },
     error: function(data){
-      console.log(data.responseText);
+      //console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
     }
   });
@@ -1344,7 +1549,7 @@ function calcRoute2() {
   var start= new google.maps.LatLng(parseFloat(puntoA),parseFloat(puntoB));
   var end= new google.maps.LatLng(parseFloat(puntoC),parseFloat(puntoD));
 
-  console.log("inicio: ",start,"fin: ", end ,"lista: ",list_ini_fin);
+  //console.log("inicio: ",start,"fin: ", end ,"lista: ",list_ini_fin);
   var request = {
     origin: start,
     destination: end,

@@ -36,10 +36,12 @@ urlpatterns = [
     url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^cuenta', 'web.views.home'),
     url(r'^Rutas','web.views.obtenerTodasRutas'),
+    url(r'^filtro_rutas','web.views.obtenerTodasRutas_filtro'),
     url(r'^coordenadas','web.views.obtenerCoordenadas'),
     url(r'^usuarios','web.views.obtenerUsuarios'),
     url(r'^todosSeguidores', 'web.views.obtenerTablaSeguidores'),
     url(r'^todosPeticiones', 'web.views.obtenerTodasPeticiones'),
+    url(r'^filtro', 'web.views.obtenerTodasPeticiones_filtro'),
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
     url(r'^busqueda', 'web.views.BuscarPer'),#para buscar una sola persona

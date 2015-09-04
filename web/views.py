@@ -18,6 +18,7 @@ from django.conf import settings
 import csv
 from web.forms import SignUpForm, SignUpForm2
 from decimal import Decimal
+import time
 
 #funcion que
 class AutoLogout:
@@ -124,19 +125,21 @@ def guardarPeticion(request):
         user = request.user
         #fk_pcomentarioersona_peticion =request.POST.get('dstgLat',None)
         Rfk_pet_ruta=request.POST.get('gruta',None)
+        estadopeticion = request.POST.get('pestado',None)
         print(Rcomentario)
         print(Rubicacion_latitude)
         print(Rubicacion_longitud)
         #print(Rfecha_pe)
         print(Rfk_pet_ruta)
         print(user.pk)
+        print(estadopeticion)
 
         miRuta=Ruta.objects.filter(id=Rfk_pet_ruta)
         print (miRuta[0].origen)
         AllRutas= Ruta.objects.all()
 
         if Rcomentario is not None :
-            peticion = Peticion(comentario= Rcomentario, ubicacion_longitud= Decimal(Rubicacion_longitud), ubicacion_latitude=Decimal(Rubicacion_latitude),fk_persona_peticion= user,fk_pet_ruta= miRuta[0])
+            peticion = Peticion(comentario= Rcomentario, ubicacion_longitud= Decimal(Rubicacion_longitud), ubicacion_latitude=Decimal(Rubicacion_latitude),fk_persona_peticion= user,fk_pet_ruta= miRuta[0],estado= estadopeticion)
             print("holaaa",peticion)
             peticion.save()
             return HttpResponse('todo posi')
@@ -242,12 +245,41 @@ def obtenerTodasRutas(request):
         response['Cache-Control'] = 'no-cache'
         return response
 
+
+
+def obtenerTodasRutas_filtro(request):
+    import time
+    tiempo = time.strftime("%Y-%m-%d")
+    if request.method == 'GET':
+        routes_f = Ruta.objects.filter(fecha=tiempo)
+        response = render_to_response(
+            'json/Rutas_filter.json',
+            {'routes_f': routes_f}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
 def obtenerTodasPeticiones(request):
     if request.method == 'GET':
         peticiones = Peticion.objects.all()
         response = render_to_response(
             'json/peticiones.json',
             {'peticiones': peticiones}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
+
+def obtenerTodasPeticiones_filtro(request):
+    import time
+    tiempo = time.strftime("%Y-%m-%d")
+    if request.method == 'GET':
+        peticiones_f = Peticion.objects.filter(fecha_pe=tiempo)
+        response = render_to_response(
+            'json/peticiones_filter.json',
+            {'peticiones_f': peticiones_f}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'

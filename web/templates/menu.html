@@ -81,10 +81,53 @@
           </nav>
 
           <!--aside para de panel derecho-->
+          <script>
+                /*  $(document).ready(function()
+                  {
+                  $(".img_noti_class").click(function()
+                  {
+                    alert("click;")
+                  $("#notificationContainer").fadeToggle(300);
+                  $("#notification_count").fadeOut("slow");
+                  return false;
+                  });
 
+                  //Document Click hiding the popup
+                  $(document).click(function()
+                  {
+                  $("#notificationContainer").hide();
+                  });
+
+                  //Popup on click
+                  $("#notificationContainer").click(function()
+                  {
+                  return false;
+                  });
+
+                });*/
+          </script>
           <div id="panel-derecho">
             <a id="a_close" class="close" title="Cerrar">×</a>
-            <div id="img_div"><img id="img_noti"src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/></div>
+            <div id="img_div"><img id="img_noti" class="img_noti_class" src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/>
+
+                      <div id="notificationContainer" class "noficationcontainerclass">
+                      <div id="notificationTitle">Notifications</div>
+                      <div id="notificationsBody" class="notifications" style:"overflow:auto">
+                      <!--  <div class ="boxdiv">
+                            <li class='listas_notificaciones' style='height:20px; widht:20px;'>Hola me podrias llevar</li>
+                            <p>Hola alito eres bobitaaa</p>
+                        </div>
+                        <div class ="boxdiv">
+                            <li class='listas_notificaciones' style='height:20px; widht:20px;'>Hola me podrias llevar</li>
+                            <p>Hola alito eres bobitaaa</p>
+                        </div>
+                      -->
+                      </div>
+                      <div id="notificationFooter"><a href="#">See All</a></div>
+                      </div>
+
+
+            </div>
 
           </div>
 <!-- Agregando Un Model para el chat-->

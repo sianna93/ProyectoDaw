@@ -1,6 +1,6 @@
 {% spaceless %}
 [
-  {% for peticion in peticiones %}
+  {% for peticion in peticiones_f %}
   {
     "id":"{{peticion.pk}}",
     "comentario":"{{ peticion.comentario}}",
