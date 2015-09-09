@@ -17,6 +17,7 @@ body{
 padding:0px;
 margin: 0px auto;
 border:solid 2px #e9e8e8;
+height: 70px;
 }
 #notification_li{
 position:relative
@@ -452,6 +453,41 @@ body,#panel-derecho{
 }
 
 /*boton guardar ru*/
+.btn_si_class , .btn_no_class {
+  clear: both;
+
+  cursor: pointer;
+  width: 135px;
+  height: 36px;
+  margin-top: 25px;
+  padding: 0;
+  background: #0392CF;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #0392CF;
+  -moz-box-shadow:
+      0 15px 30px 0 rgba(255,255,255,.25) inset,
+      0 2px 7px 0 rgba(0,0,0,.2);
+  -webkit-box-shadow:
+      0 15px 30px 0 rgba(255,255,255,.30) inset,
+      0 2px 7px 0 rgba(0,0,0,.2);
+  box-shadow:
+      0 15px 30px 0 rgba(255,255,255,.35) inset,
+      0 2px 7px 0 rgba(0,0,0,.2);
+  font-family:georgia,serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.1);
+  -o-transition: all .2s;
+  -moz-transition: all .2s;
+  -webkit-transition: all .2s;
+  -ms-transition: all .2s;
+  position: relative;
+  top: 20px;
+
+}
 #btn_guardar, #btn_Guardar_coord, #btn_llevame,#btn_si,#btn_no{
     clear: both;
 

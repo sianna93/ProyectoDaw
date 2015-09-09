@@ -22,7 +22,9 @@ function initialize() {
     $(".img_noti_class").click(function()
     {
       $('.listas_notificaciones').remove();
-      $('.notificationContainer').append("<div id='notificationTitle'>Notifications</div><div id='notificationsBody' class='notifications' style:'overflow:auto'></div><div id='notificationFooter'><a href='#'>See All</a></div>")
+      $('.btn_si_class').remove();
+      $('.btn_no_class').remove();
+      $('.notificationContainer').append("<div id='notificationTitle'>Notifications</div><div id='notificationsBody' class='notifications' style='overflow:auto;'></div><div id='notificationFooter'><a href='#'>See All</a></div>")
       $("#notificationContainer").fadeToggle(300);
       $("#notification_count").fadeOut("slow");
       var nombre_user ;
@@ -75,8 +77,54 @@ function initialize() {
                                      $.each(peticiones,function(pe,peticion){
                                        if(ruta.id == peticion.pet_ruta){
                                          if(peticion.pet_estado=="Pendiente"){
-                                           $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</p><div>");
+                                           $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' id='"+peticion.id+"' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</p>"+
+                                           "<button id='"+peticion.id+"' class='btn_si_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 15px auto;position:relative;top:-20px;font-size:10px'> si</button>"+
+                                           "<button id='"+peticion.id+"' class='btn_no_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 5px;position:relative;top:-20px;font-size:10px'> No</button></div>");
                                          }
+                                         $(".btn_si_class").click(function()
+                                         {
+                                           alert("diste click");
+
+                                           var id = $(this).attr("id");
+                                           var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+                                           var estado = "Aceptado"
+                                           $.ajax({
+                                               type: "POST",
+                                               url:'/cambiar/',
+                                               data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
+                                               success: function(){
+                                                swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                                             },
+                                               error: function(e){
+                                               swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                                             }
+                                           });
+
+
+                                         });
+                                         $(".btn_no_class").click(function()
+                                         {
+                                            var id = $(this).attr("id");
+                                            var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+                                            var estado = "Negado"
+                                            $.ajax({
+                                                type: "POST",
+                                                url:'/cambiar/',
+                                                data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
+                                                success: function(){
+                                                 swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                                              },
+                                                error: function(e){
+                                                swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                                              }
+                                            });
+
+
+
+                                         });
+
+
+
                                        }
                                      });
 
@@ -133,6 +181,61 @@ function initialize() {
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
            });
+
+
+           $.ajax({
+            type: "GET",
+            url:'/todosPeticiones/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(peticiones){
+                  $.each(peticiones,function(p,peticion){
+                    console.log(peticion.persona_peticion+""+nombre_user+""+peticion.pet_estado);
+
+                    if(peticion.persona_peticion==nombre_user){
+                      $.ajax({
+                       type: "GET",
+                       url:'/Rutas/',
+                       async: true,
+                       dataType:"Json",
+                       contenType:"application/Json; charset=utf-8",
+                       success: function(routes){
+                             $.each(routes,function(rf,route){
+                               if(route.id==peticion.pet_ruta){
+                                 if(peticion.pet_estado=="Aceptado"){
+
+
+                                   $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Aceptado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
+                                 }else if (peticion.pet_estado=="Negado") {
+                                   console.log("ingrese negado")
+                                  $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Negado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
+                                 }
+
+                               }
+                             });
+
+                       },
+                       error: function(data){
+                        // console.log(data.responseText);
+                         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                       }
+                      });
+
+
+
+
+                    }
+                  });
+
+            },
+            error: function(data){
+             // console.log(data.responseText);
+              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+            }
+           });
+
+
 
 
 
