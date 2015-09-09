@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^todosSeguidores', 'web.views.obtenerTablaSeguidores'),
     url(r'^todosPeticiones', 'web.views.obtenerTodasPeticiones'),
     url(r'^filtro', 'web.views.obtenerTodasPeticiones_filtro'),
+    url(r'^update', 'web.views.update_estado'),
     url(r'^seguidores', 'web.views.obtenerSeguidores'),
     url(r'^siguiendos', 'web.views.obtenerSiguiendos'),
     url(r'^busqueda', 'web.views.BuscarPer'),#para buscar una sola persona
@@ -60,5 +61,7 @@ urlpatterns = [
     url(r'^registro$', 'web.views.regis',name="regis"),#acceso a la pag registrar
     url(r'^noseguir','web.views.Dejar_de_seguir'),#para el views de dejar_de_seguir
     url(r'^api/', include(router.urls)),
+    url(r'^cambiar','web.views.cambiar_estado'),#para el views de dejar_de_seguir
+
 
 ]

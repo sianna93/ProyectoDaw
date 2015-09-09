@@ -1,14 +1,7 @@
-/*****************************************************
-/*  PROYECTO DE ESTRUCTURAS                         /*
-/*  Integrantes:                                    /*
-/*    Sianna Puente                                 /*
-/*    Janina Costa                                  /*
-/*    Stephany Quimba                               /*
-/*    Kleber Díaz                                   /*
-/*                                                  /*
-/*  Funciones para la página de registarse          /*
-/****************************************************/
 
+function initialize() {
+    document.getElementById('btnRegistrar').addEventListener('click',usuarioexiste, false);
+}
 //funcion que me valida que el ingreso de la placa solo sea de un modelo en específico
 function testaPlaca(plaquita) {
 	padrao = /^[a-zA-Z]{3}\d{4}$/

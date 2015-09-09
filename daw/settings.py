@@ -96,13 +96,11 @@ WSGI_APPLICATION = 'daw.wsgi.application'
 DATABASES = {
     'default': {
 	'ENGINE': 'django.db.backends.mysql',
-<<<<<<< Updated upstream
-        'NAME': '2015_1t_grupo6',
-=======
         'NAME': 'daw2',
->>>>>>> Stashed changes
         'USER': 'root',
-        'PASSWORD': 'root',
+
+        'PASSWORD': '',
+
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
