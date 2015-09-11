@@ -1,5 +1,5 @@
 *.pyc
-/daw/settings*.py
+/daw/settings.py
 /daw/wsgi*.py
 /carga
 /media
