@@ -28,11 +28,12 @@
             <section id="form">
                   <form action='registrar' method='POST' > {% csrf_token %}
 
+
+                        <input type="text" id="txtusername" name="username"  class="txtvalidar" placeholder="Username" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
+
                         <input type="text" id="first_name" name="first_name" size="3"  class="txtvalidar" placeholder="Nombre" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
 
                         <input type="text" id="last_name" name="last_name" class="txtvalidar" placeholder="Apellido" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
-
-                        <input type="text" id="txtusername" name="username"  class="txtvalidar" placeholder="Username" required="" onkeypress="return soloLetras(event)" onblur="limpia()" onKeyUp="return limitar(event,this.value,10)" onKeyDown="return limitar(event,this.value,10)">
 
                         <input type="password" name="password" id="txtPass"  class="password" placeholder="Password" required=""  > </br > </br >
                         <!--{{ form.password }}-->
