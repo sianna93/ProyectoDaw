@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^filtro_rutas','web.views.obtenerTodasRutas_filtro'),
     url(r'^coordenadas','web.views.obtenerCoordenadas'),
     url(r'^usuarios','web.views.obtenerUsuarios'),
-    url(r'^nombres','web.views.getName'),
+    url(r'^nombres','web.views.getName'),               #webservices
     url(r'^todosSeguidores', 'web.views.obtenerTablaSeguidores'),
     url(r'^todosPeticiones', 'web.views.obtenerTodasPeticiones'),
     url(r'^filtro', 'web.views.obtenerTodasPeticiones_filtro'),

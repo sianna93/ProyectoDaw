@@ -1,6 +1,6 @@
 {% spaceless %}
 {
-    "nombre":"{{nombres}}",
-    "apellidos":"{{apellidos}}",
+    "nombres":"{{datos.NOMBRES}}",
+    "apellidos":"{{datos.APELLIDOS}}"
 }
 {% endspaceless %}

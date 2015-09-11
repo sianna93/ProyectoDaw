@@ -582,10 +582,29 @@ def getPerson(user):
    #e.nombres=nomb
    #e.apellidos=apelli
 
-   return [nomb,apelli]
+   #return [nomb,apelli]
+   return nomb
 
 def getName(request) :
     if request.method=='GET':
-        user=request.GET.get("user_n")
-        [nombres,apellidos]= getPerson(user)
-        return HttpResponse(json.dumps({'nombres':nombres, 'apellidos':apellidos}), content_type='application/json; charset=utf-8')
+       user=request.GET.get("user_n")
+       print(user)
+       from suds.xsd.doctor import ImportDoctor, Import
+       from suds.client import Client
+       url = 'http://ws.espol.edu.ec/saac/wsandroid.asmx?WSDL'
+       imp = Import('http://www.w3.org/2001/XMLSchema')
+       imp.filter.add('http://tempuri.org/')
+       doctor = ImportDoctor(imp)
+       client = Client(url, doctor=doctor)
+       auth = client.service
+   #debes revisar el dato ye ir viendo los datos para sacar la informacion
+
+       datos = auth.wsInfoUsuario(user).diffgram[0][0]
+       response = render_to_response(
+            'json/nombre.json',
+            {'datos':datos},
+            context_instance=RequestContext(request)
+        )
+       response['Content-Type'] = 'application/json; charset=utf-8'
+       response['Cache-Control'] = 'no-cache'
+       return response

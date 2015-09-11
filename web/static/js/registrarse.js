@@ -131,15 +131,14 @@ function limpia() {
 function setNombre(){
   $.ajax({
     type: "GET",
-    url:'/nombres/',
+    url:'/nombres',
     data: {user_n: 'sppuente'},
     dataType:"json",
     contentType:"application/json; charset=utf-8",
-    success: function(usuario){
-      console.log(usuario);
+    success: function(data){
+      console.log(data);
     },
     error: function(data){
-    //  console.log(data.responseText);
       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
     }
   });
