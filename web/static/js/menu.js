@@ -17,8 +17,12 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
+  inicializar_notificaciones();
 
-    $(".img_noti_class").click(function()
+}
+
+function inicializar_notificaciones(){
+      $(".img_noti_class").click(function()
     {
       $('.listas_notificaciones').remove();
       $('.btn_si_class').remove();
@@ -212,9 +216,12 @@ function initialize() {
     {
       return false;
     });
-
-
 }
+
+
+
+
+
 var list_puntos= [];
 var list_ini_fin=[];
 var inicio,fin;
