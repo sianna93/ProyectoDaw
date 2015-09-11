@@ -1,161 +1,128 @@
-{% load staticfiles %}
+  {% load staticfiles %}
 
-{% load swampdragon_tags %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title> Rutas </title>
-          <!--<script src="{% static 'js/menu.js' %}"></script>-->
-        <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}" >
-          <!-- Latest compiled and minified css -->
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert2.css' %}">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-          <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  {% load swampdragon_tags %}
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title> Rutas </title>
+    <!--<script src="{% static 'js/menu.js' %}"></script>-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}" >
+    <!-- Latest compiled and minified css -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert2.css' %}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
-        <!-- INICIO DE BOOSTRAP -->
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <!-- FIN DE BOOSTRAP -->
-        <script>
-            window.fbAsyncInit = function() {
-              FB.init({
-                appId      : '1620624664887061',
-                xfbml      : true,
-                version    : 'v2.4'
-              });
-            };
+    <!-- INICIO DE BOOSTRAP -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- FIN DE BOOSTRAP -->
+    <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1620624664887061',
+        xfbml      : true,
+        version    : 'v2.4'
+      });
+    };
 
-          (function(d, s, id){
-             var js, fjs = d.getElementsByTagName(s)[0];
-             if (d.getElementById(id)) {return;}
-             js = d.createElement(s); js.id = id;
-             js.src = "//connect.facebook.net/en_US/sdk.js";
-             fjs.parentNode.insertBefore(js, fjs);
-           }(document, 'script', 'facebook-jssdk'));
-      </script>
+    (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+    </script>
 
-        <!-- Latest compiled JavaScript -->
-      </head>
-      <body>
+    <!-- Latest compiled JavaScript -->
+  </head>
+  <body>
 
-          <div id="map-canvas" ></div>
-          <div id="directions_panel"></div>
-
-
-          <!--Inicio de menu -->
-          <nav id="form">
-            <ul id="navigationMenu" style="margin: 0-40px; width: 0px; height: 0px ">
-              <li>
-                <a id="a_cuenta" class="cuenta" href="#"><span>Cuenta</span> </a>
-              </li>
-              <li>
-                <a id="a_siguiendo" class="siguiendo" href="#"  ><span>Siguiendo</span> </a>
-              </li>
-              <li>
-                <a id="a_seguidores" class="seguidores" href="#" ><span>Seguidores</span> </a>
-              </li>
-              <li>
-                <a id="a_buscar" class="buscar" href="#"> <span>Buscar</span></a>
-              </li>
-              <li>
-                <a id="a_iniciar_ruta" class="iniciar_ruta" href="#" ><span>Iniciar ruta</span></a>
-              </li>
-              <li>
-                <a id="a_misrutas" class="Mis_Rutas" href="#"><span>Mis Rutas</span></a>
-              </li>
-              <li>
-                <a id="a_cerrar_sesion" href= "{% url 'logout' %}" class="cerrar_sesion" > <span>cerrar sesión</span>  </a>
-              </li>
-            </ul>
-          </nav>
-
-          <!--aside para de panel derecho-->
-          <script>
-                /*  $(document).ready(function()
-                  {
-                  $(".img_noti_class").click(function()
-                  {
-                    alert("click;")
-                  $("#notificationContainer").fadeToggle(300);
-                  $("#notification_count").fadeOut("slow");
-                  return false;
-                  });
-
-                  //Document Click hiding the popup
-                  $(document).click(function()
-                  {
-                  $("#notificationContainer").hide();
-                  });
-
-                  //Popup on click
-                  $("#notificationContainer").click(function()
-                  {
-                  return false;
-                  });
-
-                });*/
-          </script>
-          <div id="panel-derecho">
-            <a id="a_close" class="close" title="Cerrar">×</a>
-            <div id="img_div"><img id="img_noti" class="img_noti_class" src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/>
-
-                      <div id="notificationContainer" class "noficationcontainerclass">
-                      <div id="notificationTitle">Notifications</div>
-                      <div id="notificationsBody" class="notifications" style:"overflow:auto">
-                      <!--  <div class ="boxdiv">
-                            <li class='listas_notificaciones' style='height:20px; widht:20px;'>Hola me podrias llevar</li>
-                            <p>Hola alito eres bobitaaa</p>
-                        </div>
-                        <div class ="boxdiv">
-                            <li class='listas_notificaciones' style='height:20px; widht:20px;'>Hola me podrias llevar</li>
-                            <p>Hola alito eres bobitaaa</p>
-                        </div>
-                      -->
-                      </div>
-                      <div id="notificationFooter"><a href="#">See All</a></div>
-                      </div>
+    <div id="map-canvas" ></div>
+    <div id="directions_panel"></div>
 
 
-            </div>
+    <!--Inicio de menu -->
+    <nav id="form">
+      <ul id="navigationMenu" style="margin: 0-40px; width: 0px; height: 0px ">
+        <li>
+          <a id="a_cuenta" class="cuenta" href="#"><span>Cuenta</span> </a>
+        </li>
+        <li>
+          <a id="a_siguiendo" class="siguiendo" href="#"  ><span>Siguiendo</span> </a>
+        </li>
+        <li>
+          <a id="a_seguidores" class="seguidores" href="#" ><span>Seguidores</span> </a>
+        </li>
+        <li>
+          <a id="a_buscar" class="buscar" href="#"> <span>Buscar</span></a>
+        </li>
+        <li>
+          <a id="a_iniciar_ruta" class="iniciar_ruta" href="#" ><span>Iniciar ruta</span></a>
+        </li>
+        <li>
+          <a id="a_misrutas" class="Mis_Rutas" href="#"><span>Mis Rutas</span></a>
+        </li>
+        <li>
+          <a id="a_cerrar_sesion" href= "{% url 'logout' %}" class="cerrar_sesion" > <span>cerrar sesión</span>  </a>
+        </li>
+      </ul>
+    </nav>
 
-          </div>
-<!-- Agregando Un Model para el chat-->
+
+  <div id="panel-derecho">
+    <a id="a_close" class="close" title="Cerrar">×</a>
+    <div id="img_div"><img id="img_noti" class="img_noti_class" src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/>
+
+      <div id="notificationContainer" class "noficationcontainerclass">
+        <div id="notificationTitle">Notifications</div>
+        <div id="notificationsBody" class="notifications" style:"overflow:auto">
+
+        </div>
+        <div id="notificationFooter"><a href="#">See All</a></div>
+      </div>
+
+
+    </div>
+
+  </div>
+  <!-- Agregando Un Model para el chat-->
   <button type="button" id="boton_modal">Inicar Chat General</button>
   <script>
   $('#boton_modal').click(function () {
 
-      $.ajax({
-        type: "GET",
-        url:'/cuenta/',
-        async: true,
-        dataType:"Json",
-        contenType:"application/Json; charset=utf-8",
-        success: function(user){
-              //console.log(user)
-              usuario= user.first_name+" "+user.last_name;
+    $.ajax({
+      type: "GET",
+      url:'/cuenta/',
+      async: true,
+      dataType:"Json",
+      contenType:"application/Json; charset=utf-8",
+      success: function(user){
+                //console.log(user)
+                usuario= user.first_name+" "+user.last_name;
                 $('#myModal_chat').modal('show');
                 $('#name').val(user.username)
               },
-        error: function(data){
-          console.log(data.responseText);
-          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-        }
-      });
+              error: function(data){
+                console.log(data.responseText);
+                swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+              }
+            });
 
-      $('#cuerpo_cuenta').remove();
+    $('#cuerpo_cuenta').remove();
 
-    });
+  });
 
   </script>
 
@@ -170,111 +137,37 @@
           <h4 class="modal-title">Chat General</h4>
         </div>
         <div class="modal-body">
-        <!--Aqui va el chat-->
+          <!--Aqui va el chat-->
           <div id = "chat" style="width: 500px; height: 500px;top:20px;"> <div class="col-md-6" style="width: 300px; height: 300px;">
-        <form method="post" id="form_chat" class="form-inline" style="width: 500px; height: 200px; left:500px;">
-            <div id="chat_form_group"class="form-group" style="width: 500px; height: 50px">
+            <form method="post" id="form_chat" class="form-inline" style="width: 500px; height: 200px; left:500px;">
+              <div id="chat_form_group"class="form-group" style="width: 500px; height: 50px">
                 <input type="text" class="form-control" placeholder="name" id="name" autofocus="true" id ="user"  readonly></br>
-            </div>
-            <div id="chat_form_group" class="form-group" style="width: 500px; height: 50px" >
+              </div>
+              <div id="chat_form_group" class="form-group" style="width: 500px; height: 50px" >
                 <input type="text" class="form-control" placeholder="message" id="message"></br>
-            </div>
+              </div>
 
-            <div id="chat_form_group" class="form-group" style="width: 500px; height: 50px">
+              <div id="chat_form_group" class="form-group" style="width: 500px; height: 50px">
                 <button type="button" class="btn btn-primary" id="send-message-button">chat</button></br>
-            </div>
+              </div>
 
-            <div id="chat_error"style="width: 100px;">
+              <div id="chat_error"style="width: 100px;">
                 <span id="error-name"></span>
-            </div>
-            <div id="chat_error" style="width: 100px;">
+              </div>
+              <div id="chat_error" style="width: 100px;">
                 <span id="error-message"></span>
-            </div>
-        </form>
+              </div>
+            </form>
 
-        <ul class="list-group" style="width: 300px; height: 200px; overflow: auto">
-            <li class="list-group-item" id="messages" style =" width:500px">
+            <ul class="list-group" style="width: 300px; height: 200px; overflow: auto">
+              <li class="list-group-item" id="messages" style =" width:500px">
 
-            </li>
-        </ul>
-      </div>
-
+              </li>
+            </ul>
           </div>
-        <!--Aqui va el chat-->
-    </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
         </div>
-      </div>
-
-    </div>
-  </div>
-
-
-
-
-
-
-<!--
-          <div id = "chat" > <div class="col-md-6">
-        <form method="post" class="form-inline">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="name" id="name" autofocus="true"></br>
-            </div>
-            <div class="form-group" >
-                <input type="text" class="form-control" placeholder="message" id="message"></br>
-            </div>
-
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" id="send-message-button">chat</button></br>
-            </div>
-
-            <div>
-                <span id="error-name"></span>
-            </div>
-            <div>
-                <span id="error-message"></span>
-            </div>
-        </form>
-
-        <ul class="list-group">
-            <li class="list-group-item" id="messages">
-
-            </li>
-        </ul>
-	    </div>
-
-          </div>
--->
-
-<div id="modal_usuario" >
-  <div class="modal fade" id="myModal_usuario" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-  <div class="modal-content">
-    <div class="modal-body">
-
-    </div>
-  </div>
-    </div>
-
-  </div>
-</div>
-
-<!--Modal de notificaciones -->
-<div id="modal_notificaciones" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Notificaciones</h4>
-      </div>
-      <div class="modal-body-notificaciones">
-        <div id ="div_notificaciones" class="div_notificaciones_class" style ="overflow:auto">
-          <ol id ="notifications" class="notifications_class">
-          </ol>
+        <!--Aqui va el chat-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -282,7 +175,46 @@
     </div>
 
   </div>
-</div>
+  </div>
+
+
+
+  <div id="modal_usuario" >
+    <div class="modal fade" id="myModal_usuario" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-body">
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--Modal de notificaciones -->
+  <div id="modal_notificaciones" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Notificaciones</h4>
+        </div>
+        <div class="modal-body-notificaciones">
+          <div id ="div_notificaciones" class="div_notificaciones_class" style ="overflow:auto">
+            <ol id ="notifications" class="notifications_class">
+            </ol>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
 
 
@@ -290,25 +222,25 @@
 
 
 
-<!--Modal de notificaciones -->
-          <!-- Modal: Modal con información de los seguidores/seguidos que se me presenta al dar click en cada nombre -->
+    <!--Modal de notificaciones -->
+    <!-- Modal: Modal con información de los seguidores/seguidos que se me presenta al dar click en cada nombre -->
 
-          <footer ><small> Derechos reservados Desarrollo web - 2015</small></footer>
-      </body>
-      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-      <!-- Google -->
-      <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-      <script src="{% static 'js/google.js' %}"></script>
-      <script src="{% static 'js/menu.js' %}"></script>
-      <script src="{% static 'js/sweetalert2.min.js' %}"></script>
+    <footer ><small> Derechos reservados Desarrollo web - 2015</small></footer>
+  </body>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!-- Google -->
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+  <script src="{% static 'js/google.js' %}"></script>
+  <script src="{% static 'js/menu.js' %}"></script>
+  <script src="{% static 'js/sweetalert2.min.js' %}"></script>
   {% csrf_token %}
-{% swampdragon_settings %}
-<script type="text/javascript" src="{% static 'swampdragon/js/dist/swampdragon.js' %}"></script>
+  {% swampdragon_settings %}
+  <script type="text/javascript" src="{% static 'swampdragon/js/dist/swampdragon.js' %}"></script>
 
 
 
-<script type="text/javascript" src="{% static 'js/app.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
 
 
 
-</html>
+  </html>

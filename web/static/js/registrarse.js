@@ -1,6 +1,6 @@
 
 function initialize() {
-    document.getElementById('btnRegistrar').addEventListener('click',usuarioexiste, false);
+    //document.getElementById('btnRegistrar').addEventListener('click',usuarioexiste, false);
     setNombre();
 }
 //funcion que me valida que el ingreso de la placa solo sea de un modelo en específico

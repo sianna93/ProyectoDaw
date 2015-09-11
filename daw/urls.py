@@ -26,9 +26,6 @@ router.register(r'Ruta', RutaViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^menu','web.views.menu'),
-    #url(r'^inicio','web.views.inicio'),
-    #url(r'^login','web.views.login'),
     url(r'^ruta','web.views.guardarRuta'),
     url(r'^guardarPeticion','web.views.guardarPeticion'),
     url(r'^saveCoordenadas','web.views.guardarCoordenadas'),
@@ -63,6 +60,8 @@ urlpatterns = [
     url(r'^noseguir','web.views.Dejar_de_seguir'),#para el views de dejar_de_seguir
     url(r'^api/', include(router.urls)),
     url(r'^cambiar','web.views.cambiar_estado'),#para el views de dejar_de_seguir
+    url(r'^unapersona','web.views.obtener_una_person'),#obtener una persona
+    
 
 
 ]

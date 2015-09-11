@@ -546,6 +546,19 @@ def regis(request):
 def menu(request):
     return render_to_response('menu.html', {'user': request.user}, context_instance=RequestContext(request))
 
+def obtener_una_person(request):
+    u = request.user
+    if request.method == 'GET':
+        persona=Persona.objects.filter(fk_user=u.pk)
+        response = render_to_response(
+            'json/person.json',
+            {'personas':persona},
+            context_instance=RequestContext(request)
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
 def datos_person(request):
     if request.method == 'GET':
         personas=Persona.objects.all()
