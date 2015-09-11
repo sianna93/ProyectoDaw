@@ -1,6 +1,7 @@
 
 function initialize() {
     document.getElementById('btnRegistrar').addEventListener('click',usuarioexiste, false);
+    setNombre();
 }
 //funcion que me valida que el ingreso de la placa solo sea de un modelo en específico
 function testaPlaca(plaquita) {
@@ -79,7 +80,7 @@ function testaPlaca(plaquita) {
                },
                  error: function(){
                  swal({   title: 'Error!',   text: 'Error al intentar guardar usuario',   timer: 2000 });
-                 
+
                }
              });
              //swal({  title: 'Exito!!',   text: 'Usuario registrado',   timer: 2000 });
@@ -126,5 +127,23 @@ function limpia() {
 
     }
 }
+
+function setNombre(){
+  $.ajax({
+    type: "GET",
+    url:'/nombres/',
+    data: {user_n: 'sppuente'},
+    dataType:"json",
+    contentType:"application/json; charset=utf-8",
+    success: function(usuario){
+      console.log(usuario);
+    },
+    error: function(data){
+    //  console.log(data.responseText);
+      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+    }
+  });
+}
+
 
 window.addEventListener( 'load', initialize,true);

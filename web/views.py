@@ -558,13 +558,34 @@ def datos_person(request):
         response['Cache-Control'] = 'no-cache'
         return response
 
-def getPerson(request):
+#FUNCION QUE CONSUME EL WEB SERVICES DE LA ESPOL
+def getPerson(user):
    from suds.xsd.doctor import ImportDoctor, Import
    from suds.client import Client
+   #intalar suds-jrok
+   #class estudiante:
+       #nombres= ''
+       #apellidos= ''
+
    url = 'http://ws.espol.edu.ec/saac/wsandroid.asmx?WSDL'
    imp = Import('http://www.w3.org/2001/XMLSchema')
    imp.filter.add('http://tempuri.org/')
    doctor = ImportDoctor(imp)
    client = Client(url, doctor=doctor)
-   content = client.service.wsInfoEstudianteGeneral(matricula)
+   auth = client.service
    #debes revisar el dato ye ir viendo los datos para sacar la informacion
+
+   nomb= auth.wsInfoUsuario(user).diffgram[0][0].NOMBRES
+   apelli = auth.wsInfoUsuario(user).diffgram[0][0].APELLIDOS
+
+   #e= estudiante()
+   #e.nombres=nomb
+   #e.apellidos=apelli
+
+   return [nomb,apelli]
+
+def getName(request) :
+    if request.method=='GET':
+        user=request.GET.get("user_n")
+        [nombres,apellidos]= getPerson(user)
+        return HttpResponse(json.dumps({'nombres':nombres, 'apellidos':apellidos}), content_type='application/json; charset=utf-8')

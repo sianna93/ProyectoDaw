@@ -1,0 +1,6 @@
+{% spaceless %}
+{
+    "nombre":"{{nombres}}",
+    "apellidos":"{{apellidos}}",
+}
+{% endspaceless %}
