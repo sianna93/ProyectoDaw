@@ -129,19 +129,31 @@ function limpia() {
 }
 
 function setNombre(){
-  $.ajax({
-    type: "GET",
-    url:'/nombres',
-    data: {user_n: 'sppuente'},
-    dataType:"json",
-    contentType:"application/json; charset=utf-8",
-    success: function(data){
-      console.log(data);
-    },
-    error: function(data){
-      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+  $( "#txtusername" ).keypress(function( event ) {
+    if ( event.which == 13 ) {
+       event.preventDefault();
+       var txtuser=$("#txtusername" ).val();
+       console.log(txtuser);
+       $.ajax({
+          type: "GET",
+          url:'/nombres',
+          data: {user_n: txtuser},
+          dataType:"json",
+          contentType:"application/json; charset=utf-8",
+          success: function(data){
+            console.log(data);
+            $("#first_name").val(data.nombres);
+            $("#last_name").val(data.apellidos);
+
+
+          },
+          error: function(data){
+            swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+          }
+        });
     }
   });
+
 }
 
 

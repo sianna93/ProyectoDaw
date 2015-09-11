@@ -521,6 +521,7 @@ def guardarUsuario(request):
         print(carro)
         if nickname is not None and contraseña is not None:
             #Se guarda el usuario
+            print(apellido)
             user = User.objects.create_user(username=nickname, password=contraseña, first_name=nombre, last_name=apellido)
             user.save()
             #Se guarda la persona  con los datos de placa y si tiene o no carro
