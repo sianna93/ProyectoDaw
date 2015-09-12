@@ -124,7 +124,7 @@ body,#panel-derecho{
 }
 
 /**menu******/
-#navigationMenu li{
+#navigationMenu li, #navigationMenu2 li{
     list-style:none;
     height:71px;
     padding:2px;
@@ -132,7 +132,7 @@ body,#panel-derecho{
 
 }
 
-#navigationMenu span{
+#navigationMenu span, #navigationMenu2 span{
     /* Container properties */
     width:0;
     left:70px;
@@ -166,10 +166,20 @@ body,#panel-derecho{
     position:relative;
 }
 
+#navigationMenu2 a{
+    /* The background sprite: */
+    background:url('../imagenes/navigation3.jpg' ) no-repeat;
+
+    height:69px;
+    width:69px;
+    display:block;
+    position:relative;
+}
+
 /* General hover styles */
 
-#navigationMenu a:hover span{ width:auto; padding:0 20px;overflow:visible; }
-#navigationMenu a:hover{
+#navigationMenu a:hover span, #navigationMenu2 a:hover span{ width:auto; padding:0 20px;overflow:visible; }
+#navigationMenu a:hover, #navigationMenu2 a:hover{
     text-decoration:none;
 
     /* CSS outer glow with the box-shadow property */
@@ -180,9 +190,9 @@ body,#panel-derecho{
 
 /* Green Button */
 
-#navigationMenu .cuenta {	background-position:0px 0;}
-#navigationMenu .cuenta:hover {	background-position:0px -72px;}
-#navigationMenu .cuenta span{
+#navigationMenu .cuenta, #navigationMenu2 .cuenta{	background-position:0px 0;}
+#navigationMenu .cuenta:hover, #navigationMenu2 .cuenta:hover{	background-position:0px -72px;}
+#navigationMenu .cuenta span, #navigationMenu2 .cuenta span{
     background-color:#7da315;
     color:#3d4f0c;
     text-shadow:1px 1px 0 #99bf31;
@@ -190,9 +200,9 @@ body,#panel-derecho{
 
 /* Blue Button */
 
-#navigationMenu .siguiendo{ background-position:-72px 0;}
-#navigationMenu .siguiendo:hover { background-position:-72px -72px;}
-#navigationMenu .siguiendo span{
+#navigationMenu .siguiendo, #navigationMenu2 .siguiendo{ background-position:-72px 0;}
+#navigationMenu .siguiendo:hover, #navigationMenu2 .siguiendo:hover{ background-position:-72px -72px;}
+#navigationMenu .siguiendo span, #navigationMenu2 .siguiendo span{
     background-color:#1e8bb4;
     color:#223a44;
     text-shadow:1px 1px 0 #44a8d0;
@@ -202,9 +212,9 @@ body,#panel-derecho{
 
 /* Blue Button */
 
-#navigationMenu .seguidores { background-position:-144px 0;}
-#navigationMenu .seguidores:hover { background-position:-144px -72px;}
-#navigationMenu .seguidores span{
+#navigationMenu .seguidores, #navigationMenu2 .seguidores{ background-position:-144px 0;}
+#navigationMenu .seguidores:hover, #navigationMenu2 .seguidores:hover{ background-position:-144px -72px;}
+#navigationMenu .seguidores span, #navigationMenu2 .seguidores span{
     background-color:#1e8bb4;
     color:#223a44;
     text-shadow:1px 1px 0 #44a8d0;
@@ -212,9 +222,9 @@ body,#panel-derecho{
 
 /* Orange Button */
 
-#navigationMenu .buscar { background-position:-217px 0;}
-#navigationMenu .buscar:hover { background-position:-217px -72px;}
-#navigationMenu .buscar span{
+#navigationMenu .buscar , #navigationMenu2 .buscar{ background-position:-217px 0;}
+#navigationMenu .buscar:hover , #navigationMenu2 .buscar:hover{ background-position:-217px -72px;}
+#navigationMenu .buscar span, #navigationMenu2 .buscar span{
     background-color:#c86c1f;
     color:#5a3517;
     text-shadow:1px 1px 0 #d28344;
@@ -222,7 +232,7 @@ body,#panel-derecho{
 
 /* Yellow Button */
 
-#navigationMenu .iniciar_ruta { background-position:-289px 0;}
+#navigationMenu .iniciar_ruta{ background-position:-289px 0;}
 #navigationMenu .iniciar_ruta:hover{ background-position:-289px -72px;}
 #navigationMenu .iniciar_ruta span{
     background-color:#d0a525;
@@ -243,8 +253,10 @@ body,#panel-derecho{
 /* Purple Button */
 
 #navigationMenu .cerrar_sesion{ background-position:-431px 0;}
+#navigationMenu2 .cerrar_sesion{ background-position:-289px 0;}
 #navigationMenu .cerrar_sesion:hover { background-position:-431px -72px;}
-#navigationMenu .cerrar_sesion span{
+#navigationMenu2 .cerrar_sesion:hover{ background-position:-289px -72px;}
+#navigationMenu .cerrar_sesion span, #navigationMenu2 .cerrar_sesion span{
     background-color:#9ddff5;
     color:#460f35;
     text-shadow:1px 1px 0 #d244a6;

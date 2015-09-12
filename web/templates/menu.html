@@ -52,7 +52,7 @@
     <div id="map-canvas" ></div>
     <div id="directions_panel"></div>
 
-
+    {% if carro_persona %}
     <!--Inicio de menu -->
     <nav id="form">
       <ul id="navigationMenu" style="margin: 0-40px; width: 0px; height: 0px ">
@@ -79,6 +79,33 @@
         </li>
       </ul>
     </nav>
+
+    {% endif %}
+
+    {% if not carro_persona %}
+    <!--Inicio de menu -->
+    <nav id="form">
+      <ul id="navigationMenu2" style="margin: 0-40px; width: 0px; height: 0px ">
+        <li>
+          <a id="a_cuenta" class="cuenta" href="#"><span>Cuenta</span> </a>
+        </li>
+        <li>
+          <a id="a_siguiendo" class="siguiendo" href="#"  ><span>Siguiendo</span> </a>
+        </li>
+        <li>
+          <a id="a_seguidores" class="seguidores" href="#" ><span>Seguidores</span> </a>
+        </li>
+        <li>
+          <a id="a_buscar" class="buscar" href="#"> <span>Buscar</span></a>
+        </li>
+        <li>
+          <a id="a_cerrar_sesion" href= "{% url 'logout' %}" class="cerrar_sesion" > <span>cerrar sesión</span>  </a>
+        </li>
+      </ul>
+    </nav>
+
+    {% endif %}
+
 
 
   <div id="panel-derecho">
@@ -215,11 +242,6 @@
 
       </div>
     </div>
-
-
-
-
-
 
 
     <!--Modal de notificaciones -->

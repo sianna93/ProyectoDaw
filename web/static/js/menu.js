@@ -9,38 +9,30 @@
   Funciones para el menu y página pincipal de la página
  **************************************************************/
 function start(){
+
   $.ajax({
     type: "GET",
-    url:'/cuenta/',
+    url:'/unapersona/',
     async: true,
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",
-    success: function(user){
-          $.ajax({
-                    type: "GET",
-                    url:'/datos/',
-                    async: true,
-                    dataType:"Json",
-                    contenType:"application/Json; charset=utf-8",
-                    success: function(personas){
-                          $.each(personas,function(p,persona){
-                            if(user.id==persona.fk_user_id){
-                              if(persona.is_carro=='True'){
-                                initializeConCarro();
-                              }
-                              else if(persona.is_carro=='False'){
-                                initializeSinCarro();
-                              }
-                            }
-                          });
-                    },
-                    error: function(data){
+    success: function(personas){
+   //       $.each(personas,function(p,persona){
+             if(personas[0].is_carro=='True'){
+                initializeConCarro();
 
-                      swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                    }
-                  });
-      }
-  )};
+                
+              }
+              else if(personas[0].is_carro=='False'){
+                initializeSinCarro();
+              }
+          //});
+    },
+    error: function(data){
+
+      swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+    }
+  });
 }
 
 //funcion para el menu para usuarios que no tienen carro
