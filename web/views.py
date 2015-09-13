@@ -561,10 +561,11 @@ def obtener_una_person(request):
         return response
 
 def personaCarro(request):
+
     u = request.user
     persona=Persona.objects.filter(fk_user=u.pk)
-
-    return render_to_response('menu.html',{'carro_persona':persona.is_carro})
+    print("tiene carro",persona.is_carro)
+    return render(request,'menu.html',{'carro_persona':'hola'})
 
 def datos_person(request):
     if request.method == 'GET':

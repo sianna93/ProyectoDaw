@@ -606,9 +606,10 @@ function mostrar_busqueda() {
 	        if(usuario.username==busqueda){
 	          user=usuario.first_name + " " + usuario.last_name;
 	          crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Seguir');
+            eventos_presentacion();
 	        }
-	      })
-
+	      });
+       
 	    },
 	    error: function(data){
 	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
