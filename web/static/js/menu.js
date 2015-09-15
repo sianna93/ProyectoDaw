@@ -8,7 +8,6 @@
 
   Funciones para el menu y página pincipal de la página
  **************************************************************/
-
 function initialize() {
   document.getElementById('a_cuenta').addEventListener('click',F_cuenta, false);
   document.getElementById('a_siguiendo').addEventListener('click',F_siguiendo, false);
@@ -16,7 +15,11 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-  $(".img_noti_class").click(function(){
+
+
+
+    $(".img_noti_class").click(function()
+    {
       $('.listas_notificaciones').remove();
       $('.btn_si_class').remove();
       $('.btn_no_class').remove();
@@ -79,6 +82,8 @@ function initialize() {
                                          }
                                          $(".btn_si_class").click(function()
                                          {
+                                           alert("diste click");
+
                                            var id = $(this).attr("id");
                                            var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
                                            var estado = "Aceptado"
@@ -638,7 +643,6 @@ function autocomplete_busqueda(){
         //bsq= this.value;
       //  console.log(bsq);
         $.ajax({
-
             url:'/filtrarNombres/',
             dataType:"json",
             contenType:"application/Json; charset=utf-8",
