@@ -13,7 +13,7 @@ function initialize() {
 
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+
 
 function cargarMapa(){
     directionsDisplay = new google.maps.DirectionsRenderer();
@@ -229,3 +229,5 @@ function setMapOnAll(map){
     markers[i].setMap(map);
   }
 }
+
+google.maps.event.addDomListener(window, 'load', initialize);

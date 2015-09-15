@@ -61,6 +61,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^cambiar','web.views.cambiar_estado'),#para el views de dejar_de_seguir
     url(r'^unapersona','web.views.obtener_una_person'),#obtener una persona
+    url(r'^personaCarro','web.views.personaCarro'),#obtener una persona
     
 
 

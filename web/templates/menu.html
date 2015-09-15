@@ -52,6 +52,7 @@
     <div id="map-canvas" ></div>
     <div id="directions_panel"></div>
 
+    {% if not carro_persona %}
 
     <!--Inicio de menu -->
     <nav id="form">
@@ -79,6 +80,31 @@
         </li>
       </ul>
     </nav>
+
+    {% else %}
+    <!--Inicio de menu -->
+    <nav id="form">
+      <ul id="navigationMenu2" style="margin: 0-40px; width: 0px; height: 0px ">
+        <li>
+          <a id="a_cuenta" class="cuenta"name="{{ carro_persona}}" href="#"><span>Cuenta</span> </a>
+        </li>
+        <li>
+          <a id="a_siguiendo" class="siguiendo" href="#"  ><span>Siguiendo</span> </a>
+        </li>
+        <li>
+          <a id="a_seguidores" class="seguidores" href="#" ><span>Seguidores</span> </a>
+        </li>
+        <li>
+          <a id="a_buscar" class="buscar" href="#"> <span>Buscar</span></a>
+        </li>
+        <li>
+          <a id="a_cerrar_sesion" href= "{% url 'logout' %}" class="cerrar_sesion" > <span>cerrar sesión</span>  </a>
+        </li>
+      </ul>
+    </nav>
+
+    {% endif %}
+
 
 
   <div id="panel-derecho">
@@ -217,11 +243,6 @@
     </div>
 
 
-
-
-
-
-
     <!--Modal de notificaciones -->
     <!-- Modal: Modal con información de los seguidores/seguidos que se me presenta al dar click en cada nombre -->
 
@@ -229,7 +250,7 @@
   </body>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <!-- Google -->
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAisUOwSGN5kWLH5nn1Bz9JdfQOKaq9fJo&sensor=false" type="text/javascript"></script>
   <script src="{% static 'js/google.js' %}"></script>
   <script src="{% static 'js/menu.js' %}"></script>
   <script src="{% static 'js/sweetalert2.min.js' %}"></script>

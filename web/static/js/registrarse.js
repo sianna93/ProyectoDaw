@@ -73,7 +73,13 @@ function testaPlaca(plaquita) {
              $.ajax({
                  type: "POST",
                  url:'/registrar',
-                 data: {'username':nickname,'first_name':nombre,'last_name':apellido,'password': contraseña,'is_carro':carro,'placa':placa,'csrfmiddlewaretoken':csrf },
+                 data: {'username':nickname,
+                        'first_name':nombre,
+                        'last_name':apellido,
+                        'password': contraseña,
+                        'is_carro':carro,
+                        'placa':placa, 
+                        'csrfmiddlewaretoken':csrf },
                  success: function(){
 
                   swal({   title: 'Exito!',   text: 'El usuario ha sido registrada con exito',   timer: 2000 });
