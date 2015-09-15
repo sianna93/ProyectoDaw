@@ -20,226 +20,142 @@ function initialize() {
 
     $(".img_noti_class").click(function()
     {
-      $('.listas_notificaciones').remove();
+      $('.boxdiv').remove();
+      //$('.listas_notificaciones').remove();
       $('.btn_si_class').remove();
       $('.btn_no_class').remove();
+      $('.boxdiv').remove();
       $('.notificationContainer').append("<div id='notificationTitle'>Notifications</div><div id='notificationsBody' class='notifications' style='overflow:auto;'></div><div id='notificationFooter'><a href='#'>See All</a></div>")
       $("#notificationContainer").fadeToggle(300);
       $("#notification_count").fadeOut("slow");
-      var nombre_user ;
-            $.ajax({
-             type: "GET",
-             url:'/cuenta/',
-             async: true,
-             dataType:"Json",
-             contenType:"application/Json; charset=utf-8",
-             success: function(user){
-               console.log(user.username);
-                nombre_user= user.username;
 
-             },
-             error: function(data){
-               //console.log(data.responseText);
-               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-             }
-           });
+      $.ajax({
+         type: "GET",
+         url:'/filtro_pendiente/',
+         async: true,
+         dataType:"Json",
+         contenType:"application/Json; charset=utf-8",
+         success: function(peticiones){
+             $.each(peticiones,function(pe,peticion){
+                 
+                   $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' id='"+peticion.id+"' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</p>"+
+                   "<button id='"+peticion.id+"' class='btn_si_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 15px auto;position:relative;top:-20px;font-size:10px'> si</button>"+
+                   "<button id='"+peticion.id+"' class='btn_no_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 5px;position:relative;top:-20px;font-size:10px'> No</button></div>");
+                 
+                 $(".btn_si_class").click(function()
+                 {
+                   alert("diste click");
 
-            //console.log(nombre_user);
-            $.ajax({
-              type: "GET",
-              url:'/usuarios/',
-              async: true,
-              dataType:"Json",
-              contenType:"application/Json; charset=utf-8",
-              success: function(users){
-                $.each(users,function(i,user){
-                     if(user.username==nombre_user){
-                       //console.log("si entre");
-                       $.ajax({
-                        type: "GET",
-                        url:'/Rutas/',
-                        async: true,
-                        dataType:"Json",
-                        contenType:"application/Json; charset=utf-8",
-                        success: function(routes){
-                        console.log(routes);
-                          $.each(routes,function(r,ruta){
-                            if(ruta.fk_user==user.username){
-                             console.log("Hola entre en rutas");
-                              $.ajax({
-                               type: "GET",
-                               url:'/filtro/',
-                               async: true,
-                               dataType:"Json",
-                               contenType:"application/Json; charset=utf-8",
-                               success: function(peticiones){
-                                     $.each(peticiones,function(pe,peticion){
-                                       if(ruta.id == peticion.pet_ruta){
-                                         if(peticion.pet_estado=="Pendiente"){
-                                           $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' id='"+peticion.id+"' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</p>"+
-                                           "<button id='"+peticion.id+"' class='btn_si_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 15px auto;position:relative;top:-20px;font-size:10px'> si</button>"+
-                                           "<button id='"+peticion.id+"' class='btn_no_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 5px;position:relative;top:-20px;font-size:10px'> No</button></div>");
-                                         }
-                                         $(".btn_si_class").click(function()
-                                         {
-                                           alert("diste click");
-
-                                           var id = $(this).attr("id");
-                                           var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-                                           var estado = "Aceptado"
-                                           $.ajax({
-                                               type: "POST",
-                                               url:'/cambiar/',
-                                               data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
-                                               success: function(){
-                                                swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
-                                             },
-                                               error: function(e){
-                                               swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
-                                             }
-                                           });
-
-
-                                         });
-                                         $(".btn_no_class").click(function()
-                                         {
-                                            var id = $(this).attr("id");
-                                            var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-                                            var estado = "Negado"
-                                            $.ajax({
-                                                type: "POST",
-                                                url:'/cambiar/',
-                                                data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
-                                                success: function(){
-                                                 swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
-                                              },
-                                                error: function(e){
-                                                swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
-                                              }
-                                            });
-
-
-
-                                         });
-
-
-
-                                       }
-                                     });
-
-                               },
-                               error: function(data){
-                                // console.log(data.responseText);
-                                 swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                               }
-                             });
-
-
-
-
-
-
-
-                            }
-                          });
-                        },
-                        error: function(data){
-                          //console.log(data.responseText);
-                          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                        }
-                      });
-
-
-                      }
+                   var id = $(this).attr("id");
+                   var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+                   var estado = "Aceptado"
+                   $.ajax({
+                       type: "POST",
+                       url:'/cambiar/',
+                       data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
+                       success: function(){
+                        swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                     },
+                       error: function(e){
+                       swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                     }
                    });
 
-             },
-             error: function(data){
-               //console.log(data.responseText);
-               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-             }
-           });
 
-           $.ajax({
-            type: "GET",
-            url:'/filtro_rutas/',
-            async: true,
-            dataType:"Json",
-            contenType:"application/Json; charset=utf-8",
-            success: function(routes_f){
-                  $.each(routes_f,function(rf,route_f){
-                    console.log(nombre_user);
-                    if(route_f.fk_user!==nombre_user){
-                        $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El Usuario :"+route_f.fk_user+"  Ha creado una nueva ruta "+route_f.origen+"-"+route_f.destino+"</p><div>");
-                    }
+                 });
+                 $(".btn_no_class").click(function()
+                 {
+                    var id = $(this).attr("id");
+                    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+                    var estado = "Negado"
+                    $.ajax({
+                        type: "POST",
+                        url:'/cambiar/',
+                        data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
+                        success: function(){
+                         swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                      },
+                        error: function(e){
+                        swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                      }
+                    });
+
+
+
+                 });
+
+             });
+
+           },
+           error: function(data){
+            // console.log(data.responseText);
+             swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+           }
+       });
+
+
+
+
+      $.ajax({
+        type: "GET",
+        url:'/filtro_rutas/',
+        async: true,
+        dataType:"Json",
+        contenType:"application/Json; charset=utf-8",
+        success: function(routes_f){
+              $.each(routes_f,function(rf,route_f){
+                    $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario"+route_f.fk_user+"  Ha creado una nueva ruta "+route_f.origen+"-"+route_f.destino+"</p><div>");
+              });
+
+        },
+        error: function(data){
+         // console.log(data.responseText);
+          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+        }
+       });
+
+
+      $.ajax({
+        type: "GET",
+        url:'/todosPeticiones/',
+        async: true,
+        dataType:"Json",
+        contenType:"application/Json; charset=utf-8",
+        success: function(peticiones){
+              $.each(peticiones,function(p,peticion){
+                console.log(peticion.persona_peticion+""+""+peticion.pet_estado);
+                  $.ajax({
+                   type: "GET",
+                   url:'/Rutas/',
+                   async: true,
+                   dataType:"Json",
+                   contenType:"application/Json; charset=utf-8",
+                   success: function(routes){
+                         $.each(routes,function(rf,route){
+                           if(route.id==peticion.pet_ruta){
+                             if(peticion.pet_estado=="Aceptado"){
+                               $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Aceptado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
+                             }else if (peticion.pet_estado=="Negado") {
+                               console.log("ingrese negado")
+                              $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Negado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
+                             }
+
+                           }
+                         });
+
+                   },
+                   error: function(data){
+                    // console.log(data.responseText);
+                     swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                   }
                   });
-
-            },
-            error: function(data){
-             // console.log(data.responseText);
-              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-            }
-           });
-
-
-           $.ajax({
-            type: "GET",
-            url:'/todosPeticiones/',
-            async: true,
-            dataType:"Json",
-            contenType:"application/Json; charset=utf-8",
-            success: function(peticiones){
-                  $.each(peticiones,function(p,peticion){
-                    console.log(peticion.persona_peticion+""+nombre_user+""+peticion.pet_estado);
-
-                    if(peticion.persona_peticion==nombre_user){
-                      $.ajax({
-                       type: "GET",
-                       url:'/Rutas/',
-                       async: true,
-                       dataType:"Json",
-                       contenType:"application/Json; charset=utf-8",
-                       success: function(routes){
-                             $.each(routes,function(rf,route){
-                               if(route.id==peticion.pet_ruta){
-                                 if(peticion.pet_estado=="Aceptado"){
-
-
-                                   $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Aceptado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
-                                 }else if (peticion.pet_estado=="Negado") {
-                                   console.log("ingrese negado")
-                                  $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Negado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
-                                 }
-
-                               }
-                             });
-
-                       },
-                       error: function(data){
-                        // console.log(data.responseText);
-                         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                       }
-                      });
-
-
-
-
-                    }
-                  });
-
-            },
-            error: function(data){
-             // console.log(data.responseText);
-              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-            }
-           });
-
-
-
-
-
-
-
+              });
+        },
+        error: function(data){
+         // console.log(data.responseText);
+          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+        }
+       });
       return false;
     });
 
@@ -255,101 +171,10 @@ function initialize() {
       return false;
     });
 
-    /*$('#img_noti').click(function () {
 
-     $('.listas_notificaciones').remove();
-      $('.btn_no_class').remove();
-      $('.btn_si_class').remove();
-      var nombre_user ;
-      $('#modal_notificaciones').modal('show');
-      $.ajax({
-       type: "GET",
-       url:'/cuenta/',
-       async: true,
-       dataType:"Json",
-       contenType:"application/Json; charset=utf-8",
-       success: function(user){
-          nombre_user= user.username;
-
-       },
-       error: function(data){
-         //console.log(data.responseText);
-         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-       }
-     });
-
-      //console.log(nombre_user);
-      $.ajax({
-        type: "GET",
-        url:'/usuarios/',
-        async: true,
-        dataType:"Json",
-        contenType:"application/Json; charset=utf-8",
-        success: function(users){
-          $.each(users,function(i,user){
-               if(user.username==nombre_user){
-                 //console.log("si entre");
-                 $.ajax({
-                  type: "GET",
-                  url:'/Rutas/',
-                  async: true,
-                  dataType:"Json",
-                  contenType:"application/Json; charset=utf-8",
-                  success: function(routes){
-                  //  console.log(routes);
-                    $.each(routes,function(r,ruta){
-                      if(ruta.fk_user==user.username){
-                      //  console.log("Hola entre en rutas");
-                        $.ajax({
-                         type: "GET",
-                         url:'/todosPeticiones/',
-                         async: true,
-                         dataType:"Json",
-                         contenType:"application/Json; charset=utf-8",
-                         success: function(peticiones){
-                               $.each(peticiones,function(pe,peticion){
-                                 if(ruta.id == peticion.pet_ruta){
-                                  // console.log(peticion);
-                                   $(".notifications_class").append("<li class='listas_notificaciones' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</li>"+"<button id='btn_si' class='btn_si_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 15px auto;position:relative;top:-20px;left:200px;font-size:10px'> si</button>"+"<button id='btn_no' class='btn_no_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 5px;position:relative;top:-20px;left:200px;font-size:10px'> No</button>");
-
-                                 }
-                               });
-
-                         },
-                         error: function(data){
-                          // console.log(data.responseText);
-                           swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                         }
-                       });
-
-
-
-
-
-
-
-                      }
-                    });
-                  },
-                  error: function(data){
-                    //console.log(data.responseText);
-                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                  }
-                });
-
-
-                }
-             });
-
-       },
-       error: function(data){
-         //console.log(data.responseText);
-         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-       }
-     });
-  });*/
 
 }
+//Variables de inicializacion para las rutas
 var list_puntos= [];
 var list_ini_fin=[];
 var inicio,fin;

@@ -251,10 +251,11 @@ def obtenerTodasRutas_filtro(request):
     import time
     tiempo = time.strftime("%Y-%m-%d")
     if request.method == 'GET':
-        routes_f = Ruta.objects.filter(fecha=tiempo)
+        rutas = Ruta.objects.filter(fecha=tiempo)
+        rutas_creadas= rutas.exclude(fk_persona_ruta=request.user)
         response = render_to_response(
             'json/Rutas_filter.json',
-            {'routes_f': routes_f}
+            {'routes_f': rutas_creadas}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
@@ -288,7 +289,7 @@ def cambiar_estado(request):
 
 def obtenerTodasPeticiones(request):
     if request.method == 'GET':
-        peticiones = Peticion.objects.all()
+        peticiones = Peticion.objects.filter(fk_persona_peticion=request.user)
         response = render_to_response(
             'json/peticiones.json',
             {'peticiones': peticiones}
@@ -302,10 +303,39 @@ def obtenerTodasPeticiones_filtro(request):
     import time
     tiempo = time.strftime("%Y-%m-%d")
     if request.method == 'GET':
+        usuario= request.user
         peticiones_f = Peticion.objects.filter(fecha_pe=tiempo)
+        rutas= Ruta.objects.filter(fk_persona_ruta=usuario)
+        list_peticion=list()
+        for ruta in rutas:
+            for p in peticiones_f:
+                if(p.fk_pet_ruta==ruta):
+                    list_peticion.append(p)
+
         response = render_to_response(
             'json/peticiones_filter.json',
-            {'peticiones_f': peticiones_f}
+            {'peticiones_f': list_peticion}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
+def obtenerTodasPeticiones_filtro_Pendiente(request):
+    import time
+    tiempo = time.strftime("%Y-%m-%d")
+    if request.method == 'GET':
+        usuario= request.user
+        peticiones_f = Peticion.objects.filter(fecha_pe=tiempo,estado='Pendiente')
+        rutas= Ruta.objects.filter(fk_persona_ruta=usuario)
+        list_peticion=list()
+        for ruta in rutas:
+            for p in peticiones_f:
+                if(p.fk_pet_ruta==ruta):
+                    list_peticion.append(p)
+
+        response = render_to_response(
+            'json/peticiones_filter.json',
+            {'peticiones_f': list_peticion}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
