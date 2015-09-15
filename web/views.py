@@ -530,39 +530,32 @@ def existeUsuario(request):
             return response
 
 def guardarUsuario(request):
-	#registra los valores Users
+    #registra los valores Users
     usuarios=User.objects.all()
     if request.method == 'POST':
         from django.utils import timezone
+        try:
+            nickname = request.POST.get('username',None)
+            nombre = request.POST.get('first_name',None)
+            apellido=request.POST.get('last_name',None)
+            contraseña=request.POST.get('password',None)
+            carro=str(request.POST.get('is_carro',':checked'))
+            placa=request.POST.get('placa',None)
+            if nickname is not None and contraseña is not None:
+                user = User.objects.create_user(username=nickname, password=contraseña, first_name=nombre, last_name=apellido)
+        except:
+            #si no se registra correctamente el usuario se queda en la misma pagina de regisstrar
+            return HttpResponseRedirect(reverse('regis')) 
+        user.save()
+        #Se guarda la persona  con los datos de placa y si tiene o no carro
+        usuarios= User.objects.all()
+        if carro == "si":
+            carro_valor = 1
+        else:
+            carro_valor = 0
+        persona = Persona(is_carro=carro_valor, placa=placa, fk_user_id=usuarios[len(usuarios)-1].pk)
+        persona.save()
 
-        nickname = request.POST.get('username',None)
-        nombre = request.POST.get('first_name',None)
-        apellido=request.POST.get('last_name',None)
-        contraseña=request.POST.get('password',None)
-
-        carro=request.POST.get('is_carro',None)
-        placa=request.POST.get('placa',None)
-
-
-        print(nickname)
-        print(nombre)
-        print(apellido)
-        print(contraseña)
-        print(carro)
-        if nickname is not None and contraseña is not None:
-            #Se guarda el usuario
-            print(apellido)
-            user = User.objects.create_user(username=nickname, password=contraseña, first_name=nombre, last_name=apellido)
-            user.save()
-            #Se guarda la persona  con los datos de placa y si tiene o no carro
-            usuarios= User.objects.all()
-            persona = Persona(is_carro=carro, placa=placa, fk_user_id=usuarios[len(usuarios)-1].pk)
-            persona.save()
-            #for i in users:
-            #	print("entro al for")
-            #	if i.username == nickname:
-            #		print("error!!!! user: ",nickname)
-            #		return render_to_response('registrarse.html',{}, context_instance=RequestContext(request))
     return render_to_response('inicio.html',{}, context_instance=RequestContext(request))
 
 
