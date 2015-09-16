@@ -261,6 +261,19 @@ def obtenerTodasRutas_filtro(request):
         response['Cache-Control'] = 'no-cache'
         return response
 
+def obtenerTodasRutas_Hoy(request):
+    import time
+    tiempo = time.strftime("%Y-%m-%d")
+    if request.method == 'GET':
+        rutas = Ruta.objects.filter(fecha=tiempo,fk_persona_ruta=request.user)
+        response = render_to_response(
+            'json/Rutas_filter.json',
+            {'routes_f': rutas_creadas}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
 def update_estado(request):
     if request.method == 'POST':
         from django.utils import timezone
@@ -600,12 +613,14 @@ def datos_person(request):
         return response
 
 def getRuta_Usuarios(request) :
+    import time
+    tiempo = time.strftime("%Y-%m-%d")
     if request.method=='GET':
        user=request.GET.get("username")
        print("USER RECIBIDO",user)
        usuario = User.objects.filter(username=user)
        print("miUsuario", usuario[0].username)
-       rutas= Ruta.objects.filter(fk_persona_ruta=usuario[0].pk)
+       rutas= Ruta.objects.filter(fk_persona_ruta=usuario[0].pk, fecha=tiempo)
        print("miUsuario", usuario[0].username)
        print("rutas",rutas)
        response = render_to_response(

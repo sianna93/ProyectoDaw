@@ -1286,10 +1286,12 @@ function cargarComponentes_Ruta(seccion){
     placeholder:'Destino',
     //onchange:'calcRoute();',
     required:'true'
-  }),$('<h4>',{
+  })/*,$('<h4>',{
     id:'label_fecha_ruta',
     text:'Fecha'
-  }),$('<input>',{
+  })
+
+   ,$('<input>',{
     id:'input_fecha_ruta',
     type:'date',
     name:'txtFecha',
@@ -1298,7 +1300,8 @@ function cargarComponentes_Ruta(seccion){
     id: 'btn_guardar',
     class:'btn btn-primary center-block',
     text:'Guardar Ruta'
-  }),$('<button>',{
+  })*/
+  ,$('<button>',{
     id: 'btn_Guardar_coord',
     class: 'btn btn-primary center-block',
     text:'Guardar Puntos'
@@ -1343,7 +1346,7 @@ function cargarComponentes_MisRutas(seccion){
   inicio,fin;
   $.ajax({
     type: "GET",
-    url:'/misRutas/',
+    url:'/filtro_rutas_Hoy/',
     async: true,
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",
