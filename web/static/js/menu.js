@@ -1346,7 +1346,7 @@ function cargarComponentes_MisRutas(seccion){
   inicio,fin;
   $.ajax({
     type: "GET",
-    url:'/filtro_rutas_Hoy/',
+    url:'/Hoyrutas/',
     async: true,
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",

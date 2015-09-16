@@ -267,8 +267,8 @@ def obtenerTodasRutas_Hoy(request):
     if request.method == 'GET':
         rutas = Ruta.objects.filter(fecha=tiempo,fk_persona_ruta=request.user)
         response = render_to_response(
-            'json/Rutas_filter.json',
-            {'routes_f': rutas_creadas}
+            'json/routes.json',
+            {'routes': rutas}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
