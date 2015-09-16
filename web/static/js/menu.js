@@ -13,8 +13,8 @@ function initialize() {
   document.getElementById('a_siguiendo').addEventListener('click',F_siguiendo, false);
   document.getElementById('a_seguidores').addEventListener('click',F_seguidores, false);
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
-  document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
-  document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
+  //document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
+  //document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
 
 
 
@@ -44,7 +44,7 @@ function initialize() {
                  
                  $(".btn_si_class").click(function()
                  {
-                   alert("diste click");
+
 
                    var id = $(this).attr("id");
                    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
@@ -169,6 +169,8 @@ function initialize() {
       return false;
     });
 
+    document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
+    document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
 
 
 }
