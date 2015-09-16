@@ -578,9 +578,9 @@ def menu(request):
     return render_to_response('menu.html', {'user': request.user}, context_instance=RequestContext(request))
 
 def obtener_una_person(request):
-    u = request.user
+
     if request.method == 'GET':
-        persona=Persona.objects.filter(fk_user=u.pk)
+        persona=Persona.objects.filter(fk_user= request.user)
         response = render_to_response(
             'json/person.json',
             {'personas':persona},
@@ -591,11 +591,8 @@ def obtener_una_person(request):
         return response
 
 def personaCarro(request):
-
-    u = request.user
-    persona=Persona.objects.filter(fk_user=u.pk)
-    print("tiene carro",persona.is_carro)
-    return render(request,'menu.html',{'carro_persona':'hola'})
+    person=Persona.objects.filter(fk_user_id=request.user)
+    return render(request,'menu.html',{'carro_persona':person[0].is_carro})
 
 def datos_person(request):
     if request.method == 'GET':

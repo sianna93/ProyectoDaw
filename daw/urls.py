@@ -49,7 +49,6 @@ urlpatterns = [
     url(r'^$', 'web.views.inicio', name='inicio'),
     #url(r'^signup$', 'web.views.signup', name='signup'), #registrar nuevo usuario
     url(r'^login$', login, {'template_name': 'inicio.html', }, name="login"), #login con funcion de django
-    url(r'^menu$', 'web.views.menu', name='menu'),
     url(r'^logout$', logout, {'template_name': 'inicio.html', }, name="logout"),  #cerrar sesion
     url(r'^datos', 'web.views.datos_person'),
     url(r'^chat$', include('daw.chat.urls')),
@@ -62,7 +61,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^cambiar','web.views.cambiar_estado'),#para el views de dejar_de_seguir
     url(r'^unapersona','web.views.obtener_una_person'),#obtener una persona
-    url(r'^personaCarro','web.views.personaCarro'),#obtener una persona
+    url(r'^menu','web.views.personaCarro',name='carro'),#carga el menu.html con el envio del valor del carro del usuario
     
 
 

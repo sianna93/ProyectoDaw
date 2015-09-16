@@ -8,15 +8,58 @@
 
   Funciones para el menu y página pincipal de la página
  **************************************************************/
-function initialize() {
+
+function start(){
+
+  $.ajax({
+    type: "GET",
+    url:'/unapersona/',
+    async: true,
+    dataType:"Json",
+    contenType:"application/Json; charset=utf-8",
+    success: function(personas){
+   //       $.each(personas,function(p,persona){
+             if(personas[0].is_carro=='True'){
+                initializeConCarro();
+
+                
+              }
+              else if(personas[0].is_carro=='False'){
+                initializeSinCarro();
+              }
+          //});
+    },
+    error: function(data){
+
+      swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+    }
+  });
+}
+
+//funcion para el menu para usuarios que no tienen carro
+function initializeSinCarro() {
+  document.getElementById('a_cuenta').addEventListener('click',F_cuenta, false);
+  document.getElementById('a_siguiendo').addEventListener('click',F_siguiendo, false);
+  document.getElementById('a_seguidores').addEventListener('click',F_seguidores, false);
+  document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
+  inicializar_notificaciones();
+
+}
+
+//funcion que inicializa todos los eventos del menu al dar click
+function initializeConCarro() {
   document.getElementById('a_cuenta').addEventListener('click',F_cuenta, false);
   document.getElementById('a_siguiendo').addEventListener('click',F_siguiendo, false);
   document.getElementById('a_seguidores').addEventListener('click',F_seguidores, false);
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
+  inicializar_notificaciones();
+
+}
 
 
+function inicializar_notificaciones(){
 
     $(".img_noti_class").click(function()
     {
@@ -79,8 +122,6 @@ function initialize() {
                         swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
                       }
                     });
-
-
 
                  });
 
