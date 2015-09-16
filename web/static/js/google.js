@@ -64,9 +64,10 @@ function cargarMapa(){
                         });
                         markers.push(marker);
                         //marker
+                        
                         marker.addListener('click', function() {
                           infowindow.open(map, marker);
-                          alert(infowindow.getContent());
+                          
                           console.log(infowindow.getContent());
                         });
 
@@ -108,9 +109,6 @@ function cargarMapa(){
 
                         };
 
-
-
-
                         directionsService.route(request, function (response, status) {
                             if (status == google.maps.DirectionsStatus.OK) {
                               //console.log(request);
@@ -150,6 +148,14 @@ function cargarMapa(){
                             waypts=[];
 
 
+                        });
+                        $("#a_iniciar_ruta").click(function(){
+                            setMapOnAll(null);
+                           //directionsDisplay.setMap(null);
+                            end=null;
+                            start = null;
+                            puntos=[];
+                            waypts=[];
                         });
 
                 },

@@ -13,230 +13,147 @@ function initialize() {
   document.getElementById('a_siguiendo').addEventListener('click',F_siguiendo, false);
   document.getElementById('a_seguidores').addEventListener('click',F_seguidores, false);
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
-  document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
-  document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
+  //document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
+  //document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
+
+
+
     $(".img_noti_class").click(function()
     {
-      $('.listas_notificaciones').remove();
+      $('.boxdiv').remove();
+      //$('.listas_notificaciones').remove();
       $('.btn_si_class').remove();
       $('.btn_no_class').remove();
+      $('.boxdiv').remove();
       $('.notificationContainer').append("<div id='notificationTitle'>Notifications</div><div id='notificationsBody' class='notifications' style='overflow:auto;'></div><div id='notificationFooter'><a href='#'>See All</a></div>")
       $("#notificationContainer").fadeToggle(300);
       $("#notification_count").fadeOut("slow");
-      var nombre_user ;
-            $.ajax({
-             type: "GET",
-             url:'/cuenta/',
-             async: true,
-             dataType:"Json",
-             contenType:"application/Json; charset=utf-8",
-             success: function(user){
-               console.log(user.username);
-                nombre_user= user.username;
 
-             },
-             error: function(data){
-               //console.log(data.responseText);
-               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-             }
-           });
+      $.ajax({
+         type: "GET",
+         url:'/filtro_pendiente/',
+         async: true,
+         dataType:"Json",
+         contenType:"application/Json; charset=utf-8",
+         success: function(peticiones){
+             $.each(peticiones,function(pe,peticion){
 
-            //console.log(nombre_user);
-            $.ajax({
-              type: "GET",
-              url:'/usuarios/',
-              async: true,
-              dataType:"Json",
-              contenType:"application/Json; charset=utf-8",
-              success: function(users){
-                $.each(users,function(i,user){
-                     if(user.username==nombre_user){
-                       //console.log("si entre");
-                       $.ajax({
-                        type: "GET",
-                        url:'/Rutas/',
-                        async: true,
-                        dataType:"Json",
-                        contenType:"application/Json; charset=utf-8",
-                        success: function(routes){
-                        console.log(routes);
-                          $.each(routes,function(r,ruta){
-                            if(ruta.fk_user==user.username){
-                             console.log("Hola entre en rutas");
-                              $.ajax({
-                               type: "GET",
-                               url:'/filtro/',
-                               async: true,
-                               dataType:"Json",
-                               contenType:"application/Json; charset=utf-8",
-                               success: function(peticiones){
-                                     $.each(peticiones,function(pe,peticion){
-                                       if(ruta.id == peticion.pet_ruta){
-                                         if(peticion.pet_estado=="Pendiente"){
-                                           $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' id='"+peticion.id+"' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</p>"+
-                                           "<button id='"+peticion.id+"' class='btn_si_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 15px auto;position:relative;top:-20px;font-size:10px'> si</button>"+
-                                           "<button id='"+peticion.id+"' class='btn_no_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 5px;position:relative;top:-20px;font-size:10px'> No</button></div>");
-                                         }
-                                         $(".btn_si_class").click(function()
-                                         {
-                                           alert("diste click");
+                   $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' id='"+peticion.id+"' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</p>"+
+                   "<button id='"+peticion.id+"' class='btn_si_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 15px auto;position:relative;top:-20px;font-size:10px'> si</button>"+
+                   "<button id='"+peticion.id+"' class='btn_no_class'  text= 'Llevame!' style= 'height:20px; widht:7px;margin: 5px;position:relative;top:-20px;font-size:10px'> No</button></div>");
 
-                                           var id = $(this).attr("id");
-                                           var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-                                           var estado = "Aceptado"
-                                           $.ajax({
-                                               type: "POST",
-                                               url:'/cambiar/',
-                                               data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
-                                               success: function(){
-                                                swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
-                                             },
-                                               error: function(e){
-                                               swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
-                                             }
-                                           });
+                 $(".btn_si_class").click(function()
+                 {
 
 
-                                         });
-                                         $(".btn_no_class").click(function()
-                                         {
-                                            var id = $(this).attr("id");
-                                            var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-                                            var estado = "Negado"
-                                            $.ajax({
-                                                type: "POST",
-                                                url:'/cambiar/',
-                                                data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
-                                                success: function(){
-                                                 swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
-                                              },
-                                                error: function(e){
-                                                swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
-                                              }
-                                            });
-
-
-
-                                         });
-
-
-
-                                       }
-                                     });
-
-                               },
-                               error: function(data){
-                                // console.log(data.responseText);
-                                 swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                               }
-                             });
-
-
-
-
-
-
-
-                            }
-                          });
-                        },
-                        error: function(data){
-                          //console.log(data.responseText);
-                          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                        }
-                      });
-
-
-                      }
+                   var id = $(this).attr("id");
+                   var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+                   var estado = "Aceptado"
+                   $.ajax({
+                       type: "POST",
+                       url:'/cambiar/',
+                       data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
+                       success: function(){
+                        swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                     },
+                       error: function(e){
+                       swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                     }
                    });
 
-             },
-             error: function(data){
-               //console.log(data.responseText);
-               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-             }
-           });
 
-           $.ajax({
-            type: "GET",
-            url:'/filtro_rutas/',
-            async: true,
-            dataType:"Json",
-            contenType:"application/Json; charset=utf-8",
-            success: function(routes_f){
-                  $.each(routes_f,function(rf,route_f){
-                    console.log(nombre_user);
-                    if(route_f.fk_user!==nombre_user){
-                        $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El Usuario :"+route_f.fk_user+"  Ha creado una nueva ruta "+route_f.origen+"-"+route_f.destino+"</p><div>");
-                    }
+                 });
+                 $(".btn_no_class").click(function()
+                 {
+                    var id = $(this).attr("id");
+                    var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+                    var estado = "Negado"
+                    $.ajax({
+                        type: "POST",
+                        url:'/cambiar/',
+                        data: {'id_p':id,'estado_p':estado,'csrfmiddlewaretoken':csrf },
+                        success: function(){
+                         swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                      },
+                        error: function(e){
+                        swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                      }
+                    });
+
+                 });
+
+             });
+
+           },
+           error: function(data){
+            // console.log(data.responseText);
+             swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+           }
+       });
+
+
+
+
+      $.ajax({
+        type: "GET",
+        url:'/filtro_rutas/',
+        async: true,
+        dataType:"Json",
+        contenType:"application/Json; charset=utf-8",
+        success: function(routes_f){
+              $.each(routes_f,function(rf,route_f){
+                    $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario"+route_f.fk_user+"  Ha creado una nueva ruta "+route_f.origen+"-"+route_f.destino+"</p><div>");
+              });
+
+        },
+        error: function(data){
+         // console.log(data.responseText);
+          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+        }
+       });
+
+
+      $.ajax({
+        type: "GET",
+        url:'/todosPeticiones/',
+        async: true,
+        dataType:"Json",
+        contenType:"application/Json; charset=utf-8",
+        success: function(peticiones){
+              $.each(peticiones,function(p,peticion){
+                console.log(peticion.persona_peticion+""+""+peticion.pet_estado);
+                  $.ajax({
+                   type: "GET",
+                   url:'/Rutas/',
+                   async: true,
+                   dataType:"Json",
+                   contenType:"application/Json; charset=utf-8",
+                   success: function(routes){
+                         $.each(routes,function(rf,route){
+                           if(route.id==peticion.pet_ruta){
+                             if(peticion.pet_estado=="Aceptado"){
+                               $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Aceptado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
+                             }else if (peticion.pet_estado=="Negado") {
+                               console.log("ingrese negado")
+                              $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Negado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
+                             }
+
+                           }
+                         });
+
+                   },
+                   error: function(data){
+                    // console.log(data.responseText);
+                     swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+                   }
                   });
-
-            },
-            error: function(data){
-             // console.log(data.responseText);
-              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-            }
-           });
-
-
-           $.ajax({
-            type: "GET",
-            url:'/todosPeticiones/',
-            async: true,
-            dataType:"Json",
-            contenType:"application/Json; charset=utf-8",
-            success: function(peticiones){
-                  $.each(peticiones,function(p,peticion){
-                    console.log(peticion.persona_peticion+""+nombre_user+""+peticion.pet_estado);
-
-                    if(peticion.persona_peticion==nombre_user){
-                      $.ajax({
-                       type: "GET",
-                       url:'/Rutas/',
-                       async: true,
-                       dataType:"Json",
-                       contenType:"application/Json; charset=utf-8",
-                       success: function(routes){
-                             $.each(routes,function(rf,route){
-                               if(route.id==peticion.pet_ruta){
-                                 if(peticion.pet_estado=="Aceptado"){
-
-
-                                   $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Aceptado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
-                                 }else if (peticion.pet_estado=="Negado") {
-                                   console.log("ingrese negado")
-                                  $("#notificationsBody").append("<div class = 'boxdiv'><p class='listas_notificaciones' style='height:20px; widht:20px'>El usuario  "+route.fk_user+"  ha Negado su solicitud de la ruta "+route.origen+"-"+route.destino+"</p><div>");
-                                 }
-
-                               }
-                             });
-
-                       },
-                       error: function(data){
-                        // console.log(data.responseText);
-                         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                       }
-                      });
-
-
-
-
-                    }
-                  });
-
-            },
-            error: function(data){
-             // console.log(data.responseText);
-              swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-            }
-           });
-
-
-
-
-
-
-
+              });
+        },
+        error: function(data){
+         // console.log(data.responseText);
+          swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
+        }
+       });
       return false;
     });
 
@@ -252,104 +169,16 @@ function initialize() {
       return false;
     });
 
-    /*$('#img_noti').click(function () {
+    document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
+    document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
 
-     $('.listas_notificaciones').remove();
-      $('.btn_no_class').remove();
-      $('.btn_si_class').remove();
-      var nombre_user ;
-      $('#modal_notificaciones').modal('show');
-      $.ajax({
-       type: "GET",
-       url:'/cuenta/',
-       async: true,
-       dataType:"Json",
-       contenType:"application/Json; charset=utf-8",
-       success: function(user){
-          nombre_user= user.username;
-
-       },
-       error: function(data){
-         //console.log(data.responseText);
-         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-       }
-     });
-
-      //console.log(nombre_user);
-      $.ajax({
-        type: "GET",
-        url:'/usuarios/',
-        async: true,
-        dataType:"Json",
-        contenType:"application/Json; charset=utf-8",
-        success: function(users){
-          $.each(users,function(i,user){
-               if(user.username==nombre_user){
-                 //console.log("si entre");
-                 $.ajax({
-                  type: "GET",
-                  url:'/Rutas/',
-                  async: true,
-                  dataType:"Json",
-                  contenType:"application/Json; charset=utf-8",
-                  success: function(routes){
-                  //  console.log(routes);
-                    $.each(routes,function(r,ruta){
-                      if(ruta.fk_user==user.username){
-                      //  console.log("Hola entre en rutas");
-                        $.ajax({
-                         type: "GET",
-                         url:'/todosPeticiones/',
-                         async: true,
-                         dataType:"Json",
-                         contenType:"application/Json; charset=utf-8",
-                         success: function(peticiones){
-                               $.each(peticiones,function(pe,peticion){
-                                 if(ruta.id == peticion.pet_ruta){
-                                  // console.log(peticion);
-                                   $(".notifications_class").append("<li class='listas_notificaciones' style='height:20px; widht:20px'>"+peticion.persona_peticion+":"+peticion.comentario+"</li>"+"<button id='btn_si' class='btn_si_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 15px auto;position:relative;top:-20px;left:200px;font-size:10px'> si</button>"+"<button id='btn_no' class='btn_no_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 5px;position:relative;top:-20px;left:200px;font-size:10px'> No</button>");
-
-                                 }
-                               });
-
-                         },
-                         error: function(data){
-                          // console.log(data.responseText);
-                           swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                         }
-                       });
-
-
-
-
-
-
-
-                      }
-                    });
-                  },
-                  error: function(data){
-                    //console.log(data.responseText);
-                    swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-                  }
-                });
-
-
-                }
-             });
-
-       },
-       error: function(data){
-         //console.log(data.responseText);
-         swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
-       }
-     });
-  });*/
 
 }
+//Variables de inicializacion para las rutas
 var list_puntos= [];
 var list_ini_fin=[];
 var inicio,fin;
+
 //Función para el botón cerrar sesión
 function F_cerrar(){
   // var ancho=100%;
@@ -410,7 +239,6 @@ function F_cuenta(evt){
 
             },
             error: function(data){
-            //  console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
@@ -498,7 +326,8 @@ function F_siguiendo(evt) {
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', "Siguiendo");
                 }
-              })
+              });
+              eventos_presentacion();
             },
             error: function(data){
               //console.log(data.responseText);
@@ -534,8 +363,7 @@ function getSiguiendos(){
     contenType:"application/Json; charset=utf-8",
     success: function(seguidores){
         $.each(seguidores,function(i,seg){
-          //console.log(seguidores);
-          //console.log(seg.siguiendo);
+
           $.ajax({
             type: "GET",
             url:'/usuarios/',
@@ -553,7 +381,7 @@ function getSiguiendos(){
               })
             },
             error: function(data){
-            //  console.log(data.responseText);
+
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
@@ -561,7 +389,7 @@ function getSiguiendos(){
         });
     },
     error: function(data){
-      //console.log(data.responseText);
+
       swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
     }
   });
@@ -586,8 +414,7 @@ function F_seguidores(evt) {
     contenType:"application/Json; charset=utf-8",
     success: function(seguidores){
         $.each(seguidores,function(i,seg){
-          //console.log(seguidores);
-          //console.log(seg.seguidor);
+
           $.ajax({
             type: "GET",
             url:'/usuarios/',
@@ -602,10 +429,11 @@ function F_seguidores(evt) {
 
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "Seguir");
                 }
-              })
+              });
+              eventos_presentacion();
             },
             error: function(data){
-            //  console.log(data.responseText);
+
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
@@ -616,7 +444,7 @@ function F_seguidores(evt) {
 
     },
     error: function(data){
-      //console.log(data.responseText);
+
       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
     }
   });
@@ -639,38 +467,24 @@ function autocomplete_busqueda(){
       source: function( request, response ) {
         //bsq= this.value;
       //  console.log(bsq);
+        //$('.ui-menu-item').remove();
         $.ajax({
             url:'/filtrarNombres/',
             dataType:"json",
             contenType:"application/Json; charset=utf-8",
             data: {q: request.term},
             success: function(data){
-              //console.log(data);
-              //console.log(request);
-              //$.each(usuarios,function(i,usuario){
-
-              //});
+              lista=[];
               $.each(data,function(i,usuario){
                 lista.push(usuario.username);
               });
-            //  console.log(lista);
+
               response(lista);
 
             },
-            /*success: function(usuarios){
-              $.each(usuarios,function(i,usuario){
-                console.log("json");
-                if(usuario.name==bsq){
-                  user=usuario.name + " " + usuario.apellido;
-                  response(user);
-                  //log(user);
-                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
-                }
-              });
-              */
-            //},
+
             error: function(data){
-            //  console.log(data.responseText);
+
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
@@ -690,7 +504,7 @@ function autocomplete_busqueda(){
         $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
       }
     });
-    //alert("click");
+
 
 }
 
@@ -715,12 +529,14 @@ function mostrar_busqueda() {
 	        if(usuario.username==busqueda){
 	          user=usuario.first_name + " " + usuario.last_name;
 	          crear_presentancion_usuario('#seccion_buscar', user,usuario.username, 'primary', 'Seguir');
+
 	        }
-	      })
+	      });
+        eventos_presentacion();
 
 	    },
 	    error: function(data){
-	      //console.log(data.responseText);
+
 	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
 	    }
 	  });
@@ -735,7 +551,7 @@ function F_buscar(evt) {
   $('#panel-derecho').show();
   document.getElementById('panel-derecho').style.visibility="visible";
   crear_cabecera('seccion_buscar', 'header_panel', 'labelpanel', 'BUSCAR');
-  cargarComponentes_Buscar('#seccion_buscar');
+  cargarComponentes_Buscar('.otra_seccion');
 
   document.getElementById('button_buscar').addEventListener('click',mostrar_busqueda, false);
   document.getElementById('txtvalidar').addEventListener('click',autocomplete_busqueda, false); //llama a la funcion que autocompleta el nombre del usuasario
@@ -758,7 +574,7 @@ function F_iniciaruta(evt) {
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",
     success: function(user){
-          //console.log(user)
+
           //Si tiene o no carro
            $.ajax({
             type: "GET",
@@ -773,14 +589,14 @@ function F_iniciaruta(evt) {
                          cargarComponentes_Ruta('#seccion_ruta');
                       }
                       else if(persona.is_carro=='False'){
-                      //  console.log("nadaaaa");
+
                       }
                     }
                   });
 
             },
             error: function(data){
-              //console.log(data.responseText);
+
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
@@ -835,10 +651,16 @@ function crear_cabecera(seccion,header,label,textlabel){
 
     style: "text-align:center;width:100%;position: relative;top: -10px;"
   })),$('<div>',{
+    class: 'otra_seccion'
+    //style: "overflow: auto; height: 520px"
+
+  }),$('<div>',{
     class: 'list_seg'
     //style: "overflow: auto; height: 520px"
 
-  })).hide().appendTo('#panel-derecho').fadeIn('slow');
+  })
+
+  ).hide().appendTo('#panel-derecho').fadeIn('slow');
 
 
 }
@@ -884,6 +706,11 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     text:txtButton,
     name : 'botones__seguir'
   }))))).hide().appendTo(".list_seg").fadeIn('slow');
+
+  //eventos_presentacion();
+}
+
+function eventos_presentacion(){
 
 
   $('.click_button').click(function () {
@@ -960,7 +787,7 @@ inicio,fin;
 
         $('#cuerpo_cuenta').remove();
         $('#myModal_usuario').modal('show');
-        cargarComponentes_Cuenta(".modal-body", nombre, id, 'seguidores', contseg, 'seguidos', contsig, car);
+        cargarComponentes_Cuenta(".modal-body", '','', 'seguidores', contseg, 'seguidos', contsig, car);
         $('#modal_usuario').css({ 'width': '440px', 'height': '400px' });
         //$('#cuerpo_cuenta').css({ 'width': '100%', 'height': '390px', 'padding': '0', 'background': 'none' });
         $('#nombreCuenta').css({'position':'relative','top':'-70px'});
@@ -1082,6 +909,7 @@ inicio,fin;
 
 
         //$('.class_cuenta').append("<button id='btn_llevame' text= 'Llevame!' style= 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'> LLEVAME</button>");
+        /*
         var label=$(this).attr("value");
         $('.class_cuenta').append($('<div>',{
           id:'div_listas_rutas',
@@ -1090,17 +918,40 @@ inicio,fin;
           id:'ListaRutas_seg',
           class :'ListaRutas_seg_class'
         })));
+        */
+
         $.ajax({
-      	    type: "GET",
-      	    url:'/usuarios/',
-      	    async: true,
-      	    dataType:"Json",
-      	    contenType:"application/Json; charset=utf-8",
-      	    success: function(usuarios){
-      	      $.each(usuarios,function(i,usuario){
-                //console.log("aqui "+usuario.username);
-      	        if(usuario.username==label){
-                  //console.log("aqui mi segunda entrada "+usuario.username);
+          type: "GET",
+          url:'/Ruta_usuarios',
+          data: {username: label_username},
+          dataType:"json",
+          contentType:"application/json; charset=utf-8",
+          success: function(rutas){
+
+            $('.list_class').remove();
+            $('.class_cuenta').append($('<div>',{
+              class:'list_class',
+              id:'div_listas_rutas',
+              style:'position:relative;top:57px;overflow:auto;width:400px;height:200px'
+            }).append($('<ol>',{
+              id:'ListaRutas_seg',
+              class :'ListaRutas_seg_class'
+            })));
+            $.each(rutas,function(i,ruta){
+                origen=ruta.origen;
+                destino=ruta.destino;
+                $(".ListaRutas_seg_class").append("<li class='rutaslistas'><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
+                "<button id='btn_llevame' class='btn_llevame_class' value="+ruta.id+" text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
+
+            });
+
+            $(".miRuta").click(function (e) {
+                  var id_ruta = e.target.id;
+
+                  var start_lt,start_lg,end_lt,end_lg;
+
+
+                  //Se leen las rutas
                   $.ajax({
                     type: "GET",
                     url:'/Rutas/',
@@ -1108,116 +959,84 @@ inicio,fin;
                     dataType:"Json",
                     contenType:"application/Json; charset=utf-8",
                     success: function(rutas){
-                      var cont = 0;
-                      var c = 0;
-                      $.each(rutas,function(i,ruta){
-                        c = c +1;
-                        console.log("comparando"+ruta.fk_user+"   "+usuario.username +"  "+c);
-                        if (ruta.fk_user==usuario.username){
-                          cont = cont +1 ;
-                          console.log("estoy entrando" + cont);
-                          origen=ruta.origen;
-                          destino=ruta.destino;
-                          $(".ListaRutas_seg_class").append("<li class='rutaslistas'><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
-                        "<button id='btn_llevame' class='btn_llevame_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
 
-                        $(".miRuta").click(function (e) {
-                          var id_ruta = e.target.id;
+                    $.each(rutas,function(i,ruta){
+                      if(ruta.id==id_ruta){
+                        start_lt=ruta.origen_lt;
+                        start_lg=ruta.origen_lg;
+                        end_lt=ruta.destino_lt;
+                        end_lg=ruta.destino_lg;
+                        //Nuevo posiciones
+                        inicio=new google.maps.LatLng(start_lt,start_lg);
+                        fin=new google.maps.LatLng(end_lt,end_lg);
+                        //Se guarda en una lista
+                        list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
+                        //list_ini_fin.push({lt:end_lt, lg: end_lg});
 
-                          var start_lt,start_lg,end_lt,end_lg;
-
-
-                          //Se leen las rutas
-                          $.ajax({
-                            type: "GET",
-                            url:'/Rutas/',
-                            async: true,
-                            dataType:"Json",
-                            contenType:"application/Json; charset=utf-8",
-                            success: function(rutas){
-
-                            $.each(rutas,function(i,ruta){
-                              if(ruta.id==id_ruta){
-                                start_lt=ruta.origen_lt;
-                                start_lg=ruta.origen_lg;
-                                end_lt=ruta.destino_lt;
-                                end_lg=ruta.destino_lg;
-                                //Nuevo posiciones
-                                inicio=new google.maps.LatLng(start_lt,start_lg);
-                                fin=new google.maps.LatLng(end_lt,end_lg);
-                                //Se guarda en una lista
-                                list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
-                                //list_ini_fin.push({lt:end_lt, lg: end_lg});
-
-                                //console.log("Inicio funcion calcular ruta");
-                                //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
-                              }//Fin del if
-                            })
+                        //console.log("Inicio funcion calcular ruta");
+                        //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
+                      }//Fin del if
+                    })
 
 
-                          },
-                            error: function(data){
-                              swal({  title: 'Error!',   text: 'Errooor al leer Rutas',   timer: 2000 });
-                            }
-                          });
-                          $.ajax({
-                            type: "GET",
-                            url:'/coordenadas/',
-                            async: true,
-                            dataType:"Json",
-                            contenType:"application/Json; charset=utf-8",
-                            success: function(puntos){
-
-                              $.each(puntos,function(i,punto){
-                                if(punto.fk_ruta==id_ruta){
-                                  latitude=punto.latitude;
-                                  longitude=punto.longitude;
-                                  p = new google.maps.LatLng(latitude,longitude);
-                                  list_puntos.push({location: p, stopover: false});
-
-                                }
-
-                              });
-                            },
-                            error: function(data){
-                              swal({  title: 'Error!',   text: 'Errooor al leer coordenadas',   timer: 2000 });
-                            }
-                          });
-
-                          calcRoute2();
-
-                        });
-
-                          $('.btn_llevame_class').click(function (e) {
-                            var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-                            var idruta = ruta.id;
-                            var estadop = "Pendiente"
-                            $.ajax({
-                                type: "POST",
-                                url:'/guardarPeticion',
-                                data: {'comentario':"Hola me podrias llevar!",'glongitud':'0','glatitud':'0','gruta':idruta,'pestado':estadop,'csrfmiddlewaretoken':csrf },
-                                success: function(){
-                                 swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
-                              },
-                                error: function(e){
-                                swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
-                              }
-                            });
-                          });
-                        }
-                      })
-                    },
+                  },
                     error: function(data){
-                      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+                      swal({  title: 'Error!',   text: 'Errooor al leer Rutas',   timer: 2000 });
                     }
                   });
-      	        }
-      	      })
-      	    },
-      	    error: function(data){
-      	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
-      	    }
-      	  });
+                  $.ajax({
+                    type: "GET",
+                    url:'/coordenadas/',
+                    async: true,
+                    dataType:"Json",
+                    contenType:"application/Json; charset=utf-8",
+                    success: function(puntos){
+
+                      $.each(puntos,function(i,punto){
+                        if(punto.fk_ruta==id_ruta){
+                          latitude=punto.latitude;
+                          longitude=punto.longitude;
+                          p = new google.maps.LatLng(latitude,longitude);
+                          list_puntos.push({location: p, stopover: false});
+
+                        }
+
+                      });
+                    },
+                    error: function(data){
+                      swal({  title: 'Error!',   text: 'Errooor al leer coordenadas',   timer: 2000 });
+                    }
+                  });
+
+                  calcRoute2();
+
+                });
+
+            $('.btn_llevame_class').click(function (e) {
+              labelRuta= $(this).attr('value');
+              var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+              var idruta = labelRuta;
+              var estadop = "Pendiente"
+              $.ajax({
+                  type: "POST",
+                  url:'/guardarPeticion',
+                  data: {'comentario':"Hola me podrias llevar!",'glongitud':'0','glatitud':'0','gruta':idruta,'pestado':estadop,'csrfmiddlewaretoken':csrf },
+                  success: function(){
+                   swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                },
+                  error: function(e){
+                  swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                }
+              });
+            });
+
+
+          },
+          error: function(data){
+            swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+          }
+        });
+
   });
 
 
@@ -1333,6 +1152,9 @@ function cargarComponentes_Buscar(seccion){
   })
 
   ).hide().appendTo(seccion).fadeIn('slow');
+
+  //eventos_presentacion();
+
   }
 
 
@@ -1681,7 +1503,6 @@ function añadir_eventos(){
 function boton_seguir(e){
   // var primary=document.getElementById('button_seguir');
 
-  alert("click");
   if (e.target.class=='btn btn-primary center-block'){
     e.target.class = 'btn btn-info center-block';
     e.target.text = "Seguir+";
@@ -1712,3 +1533,4 @@ function seguir(seguidor_a){
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+//window.addEventListener('load', initialize, true);

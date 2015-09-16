@@ -251,10 +251,11 @@ def obtenerTodasRutas_filtro(request):
     import time
     tiempo = time.strftime("%Y-%m-%d")
     if request.method == 'GET':
-        routes_f = Ruta.objects.filter(fecha=tiempo)
+        rutas = Ruta.objects.filter(fecha=tiempo)
+        rutas_creadas= rutas.exclude(fk_persona_ruta=request.user)
         response = render_to_response(
             'json/Rutas_filter.json',
-            {'routes_f': routes_f}
+            {'routes_f': rutas_creadas}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
@@ -288,7 +289,7 @@ def cambiar_estado(request):
 
 def obtenerTodasPeticiones(request):
     if request.method == 'GET':
-        peticiones = Peticion.objects.all()
+        peticiones = Peticion.objects.filter(fk_persona_peticion=request.user)
         response = render_to_response(
             'json/peticiones.json',
             {'peticiones': peticiones}
@@ -302,10 +303,39 @@ def obtenerTodasPeticiones_filtro(request):
     import time
     tiempo = time.strftime("%Y-%m-%d")
     if request.method == 'GET':
+        usuario= request.user
         peticiones_f = Peticion.objects.filter(fecha_pe=tiempo)
+        rutas= Ruta.objects.filter(fk_persona_ruta=usuario)
+        list_peticion=list()
+        for ruta in rutas:
+            for p in peticiones_f:
+                if(p.fk_pet_ruta==ruta):
+                    list_peticion.append(p)
+
         response = render_to_response(
             'json/peticiones_filter.json',
-            {'peticiones_f': peticiones_f}
+            {'peticiones_f': list_peticion}
+        )
+        response['Content-Type'] = 'application/json; charset=utf-8'
+        response['Cache-Control'] = 'no-cache'
+        return response
+
+def obtenerTodasPeticiones_filtro_Pendiente(request):
+    import time
+    tiempo = time.strftime("%Y-%m-%d")
+    if request.method == 'GET':
+        usuario= request.user
+        peticiones_f = Peticion.objects.filter(fecha_pe=tiempo,estado='Pendiente')
+        rutas= Ruta.objects.filter(fk_persona_ruta=usuario)
+        list_peticion=list()
+        for ruta in rutas:
+            for p in peticiones_f:
+                if(p.fk_pet_ruta==ruta):
+                    list_peticion.append(p)
+
+        response = render_to_response(
+            'json/peticiones_filter.json',
+            {'peticiones_f': list_peticion}
         )
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
@@ -500,39 +530,32 @@ def existeUsuario(request):
             return response
 
 def guardarUsuario(request):
-	#registra los valores Users
+    #registra los valores Users
     usuarios=User.objects.all()
     if request.method == 'POST':
         from django.utils import timezone
+        try:
+            nickname = request.POST.get('username',None)
+            nombre = request.POST.get('first_name',None)
+            apellido=request.POST.get('last_name',None)
+            contraseña=request.POST.get('password',None)
+            carro=str(request.POST.get('is_carro',':checked'))
+            placa=request.POST.get('placa',None)
+            if nickname is not None and contraseña is not None:
+                user = User.objects.create_user(username=nickname, password=contraseña, first_name=nombre, last_name=apellido)
+        except:
+            #si no se registra correctamente el usuario se queda en la misma pagina de regisstrar
+            return HttpResponseRedirect(reverse('regis')) 
+        user.save()
+        #Se guarda la persona  con los datos de placa y si tiene o no carro
+        usuarios= User.objects.all()
+        if carro == "si":
+            carro_valor = 1
+        else:
+            carro_valor = 0
+        persona = Persona(is_carro=carro_valor, placa=placa, fk_user_id=usuarios[len(usuarios)-1].pk)
+        persona.save()
 
-        nickname = request.POST.get('username',None)
-        nombre = request.POST.get('first_name',None)
-        apellido=request.POST.get('last_name',None)
-        contraseña=request.POST.get('password',None)
-
-        carro=request.POST.get('is_carro',None)
-        placa=request.POST.get('placa',None)
-
-
-        print(nickname)
-        print(nombre)
-        print(apellido)
-        print(contraseña)
-        print(carro)
-        if nickname is not None and contraseña is not None:
-            #Se guarda el usuario
-            print(apellido)
-            user = User.objects.create_user(username=nickname, password=contraseña, first_name=nombre, last_name=apellido)
-            user.save()
-            #Se guarda la persona  con los datos de placa y si tiene o no carro
-            usuarios= User.objects.all()
-            persona = Persona(is_carro=carro, placa=placa, fk_user_id=usuarios[len(usuarios)-1].pk)
-            persona.save()
-            #for i in users:
-            #	print("entro al for")
-            #	if i.username == nickname:
-            #		print("error!!!! user: ",nickname)
-            #		return render_to_response('registrarse.html',{}, context_instance=RequestContext(request))
     return render_to_response('inicio.html',{}, context_instance=RequestContext(request))
 
 
@@ -548,9 +571,9 @@ def menu(request):
     return render_to_response('menu.html', {'user': request.user}, context_instance=RequestContext(request))
 
 def obtener_una_person(request):
-    u = request.user
+
     if request.method == 'GET':
-        persona=Persona.objects.filter(fk_user=u.pk)
+        persona=Persona.objects.filter(fk_user= request.user)
         response = render_to_response(
             'json/person.json',
             {'personas':persona},
@@ -561,11 +584,8 @@ def obtener_una_person(request):
         return response
 
 def personaCarro(request):
-
-    u = request.user
-    persona=Persona.objects.filter(fk_user=u.pk)
-    print("tiene carro",persona.is_carro)
-    return render(request,'menu.html',{'carro_persona':'hola'})
+    person=Persona.objects.filter(fk_user_id=request.user)
+    return render(request,'menu.html',{'carro_persona':person[0].is_carro})
 
 def datos_person(request):
     if request.method == 'GET':
@@ -578,6 +598,25 @@ def datos_person(request):
         response['Content-Type'] = 'application/json; charset=utf-8'
         response['Cache-Control'] = 'no-cache'
         return response
+
+def getRuta_Usuarios(request) :
+    if request.method=='GET':
+       user=request.GET.get("username")
+       print("USER RECIBIDO",user)
+       usuario = User.objects.filter(username=user)
+       print("miUsuario", usuario[0].username)
+       rutas= Ruta.objects.filter(fk_persona_ruta=usuario[0].pk)
+       print("miUsuario", usuario[0].username)
+       print("rutas",rutas)
+       response = render_to_response(
+            'json/routes.json',
+            {'routes':rutas},
+            context_instance=RequestContext(request)
+        )
+       response['Content-Type'] = 'application/json; charset=utf-8'
+       response['Cache-Control'] = 'no-cache'
+       return response
+
 
 #FUNCION QUE CONSUME EL WEB SERVICES DE LA ESPOL
 def getName(request) :

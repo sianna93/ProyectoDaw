@@ -52,7 +52,7 @@
     <div id="map-canvas" ></div>
     <div id="directions_panel"></div>
 
-    {% if not carro_persona %}
+    {% if carro_persona == True %}
 
     <!--Inicio de menu -->
     <nav id="form">
@@ -112,7 +112,7 @@
     <div id="img_div"><img id="img_noti" class="img_noti_class" src="{%static 'imagenes/notificacion.png' %}" alt="=imag noti" title="Notificaciones"/>
 
       <div id="notificationContainer" class "noficationcontainerclass">
-        <div id="notificationTitle">Notifications</div>
+        <div id="notificationTitle">Notificaciones</div>
         <div id="notificationsBody" class="notifications" style:"overflow:auto">
 
         </div>
