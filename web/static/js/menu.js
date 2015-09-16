@@ -178,6 +178,7 @@ function initialize() {
 var list_puntos= [];
 var list_ini_fin=[];
 var inicio,fin;
+
 //Función para el botón cerrar sesión
 function F_cerrar(){
   // var ancho=100%;
@@ -238,7 +239,6 @@ function F_cuenta(evt){
 
             },
             error: function(data){
-            //  console.log(data.responseText);
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
@@ -326,7 +326,8 @@ function F_siguiendo(evt) {
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', "Siguiendo");
                 }
-              })
+              });
+              eventos_presentacion();
             },
             error: function(data){
               //console.log(data.responseText);
@@ -362,8 +363,7 @@ function getSiguiendos(){
     contenType:"application/Json; charset=utf-8",
     success: function(seguidores){
         $.each(seguidores,function(i,seg){
-          //console.log(seguidores);
-          //console.log(seg.siguiendo);
+
           $.ajax({
             type: "GET",
             url:'/usuarios/',
@@ -381,7 +381,7 @@ function getSiguiendos(){
               })
             },
             error: function(data){
-            //  console.log(data.responseText);
+
               swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
             }
           });
@@ -389,7 +389,7 @@ function getSiguiendos(){
         });
     },
     error: function(data){
-      //console.log(data.responseText);
+
       swal({  title: 'Error!',   text: 'Inicie sesion',   timer: 2000 });
     }
   });
@@ -414,8 +414,7 @@ function F_seguidores(evt) {
     contenType:"application/Json; charset=utf-8",
     success: function(seguidores){
         $.each(seguidores,function(i,seg){
-          //console.log(seguidores);
-          //console.log(seg.seguidor);
+
           $.ajax({
             type: "GET",
             url:'/usuarios/',
@@ -430,10 +429,11 @@ function F_seguidores(evt) {
 
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "Seguir");
                 }
-              })
+              });
+              eventos_presentacion();
             },
             error: function(data){
-            //  console.log(data.responseText);
+
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
@@ -444,7 +444,7 @@ function F_seguidores(evt) {
 
     },
     error: function(data){
-      //console.log(data.responseText);
+
       swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
     }
   });
@@ -473,32 +473,17 @@ function autocomplete_busqueda(){
             contenType:"application/Json; charset=utf-8",
             data: {q: request.term},
             success: function(data){
-              //console.log(data);
-              //console.log(request);
-              //$.each(usuarios,function(i,usuario){
 
-              //});
               $.each(data,function(i,usuario){
                 lista.push(usuario.username);
               });
-            //  console.log(lista);
+
               response(lista);
 
             },
-            /*success: function(usuarios){
-              $.each(usuarios,function(i,usuario){
-                console.log("json");
-                if(usuario.name==bsq){
-                  user=usuario.name + " " + usuario.apellido;
-                  response(user);
-                  //log(user);
-                  //crear_presentancion_usuario('#', user,usuario.username, 'primary', 'Siguiendo');
-                }
-              });
-              */
-            //},
+
             error: function(data){
-            //  console.log(data.responseText);
+
               swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
             }
           });
@@ -518,7 +503,7 @@ function autocomplete_busqueda(){
         $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
       }
     });
-    //alert("click");
+
 
 }
 
@@ -548,7 +533,7 @@ function mostrar_busqueda() {
 
 	    },
 	    error: function(data){
-	      //console.log(data.responseText);
+
 	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
 	    }
 	  });
@@ -586,7 +571,7 @@ function F_iniciaruta(evt) {
     dataType:"Json",
     contenType:"application/Json; charset=utf-8",
     success: function(user){
-          //console.log(user)
+
           //Si tiene o no carro
            $.ajax({
             type: "GET",
@@ -601,14 +586,14 @@ function F_iniciaruta(evt) {
                          cargarComponentes_Ruta('#seccion_ruta');
                       }
                       else if(persona.is_carro=='False'){
-                      //  console.log("nadaaaa");
+
                       }
                     }
                   });
 
             },
             error: function(data){
-              //console.log(data.responseText);
+
               swal({  title: 'Error!',   text: 'Error',   timer: 2000 });
             }
           });
@@ -713,6 +698,10 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
     name : 'botones__seguir'
   }))))).hide().appendTo(".list_seg").fadeIn('slow');
 
+}
+
+function eventos_presentacion(){
+
 
   $('.click_button').click(function () {
     if ($(this).text()=='Siguiendo'){
@@ -788,7 +777,7 @@ inicio,fin;
 
         $('#cuerpo_cuenta').remove();
         $('#myModal_usuario').modal('show');
-        cargarComponentes_Cuenta(".modal-body", nombre, id, 'seguidores', contseg, 'seguidos', contsig, car);
+        cargarComponentes_Cuenta(".modal-body", '','', 'seguidores', contseg, 'seguidos', contsig, car);
         $('#modal_usuario').css({ 'width': '440px', 'height': '400px' });
         //$('#cuerpo_cuenta').css({ 'width': '100%', 'height': '390px', 'padding': '0', 'background': 'none' });
         $('#nombreCuenta').css({'position':'relative','top':'-70px'});
@@ -910,6 +899,7 @@ inicio,fin;
 
 
         //$('.class_cuenta').append("<button id='btn_llevame' text= 'Llevame!' style= 'margin: 0 auto;position:relative;top:80px;left:226px;font-size:20px'> LLEVAME</button>");
+        /*
         var label=$(this).attr("value");
         $('.class_cuenta').append($('<div>',{
           id:'div_listas_rutas',
@@ -918,17 +908,40 @@ inicio,fin;
           id:'ListaRutas_seg',
           class :'ListaRutas_seg_class'
         })));
+        */
+        
         $.ajax({
-      	    type: "GET",
-      	    url:'/usuarios/',
-      	    async: true,
-      	    dataType:"Json",
-      	    contenType:"application/Json; charset=utf-8",
-      	    success: function(usuarios){
-      	      $.each(usuarios,function(i,usuario){
-                //console.log("aqui "+usuario.username);
-      	        if(usuario.username==label){
-                  //console.log("aqui mi segunda entrada "+usuario.username);
+          type: "GET",
+          url:'/Ruta_usuarios',
+          data: {username: label_username},
+          dataType:"json",
+          contentType:"application/json; charset=utf-8",
+          success: function(rutas){
+
+            $('.list_class').remove();
+            $('.class_cuenta').append($('<div>',{
+              class:'list_class',
+              id:'div_listas_rutas',
+              style:'position:relative;top:57px;overflow:auto;width:400px;height:200px'
+            }).append($('<ol>',{
+              id:'ListaRutas_seg',
+              class :'ListaRutas_seg_class'
+            })));
+            $.each(rutas,function(i,ruta){
+                origen=ruta.origen;
+                destino=ruta.destino;
+                $(".ListaRutas_seg_class").append("<li class='rutaslistas'><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
+                "<button id='btn_llevame' class='btn_llevame_class' value="+ruta.id+" text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
+                                
+            });
+
+            $(".miRuta").click(function (e) {
+                  var id_ruta = e.target.id;
+
+                  var start_lt,start_lg,end_lt,end_lg;
+
+
+                  //Se leen las rutas
                   $.ajax({
                     type: "GET",
                     url:'/Rutas/',
@@ -936,116 +949,84 @@ inicio,fin;
                     dataType:"Json",
                     contenType:"application/Json; charset=utf-8",
                     success: function(rutas){
-                      var cont = 0;
-                      var c = 0;
-                      $.each(rutas,function(i,ruta){
-                        c = c +1;
-                        console.log("comparando"+ruta.fk_user+"   "+usuario.username +"  "+c);
-                        if (ruta.fk_user==usuario.username){
-                          cont = cont +1 ;
-                          console.log("estoy entrando" + cont);
-                          origen=ruta.origen;
-                          destino=ruta.destino;
-                          $(".ListaRutas_seg_class").append("<li class='rutaslistas'><a class='linkRuta' title= 'Trazar Ruta' href='#' style='clear:both;color:white' ><span id="+ruta.id+" class='miRuta'>"+origen+"-"+destino+ "</span></a></li>"+
-                        "<button id='btn_llevame' class='btn_llevame_class' text= 'Llevame!' style= 'height:20px; widht:20px;margin: 0 auto;position:relative;top:-20px;left:200px;font-size:10px'> LLEVAME</button>");
 
-                        $(".miRuta").click(function (e) {
-                          var id_ruta = e.target.id;
+                    $.each(rutas,function(i,ruta){
+                      if(ruta.id==id_ruta){
+                        start_lt=ruta.origen_lt;
+                        start_lg=ruta.origen_lg;
+                        end_lt=ruta.destino_lt;
+                        end_lg=ruta.destino_lg;
+                        //Nuevo posiciones
+                        inicio=new google.maps.LatLng(start_lt,start_lg);
+                        fin=new google.maps.LatLng(end_lt,end_lg);
+                        //Se guarda en una lista
+                        list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
+                        //list_ini_fin.push({lt:end_lt, lg: end_lg});
 
-                          var start_lt,start_lg,end_lt,end_lg;
-
-
-                          //Se leen las rutas
-                          $.ajax({
-                            type: "GET",
-                            url:'/Rutas/',
-                            async: true,
-                            dataType:"Json",
-                            contenType:"application/Json; charset=utf-8",
-                            success: function(rutas){
-
-                            $.each(rutas,function(i,ruta){
-                              if(ruta.id==id_ruta){
-                                start_lt=ruta.origen_lt;
-                                start_lg=ruta.origen_lg;
-                                end_lt=ruta.destino_lt;
-                                end_lg=ruta.destino_lg;
-                                //Nuevo posiciones
-                                inicio=new google.maps.LatLng(start_lt,start_lg);
-                                fin=new google.maps.LatLng(end_lt,end_lg);
-                                //Se guarda en una lista
-                                list_ini_fin=[start_lt,start_lg,end_lt,end_lg]
-                                //list_ini_fin.push({lt:end_lt, lg: end_lg});
-
-                                //console.log("Inicio funcion calcular ruta");
-                                //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
-                              }//Fin del if
-                            })
+                        //console.log("Inicio funcion calcular ruta");
+                        //calcRoute2(inicio.lat(),inicio.lng(),fin.lat(),fin.lng());
+                      }//Fin del if
+                    })
 
 
-                          },
-                            error: function(data){
-                              swal({  title: 'Error!',   text: 'Errooor al leer Rutas',   timer: 2000 });
-                            }
-                          });
-                          $.ajax({
-                            type: "GET",
-                            url:'/coordenadas/',
-                            async: true,
-                            dataType:"Json",
-                            contenType:"application/Json; charset=utf-8",
-                            success: function(puntos){
-
-                              $.each(puntos,function(i,punto){
-                                if(punto.fk_ruta==id_ruta){
-                                  latitude=punto.latitude;
-                                  longitude=punto.longitude;
-                                  p = new google.maps.LatLng(latitude,longitude);
-                                  list_puntos.push({location: p, stopover: false});
-
-                                }
-
-                              });
-                            },
-                            error: function(data){
-                              swal({  title: 'Error!',   text: 'Errooor al leer coordenadas',   timer: 2000 });
-                            }
-                          });
-
-                          calcRoute2();
-
-                        });
-
-                          $('.btn_llevame_class').click(function (e) {
-                            var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
-                            var idruta = ruta.id;
-                            var estadop = "Pendiente"
-                            $.ajax({
-                                type: "POST",
-                                url:'/guardarPeticion',
-                                data: {'comentario':"Hola me podrias llevar!",'glongitud':'0','glatitud':'0','gruta':idruta,'pestado':estadop,'csrfmiddlewaretoken':csrf },
-                                success: function(){
-                                 swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
-                              },
-                                error: function(e){
-                                swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
-                              }
-                            });
-                          });
-                        }
-                      })
-                    },
+                  },
                     error: function(data){
-                      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+                      swal({  title: 'Error!',   text: 'Errooor al leer Rutas',   timer: 2000 });
                     }
                   });
-      	        }
-      	      })
-      	    },
-      	    error: function(data){
-      	      swal({  title: 'Error!!',   text: 'No existe el usuario',   timer: 2000 });
-      	    }
-      	  });
+                  $.ajax({
+                    type: "GET",
+                    url:'/coordenadas/',
+                    async: true,
+                    dataType:"Json",
+                    contenType:"application/Json; charset=utf-8",
+                    success: function(puntos){
+
+                      $.each(puntos,function(i,punto){
+                        if(punto.fk_ruta==id_ruta){
+                          latitude=punto.latitude;
+                          longitude=punto.longitude;
+                          p = new google.maps.LatLng(latitude,longitude);
+                          list_puntos.push({location: p, stopover: false});
+
+                        }
+
+                      });
+                    },
+                    error: function(data){
+                      swal({  title: 'Error!',   text: 'Errooor al leer coordenadas',   timer: 2000 });
+                    }
+                  });
+
+                  calcRoute2();
+
+                });
+
+            $('.btn_llevame_class').click(function (e) {
+              labelRuta= $(this).attr('value');
+              var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
+              var idruta = labelRuta;
+              var estadop = "Pendiente"
+              $.ajax({
+                  type: "POST",
+                  url:'/guardarPeticion',
+                  data: {'comentario':"Hola me podrias llevar!",'glongitud':'0','glatitud':'0','gruta':idruta,'pestado':estadop,'csrfmiddlewaretoken':csrf },
+                  success: function(){
+                   swal({   title: 'Exito!',   text: 'La peticion ha sido enviada con exito',   timer: 2000 });
+                },
+                  error: function(e){
+                  swal({   title: 'Error!',   text: 'Error al intentar guardar peticion',   timer: 2000 });
+                }
+              });
+            });
+
+
+          },
+          error: function(data){
+            swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+          }
+        });
+
   });
 
 
@@ -1509,7 +1490,6 @@ function añadir_eventos(){
 function boton_seguir(e){
   // var primary=document.getElementById('button_seguir');
 
-  alert("click");
   if (e.target.class=='btn btn-primary center-block'){
     e.target.class = 'btn btn-info center-block';
     e.target.text = "Seguir+";
@@ -1540,3 +1520,4 @@ function seguir(seguidor_a){
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+//window.addEventListener('load', initialize, true);

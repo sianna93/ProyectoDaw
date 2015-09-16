@@ -599,6 +599,25 @@ def datos_person(request):
         response['Cache-Control'] = 'no-cache'
         return response
 
+def getRuta_Usuarios(request) :
+    if request.method=='GET':
+       user=request.GET.get("username")
+       print("USER RECIBIDO",user)
+       usuario = User.objects.filter(username=user)
+       print("miUsuario", usuario[0].username)
+       rutas= Ruta.objects.filter(fk_persona_ruta=usuario[0].pk)
+       print("miUsuario", usuario[0].username)
+       print("rutas",rutas)
+       response = render_to_response(
+            'json/routes.json',
+            {'routes':rutas},
+            context_instance=RequestContext(request)
+        )
+       response['Content-Type'] = 'application/json; charset=utf-8'
+       response['Cache-Control'] = 'no-cache'
+       return response
+
+
 #FUNCION QUE CONSUME EL WEB SERVICES DE LA ESPOL
 def getName(request) :
     if request.method=='GET':

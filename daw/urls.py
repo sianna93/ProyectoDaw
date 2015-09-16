@@ -62,7 +62,7 @@ urlpatterns = [
     url(r'^cambiar','web.views.cambiar_estado'),#para el views de dejar_de_seguir
     url(r'^unapersona','web.views.obtener_una_person'),#obtener una persona
     url(r'^menu','web.views.personaCarro',name='carro'),#carga el menu.html con el envio del valor del carro del usuario
-    
+     url(r'^Ruta_usuarios','web.views.getRuta_Usuarios'),
 
 
 ]
