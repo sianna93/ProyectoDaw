@@ -64,9 +64,10 @@ function cargarMapa(){
                         });
                         markers.push(marker);
                         //marker
+                        
                         marker.addListener('click', function() {
                           infowindow.open(map, marker);
-                          alert(infowindow.getContent());
+                          
                           console.log(infowindow.getContent());
                         });
 
