@@ -15,9 +15,6 @@ function initialize() {
   document.getElementById('a_buscar').addEventListener('click',F_buscar, false);//BUSCAR
   document.getElementById('a_iniciar_ruta').addEventListener('click',F_iniciaruta, false);
   document.getElementById('a_misrutas').addEventListener('click',F_misrutas, false);
-
-
-
     $(".img_noti_class").click(function()
     {
       $('.listas_notificaciones').remove();
