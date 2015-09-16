@@ -19,6 +19,7 @@ function start(){
     contenType:"application/Json; charset=utf-8",
     success: function(personas){
    //       $.each(personas,function(p,persona){
+
              if(personas[0].is_carro=='True'){
                 initializeConCarro();
 
@@ -1580,4 +1581,4 @@ function seguir(seguidor_a){
 
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', start);
