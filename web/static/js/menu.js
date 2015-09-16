@@ -467,13 +467,14 @@ function autocomplete_busqueda(){
       source: function( request, response ) {
         //bsq= this.value;
       //  console.log(bsq);
+        //$('.ui-menu-item').remove();
         $.ajax({
             url:'/filtrarNombres/',
             dataType:"json",
             contenType:"application/Json; charset=utf-8",
             data: {q: request.term},
             success: function(data){
-
+              lista=[];
               $.each(data,function(i,usuario){
                 lista.push(usuario.username);
               });
