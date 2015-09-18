@@ -327,7 +327,7 @@ function F_siguiendo(evt) {
                   crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', "Siguiendo");
                 }
               });
-              eventos_presentacion();
+              eventos_presentacion('siguiendo');
             },
             error: function(data){
               //console.log(data.responseText);
@@ -378,7 +378,8 @@ function getSiguiendos(){
                   user=usuario.first_name + " " + usuario.last_name;
                   crear_presentancion_usuario('#seccion_siguiendo', user,usuario.username, 'primary', "Siguiendo");
                 }
-              })
+              });
+              eventos_presentacion('siguiendo');
             },
             error: function(data){
 
@@ -430,7 +431,7 @@ function F_seguidores(evt) {
                   crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "Seguir");
                 }
               });
-              eventos_presentacion();
+              eventos_presentacion('seguidor');
             },
             error: function(data){
 
@@ -452,6 +453,52 @@ function F_seguidores(evt) {
   //$('#seccion_seguidores').css({'overflow':'auto'});
   //cargarDatosSeguidores();
   //añadir_eventos();
+}
+
+function getSeguidores(){
+  $( ".cuerpo_presentacion_class" ).remove();
+  $.ajax({
+    type: "GET",
+    url:'/seguidores/',
+    async: true,
+    dataType:"Json",
+    contenType:"application/Json; charset=utf-8",
+    success: function(seguidores){
+        $.each(seguidores,function(i,seg){
+
+          $.ajax({
+            type: "GET",
+            url:'/usuarios/',
+            async: true,
+            dataType:"Json",
+            contenType:"application/Json; charset=utf-8",
+            success: function(usuarios){
+              $.each(usuarios,function(i,usuario){
+
+                if(usuario.username==seg.siguiendo){
+                  user=usuario.first_name + " " + usuario.last_name;
+
+                  crear_presentancion_usuario('#seccion_seguidores', user,usuario.username, 'primary', "Seguir");
+                }
+              });
+              eventos_presentacion('seguidor');
+            },
+            error: function(data){
+
+              swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+            }
+          });
+
+
+        });
+
+
+    },
+    error: function(data){
+
+      swal({  title: 'Error!',   text: 'Errooor',   timer: 2000 });
+    }
+  });
 }
 
 function autocomplete_busqueda(){
@@ -532,7 +579,7 @@ function mostrar_busqueda() {
 
 	        }
 	      });
-        eventos_presentacion();
+        eventos_presentacion('');
 
 	    },
 	    error: function(data){
@@ -710,7 +757,7 @@ function crear_presentancion_usuario(seccion,nombre,id,typeButton, txtButton){
   //eventos_presentacion();
 }
 
-function eventos_presentacion(){
+function eventos_presentacion(seccion){
 
 
   $('.click_button').click(function () {
@@ -749,7 +796,7 @@ function eventos_presentacion(){
           }
         })
         if (existe >= 1){
-              dejar_de_seguir(labelText);
+              dejar_de_seguir(labelText,seccion);
               //swal({  title: 'Error!!',   text: 'Ya lo estas siguiendo',   timer: 2000 });
 
 
@@ -1049,7 +1096,7 @@ inicio,fin;
 /*var cleanFollowers = function(){
   //$('div followers').empty(); &&
 };*/
-function dejar_de_seguir(labelText){
+function dejar_de_seguir(labelText,seccion){
     var csrf =  $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
       type : "POST",
@@ -1057,7 +1104,8 @@ function dejar_de_seguir(labelText){
       data: {'seguidor':labelText,'csrfmiddlewaretoken':csrf },
       success: function(){
          swal({   title: 'Exito!',   text: 'Se ha eliminado con Exito',   timer: 2000 });
-         getSiguiendos();
+         if(seccion=='siguiendo'){getSiguiendos();}
+         //else if (seccion == 'seguidor'){getSeguidores();}
       },
       error: function(){
         //swal({   title: 'Error!',   text: 'Error al dejar Seguir',   timer: 2000 });
